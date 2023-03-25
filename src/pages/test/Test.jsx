@@ -4,6 +4,7 @@ import './Test.css'
 function Test() {
 
   const inputRef = createRef();
+  const textareaRef = createRef();
   const [teleName, setTeleName] = useState('');
   const [teleMessages, setTeleMessages] = useState([]);
 
@@ -29,6 +30,29 @@ function Test() {
       })
       .then((readyData) => {
         console.log(' >2> ', readyData);
+        setTeleMessages(readyData.result.map((update) => update.message));
+      })
+  };
+
+  const doGreet = (userId) => {
+    const token = inputRef.current?.value;
+    const messageText = textareaRef.current?.value;
+    console.log(textareaRef.current.value)
+    fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chat_id: userId,
+        text: messageText,
+      }),
+    })
+      .then((data) => {
+        return data.json();
+      })
+      .then((readyData) => {
+        console.log(' >3> ', readyData);
         setTeleMessages(readyData.result.map((update) => update.message));
       })
   };
@@ -93,12 +117,28 @@ function Test() {
           </div>
           {teleMessages.map((message, index) => (
             <div key={index}>
-              {message.text}
+              <h3>{message.text}</h3>
               <sup>
                 {message.from.first_name}
               </sup>
+              <input
+                type="button"
+                value="Greet"
+                onClick={() => {
+                  doGreet(message.from.id);
+                }}
+              />
             </div>
           ))}
+        </li>
+
+        <li>
+
+          <textarea
+            ref={textareaRef}
+            placeholder="Greetings"
+          >
+          </textarea>
         </li>
       </ol>
     </div>
