@@ -1,6 +1,11 @@
 import { createRef, useState } from 'react';
 import './Test.css';
 
+import {
+	getTelegramBotName,
+	getTelegramMessages,
+	sendTelegramMessage,
+} from '@services/telegramAPI';
 
 function Test() {
 
@@ -13,49 +18,34 @@ function Test() {
 
 	const getName = () => {
 		const token = inputRef.current?.value;
-		fetch(`https://api.telegram.org/bot${token}/getMe`)
-			.then((data) => {
-				return data.json();
-			})
-			.then((readyData) => {
-				console.log(' >1> ', readyData);
-				setTeleName(readyData.result.username);
-			});
+		getTelegramBotName(token).then((readyData) => {
+			console.log(' >1> ', readyData);
+			setTeleName(readyData.result.username);
+		});
 	};
 
 	const getMessages = () => {
 		const token = inputRef.current?.value;
-		fetch(`https://api.telegram.org/bot${token}/getUpdates`)
-			.then((data) => {
-				return data.json();
-			})
-			.then((readyData) => {
-				console.log(' >2> ', readyData);
-				setTeleMessages(readyData.result.map((update) => update.message));
-			});
+		getTelegramMessages(token).then((readyData) => {
+			console.log(' >2> ', readyData);
+			setTeleMessages(readyData.result.map((update) => update.message));
+		});
 	};
 
 	const doGreet = (userId) => {
 		const token = inputRef.current?.value;
 		const messageText = textareaRef.current?.value;
 		console.log(textareaRef.current.value);
-		fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
+		sendTelegramMessage(
+			token,
+			{
 				chat_id: userId,
 				text: messageText,
-			}),
-		})
-			.then((data) => {
-				return data.json();
-			})
-			.then((readyData) => {
-				console.log(' >3> ', readyData);
-				setTeleMessages(readyData.result.map((update) => update.message));
-			});
+			}
+		).then((readyData) => {
+			console.log(' >3> ', readyData);
+			setTeleMessages(readyData.result.map((update) => update.message));
+		});
 	};
 
 	return (
