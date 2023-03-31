@@ -38,11 +38,11 @@
       "error",
       {
         "groups": [
+					"builtin",
           "external",
-          "builtin",
           "internal",
+					"parent",
           "sibling",
-          "parent",
           "index"
         ],
         "newlines-between": "always"
