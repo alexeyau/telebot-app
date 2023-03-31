@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "husky install",
-    "lint-code": "eslint -c .eslintrc.json --ext .js,.jsx . --cache",
+    "lint-code": "eslint -c .eslintrc.json --ext .js,.jsx . --cache .",
     "lint-code:fix": "npm run lint-code -- --fix"
   },
   "dependencies": {
