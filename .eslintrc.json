@@ -30,7 +30,7 @@
   "plugins": ["react", "import"],
   "rules": {
     "indent": ["error", "tab"],
-    "linebreak-style": ["error", "windows"],
+		"linebreak-style": "off",
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "react/react-in-jsx-scope": "off",
