@@ -12,43 +12,68 @@
 			"version": "detect"
 		}
 	},
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:import/recommended"
-  ],
-  "overrides": [],
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "plugins": ["react", "import"],
-  "rules": {
-    "indent": ["error", "tab"],
+	"env": {
+		"browser": true,
+		"es2021": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:import/recommended"
+	],
+	"overrides": [],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": ["react", "import"],
+	"rules": {
+		"indent": ["error", "tab"],
 		"linebreak-style": "off",
 		"quotes": ["error", "single", { "allowTemplateLiterals": true }],
-    "semi": ["error", "always"],
-    "react/react-in-jsx-scope": "off",
-    "import/order": [
-      "error",
-      {
-        "groups": [
+		"semi": ["error", "always"],
+		"no-whitespace-before-property": "error",
+		"no-trailing-spaces": "error",
+		"rest-spread-spacing": ["error", "never"],
+		"padding-line-between-statements": [
+			"error",
+			{ "blankLine": "always", "prev": "*", "next": "return" }
+		],
+		"space-before-function-paren": [
+			"error",
+			{
+				"anonymous": "never",
+				"named": "never",
+				"asyncArrow": "always"
+			}
+		],
+		"space-in-parens": ["error", "never"],
+		"no-var": "error",
+		"no-param-reassign": "error",
+		"no-nested-ternary": "error",
+		"no-extra-semi": "error",
+		"no-extra-boolean-cast": "error",
+		"no-labels": "error",
+		"curly": "error",
+		"camelcase": "error",
+		"react/react-in-jsx-scope": "off",
+		"jsx-quotes": ["error", "prefer-single"],
+		"import/order": [
+			"error",
+			{
+				"groups": [
 					"builtin",
-          "external",
-          "internal",
+					"external",
+					"internal",
 					"parent",
-          "sibling",
-          "index"
-        ],
-        "newlines-between": "always"
-      }
-    ],
-    "import/newline-after-import": ["error", { "count": 2 }],
-    "import/no-duplicates": ["error", { "considerQueryString": true }]
-  }
+					"sibling",
+					"index"
+				],
+				"newlines-between": "always"
+			}
+		],
+		"import/newline-after-import": ["error", { "count": 2 }],
+		"import/no-duplicates": ["error", { "considerQueryString": true }]
+	}
 }
