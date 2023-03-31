@@ -31,7 +31,7 @@
   "rules": {
     "indent": ["error", "tab"],
 		"linebreak-style": "off",
-    "quotes": ["error", "single"],
+		"quotes": ["error", "single", { "allowTemplateLiterals": true }],
     "semi": ["error", "always"],
     "react/react-in-jsx-scope": "off",
     "import/order": [
