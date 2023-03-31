@@ -57,6 +57,7 @@
 		"no-labels": "error",
 		"curly": "error",
 		"camelcase": "error",
+		"object-curly-spacing": ["error", "always"],
 		"react/react-in-jsx-scope": "off",
 		"jsx-quotes": ["error", "prefer-single"],
 		"import/order": [
