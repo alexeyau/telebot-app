@@ -1,12 +1,13 @@
-import { createRef, useState } from 'react';
-import './Test.css'
+import { createRef, useState, useEffect } from "react";
+import "./Test.css";
+import CheckMessage from "../checkMessage/CheckMessage";
 
 function Test() {
-
   const inputRef = createRef();
   const textareaRef = createRef();
-  const [teleName, setTeleName] = useState('');
+  const [teleName, setTeleName] = useState("");
   const [teleMessages, setTeleMessages] = useState([]);
+  const [token1, setToken1] = useState("");
 
   const teleNameUrl = teleName && `https://t.me/${teleName}`;
 
@@ -17,9 +18,9 @@ function Test() {
         return data.json();
       })
       .then((readyData) => {
-        console.log(' >1> ', readyData);
+        console.log(" >1> ", readyData);
         setTeleName(readyData.result.username);
-      })
+      });
   };
 
   const getMessages = () => {
@@ -29,19 +30,18 @@ function Test() {
         return data.json();
       })
       .then((readyData) => {
-        console.log(' >2> ', readyData);
+        console.log(" >2> ", readyData);
         setTeleMessages(readyData.result.map((update) => update.message));
-      })
+      });
   };
 
   const doGreet = (userId) => {
-    const token = inputRef.current?.value;
     const messageText = textareaRef.current?.value;
-    console.log(textareaRef.current.value)
+    console.log(textareaRef.current.value);
     fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         chat_id: userId,
@@ -52,27 +52,18 @@ function Test() {
         return data.json();
       })
       .then((readyData) => {
-        console.log(' >3> ', readyData);
-        setTeleMessages(readyData.result.map((update) => update.message));
-      })
+        console.log(" >3> ", readyData);
+      });
   };
 
   return (
     <div className="Test">
       <a href={`/`}>&laquo; back</a>
-      <div>
-        piu test
-      </div>
+      <div>piu test</div>
       <ol>
-
         <li>
-          Create a Telegram-bot here:
-          {' '}
-          <a
-            href="https://t.me/botfather"
-          >
-            https://t.me/botfather
-          </a>
+          Create a Telegram-bot here:{" "}
+          <a href="https://t.me/botfather">https://t.me/botfather</a>
         </li>
 
         <li>
@@ -80,6 +71,8 @@ function Test() {
           <form>
             <div>
               <input
+                value={token1}
+                onChange={(event) => setToken1(event.target.value)}
                 ref={inputRef}
                 className="Test__input"
                 placeholder="Token to access the HTTP API"
@@ -92,35 +85,25 @@ function Test() {
         <li>
           Push the button:
           <div>
-            <button
-              className="Test__button"
-              onClick={getName}
-            >
+            <button className="Test__button" onClick={getName}>
               Say my name
             </button>
             <br />
-            {teleName && (
-              <a href={teleNameUrl}>{teleNameUrl}</a>
-            )}
+            {teleName && <a href={teleNameUrl}>{teleNameUrl}</a>}
           </div>
         </li>
 
         <li>
           Push the next button:
           <div>
-            <button
-              className="Test__button"
-              onClick={getMessages}
-            >
+            <button className="Test__button" onClick={getMessages}>
               Get messages
             </button>
           </div>
           {teleMessages.map((message, index) => (
             <div key={index}>
               <h3>{message.text}</h3>
-              <sup>
-                {message.from.first_name}
-              </sup>
+              <sup>{message.from.first_name}</sup>
               <input
                 type="button"
                 value="Greet"
@@ -133,16 +116,13 @@ function Test() {
         </li>
 
         <li>
-
-          <textarea
-            ref={textareaRef}
-            placeholder="Greetings"
-          >
-          </textarea>
+          <textarea ref={textareaRef} placeholder="Greetings"></textarea>
         </li>
       </ol>
+
+      <CheckMessage token={token1} />
     </div>
-  )
+  );
 }
 
-export default Test
+export default Test;
