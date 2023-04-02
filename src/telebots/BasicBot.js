@@ -1,38 +1,38 @@
 export class BasicBot {
 	static settings = {
-		intervalTime: 10000,
+		intervalTime: 15000,
 	};
 
 	static isProcessed(message, processedIdArr) {
-		return processedIdArr.includes(message.id);
+		return processedIdArr.includes(message.message_id);
 	}
 
 	constructor(initSettings) {
 		const {
 			onSendCallback,
 			saveProcessedMessageId,
-			getProcessedMessagesId,
-			getTelegramMessages,
-			sendTelegramMessage,
-			botName,
+			getProcessedMessagesIds,
+			getTelegramMessagesAsync,
+			sendTelegramMessageAsync,
+			name,
 		} = initSettings;
 
 		this.onSendCallback = onSendCallback;
 		this.saveProcessedMessageId = saveProcessedMessageId;
-		this.getProcessedMessagesId = getProcessedMessagesId;
-		this.getTelegramMessages = getTelegramMessages;
-		this.sendTelegramMessage = sendTelegramMessage;
+		this.getProcessedMessagesIds = getProcessedMessagesIds;
+		this.getTelegramMessagesAsync = getTelegramMessagesAsync;
+		this.sendTelegramMessageAsync = sendTelegramMessageAsync;
 
 		this._processedIds = [];
 		this._interval = null;
-		this.botName = botName || 'BasicBot';
+		this.name = name || 'BasicBot';
 	}
 
-	async _doWork() {
-		console.log(' > ', new Date());
+	_doWork = async () => {
+		console.log(' tic/tac > ', new Date());
 		try {
-			this._processedIds = this.getProcessedMessagesId(this.botName);
-			const messages = await this.getTelegramMessages();
+			this._processedIds = this.getProcessedMessagesIds(this.botName);
+			const messages = await this.getTelegramMessagesAsync();
 			messages
 				.filter((message) => !BasicBot.isProcessed(message, this._processedIds))
 				.forEach((message) => this._sendResponse(message));
@@ -42,7 +42,11 @@ export class BasicBot {
 	}
 
 	async _sendResponse(message) {
-		await this.sendTelegramMessage('hi!', message.from.id);
+		let answer = 'hi!';
+		if (message.text === '/start') {
+			answer = 'vot du yu vont?';
+		}
+		await this.sendTelegramMessageAsync(message.from.id, answer);
 		this._onSend(message);
 	}
 
@@ -57,8 +61,8 @@ export class BasicBot {
 	_onSend(message) {
 		if (this.onSendCallback) {
 			this.onSendCallback(message);
-			this.saveProcessedMessageId(this.botName, message.id); // id?
 		}
+		this.saveProcessedMessageId(message.message_id);
 	}
 
 }
