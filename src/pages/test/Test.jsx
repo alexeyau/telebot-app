@@ -5,7 +5,6 @@ import {
 	getTelegramMessages,
 	sendTelegramMessage,
 } from '@services/telegramAPI.js';
-
 import {
 	getStorageItem,
 	setStorageItem,
@@ -14,6 +13,7 @@ import {
 import { BasicBot } from '../../telebots/BasicBot';
 
 import './Test.css';
+
 
 let saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
 
@@ -53,7 +53,7 @@ function Test() {
 		const messageText = textareaRef.current?.value;
 		console.log(textareaRef.current.value);
 		sendTelegramMessage(token, {
-			chat_id: userId,
+			chatId: userId,
 			text: messageText,
 		}).then((readyData) => {
 			console.log(' >3> ', readyData);
@@ -80,6 +80,7 @@ function Test() {
 			},
 			getProcessedMessagesIds: () => {
 				const botData = JSON.parse(getStorageItem(botName) || '{}');
+
 				return botData.processedMessagesIds || [];
 			},
 			getTelegramMessagesAsync: async () => {
@@ -89,7 +90,7 @@ function Test() {
 			},
 			sendTelegramMessageAsync: async (userId, messageText) => {
 				return sendTelegramMessage(token, {
-					chat_id: userId,
+					chatId: userId,
 					text: messageText,
 				});
 			},

@@ -39,7 +39,7 @@ export class BasicBot {
 		} catch (e) {
 			console.log(e);
 		}
-	}
+	};
 
 	async _sendResponse(message) {
 		let answer = 'hi!';
