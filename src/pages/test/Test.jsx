@@ -11,7 +11,7 @@ import {
 	setStorageItem,
 } from '@services/localStorage.js';
 
-import { BasicBot } from '../../telebots/BasicBot';
+import { BasicBotRandom } from '../../telebots/BasicBotRandom';
 
 import './Test.css';
 
@@ -97,7 +97,7 @@ function Test() {
 				console.log('callback: message sent');
 			}
 		};
-		const bot = new BasicBot(settings);
+		const bot = new BasicBotRandom(settings);
 		bot.start();
 	};
 
