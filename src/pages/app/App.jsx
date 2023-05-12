@@ -1,29 +1,17 @@
 import { useState } from 'react';
 
-import reactLogo from './assets/react.svg';
-
+import reactLogo from '@/assets/react.svg';
 // eslint-disable-next-line import/no-unresolved
 import viteLogo from '/vite.svg';
-import './App.css';
+import Layout from '@/components/Layout';
 
 
 function App() {
 	const [count, setCount] = useState(0);
 
   return (
-    <div className="App">
 
-      <div className='header'>
-
-        <div className='header-logo'></div>
-        <div className='header-menu'>
-          <div className='header-text'>What is a bot?</div>
-          <div className='header-text'>Examples of works</div>
-          <div className='header-text'>Reviews</div>
-          <div className='header-text'>Cost</div>
-        </div>
-
-      </div>
+    <Layout>
       
       <div className='page'>
         <div className='content'>
@@ -65,14 +53,9 @@ function App() {
           </div>
 
         </div>
-
-        <div className='footer'><div className='footer-text'>Footer</div></div>
-
       </div>
 
-
-
-    </div>
+    </Layout>
   );
 }
 

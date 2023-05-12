@@ -45,7 +45,7 @@
   color: #888;
 }
 
-.App {
+.Layout {
   display: flex;
   flex-direction: column;
   text-align: center;
