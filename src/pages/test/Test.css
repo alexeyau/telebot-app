@@ -1,7 +1,39 @@
 .Test {
-  bacground: lightgreen;
+  background: lightgreen;
+  border-radius: 8px;
+  padding: 10px;
+  overflow: hidden;
+}
+
+.test_box {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 auto;
+  align-items: center;
 }
 
 .Test__input {
   font-size: 18px;
+  width: 363px;
+  border-radius: 4px;
+  outline: none;
+  border: 0.5px solid rgb(102, 95, 95);
+  padding: 4px;
+}
+
+.Test__button {
+  width: 100%;
+}
+
+.test__textarea {
+  border-radius: 4px;
+  border: 0.5px solid rgb(102, 95, 95);
+  width: 300px;
+  height: 100px;
+  padding: 4px;
+  outline: none;
+  overflow: hidden;
+  resize: none;
 }
