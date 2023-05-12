@@ -11,7 +11,8 @@ import {
 	setStorageItem,
 } from '@services/localStorage.js';
 
-import { BasicBotRandom } from '../../telebots/BasicBotRandom';
+import { BasicBotRandom } from '@/telebots/BasicBotRandom';
+import Layout from '@/components/Layout';
 
 import './Test.css';
 
@@ -102,80 +103,82 @@ function Test() {
 	};
 
 	return (
-		<div className='Test'>
-			<a href={'/'}>&laquo; back</a>
-			<div>piu test</div>
-			<ol className='test_box'>
-				<li>
-					Create a Telegram-bot here:{' '}
-					<a href='https://t.me/botfather'>https://t.me/botfather</a>
-				</li>
+		<Layout>
+			<div className='Test'>
+				<a href={'/'}>&laquo; back</a>
+				<div>piu test</div>
+				<ol className='test_box'>
+					<li>
+						Create a Telegram-bot here:{' '}
+						<a href='https://t.me/botfather'>https://t.me/botfather</a>
+					</li>
 
-				<li>
-					Enter Token:
-					<form>
+					<li>
+						Enter Token:
+						<form>
+							<div>
+								<input
+									ref={inputRef}
+									className='Test__input'
+									placeholder='Token to access the HTTP API'
+									type='text'
+								/>
+							</div>
+						</form>
+					</li>
+
+					<li>
+						Push the button:
 						<div>
-							<input
-								ref={inputRef}
-								className='Test__input'
-								placeholder='Token to access the HTTP API'
-								type='text'
-							/>
+							<button className='Test__button' onClick={getName}>
+								Say my name
+							</button>
+							<br />
+							{teleName && <a href={teleNameUrl}>{teleNameUrl}</a>}
 						</div>
-					</form>
-				</li>
+					</li>
 
-				<li>
-					Push the button:
-					<div>
-						<button className='Test__button' onClick={getName}>
-							Say my name
-						</button>
-						<br />
-						{teleName && <a href={teleNameUrl}>{teleNameUrl}</a>}
-					</div>
-				</li>
-
-				<li>
-					Push the next button:
-					<div>
-						<button className='Test__button' onClick={getMessages}>
-							Get messages
-						</button>
-					</div>
-					{teleMessages.map((message, index) => (
-						<div key={index}>
-							<h3>{message.text}</h3>
-							<sup>{message.from.first_name}</sup>
-							<input
-								type='button'
-								value='Greet'
-								onClick={() => {
-									doGreet(message.from.id);
-								}}
-							/>
+					<li>
+						Push the next button:
+						<div>
+							<button className='Test__button' onClick={getMessages}>
+								Get messages
+							</button>
 						</div>
-					))}
-				</li>
+						{teleMessages.map((message, index) => (
+							<div key={index}>
+								<h3>{message.text}</h3>
+								<sup>{message.from.first_name}</sup>
+								<input
+									type='button'
+									value='Greet'
+									onClick={() => {
+										doGreet(message.from.id);
+									}}
+								/>
+							</div>
+						))}
+					</li>
 
-				<li>
-					<textarea
-						className='test__textarea'
-						ref={textareaRef}
-						placeholder='Greetings'
-					></textarea>
-				</li>
+					<li>
+						<textarea
+							className='test__textarea'
+							ref={textareaRef}
+							placeholder='Greetings'
+						></textarea>
+					</li>
 
-				<li>
-					Create Bot Instace (try OOP):
-					<div>
-						<button className='Test__button' onClick={createBotInstance}>
-							Create!
-						</button>
-					</div>
-				</li>
-			</ol>
-		</div>
+					<li>
+						Create Bot Instace (try OOP):
+						<div>
+							<button className='Test__button' onClick={createBotInstance}>
+								Create!
+							</button>
+						</div>
+					</li>
+				</ol>
+			</div>
+		</Layout>
 	);
 }
 
