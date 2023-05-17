@@ -58,6 +58,7 @@
 		"curly": "error",
 		"camelcase": "error",
 		"react/react-in-jsx-scope": "off",
+		"no-case-declarations": "off",
 		"jsx-quotes": ["error", "prefer-single"],
 		"import/order": [
 			"error",

@@ -94,13 +94,14 @@
   display: flex;
   flex-direction: column;
   text-align: left;
+  flex: 1 1 auto;
 }
 
 .content {
+  margin: 10px auto 0px auto;
   display: flex;
   flex-direction: row;
-  min-height: 500px;
-  flex: 1 1 auto;
+  min-height: 50vh;
 }
 
 .content-item {
@@ -140,6 +141,7 @@
 
 .footer-text {
   padding-top: 20px;
+  padding-bottom: 20px;
   margin-left: auto;
   margin-right: 100px;
 }

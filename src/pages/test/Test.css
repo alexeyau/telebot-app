@@ -1,8 +1,10 @@
 .Test {
-  background: lightgreen;
+  display: flex;
+  background: #0d1117;
   border-radius: 8px;
-  padding: 10px;
+  padding: 100px 0px 0px 60px;
   overflow: hidden;
+  flex: 1 1 auto;
 }
 
 .test_box {
@@ -19,12 +21,13 @@
   width: 363px;
   border-radius: 4px;
   outline: none;
-  border: 0.5px solid rgb(102, 95, 95);
+  border: 0.5px solid #0d1117;
   padding: 4px;
 }
 
 .Test__button {
   width: 100%;
+  background-color: rgb(32, 32, 184);
 }
 
 .test__textarea {
