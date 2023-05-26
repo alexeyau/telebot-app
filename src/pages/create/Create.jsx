@@ -124,33 +124,33 @@ function Create() {
         <h3 className='Create_H3'>Your bot token is: {token}</h3>
         <h4 className='Create_H4'>{activeBot}</h4>
 
-            <ol className='test_box'>
-            <li className='Create_List'>
-              Create Simple Bot Instance:
-              <div>
-                <button
-                  className='Create__button'    
-                  onClick={createBotSimpleInstance}
-                  disabled={!token || isRandomBotActive}
-                >
-                  Create1!
-                </button>
-              </div>
-            </li>
+				<ol className='test_box'>
+					<li className='Create_List'>
+						Create Simple Bot Instance:
+						<div>
+							<button
+								className='Create__button'
+								onClick={createBotSimpleInstance}
+								disabled={!token || isRandomBotActive}
+							>
+								Create1!
+							</button>
+						</div>
+					</li>
 
-            <li className='Create_List'>
-              Create Random Bot Instance:
-              <div>
-                <button
-                  className='Create__button'
-                  onClick={createBotRandomInstance}
-                  disabled={!token || isSimpleBotActive}
-                >
-                  Create2!
-                </button>
-              </div>
-            </li>
-          </ol>
+					<li className='Create_List'>
+						Create Random Bot Instance:
+						<div>
+							<button
+								className='Create__button'
+								onClick={createBotRandomInstance}
+								disabled={!token || isSimpleBotActive}
+							>
+								Create2!
+							</button>
+						</div>
+					</li>
+				</ol>
 			</div>
 		</Layout>
 	);

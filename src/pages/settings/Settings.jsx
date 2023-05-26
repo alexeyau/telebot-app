@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';	
+import { useSelector } from 'react-redux';
 import {useState} from 'react';
 
 import {
@@ -7,6 +7,7 @@ import {
 } from '@services/localStorage.js';
 
 import Layout from '@/components/Layout';
+import './Settings.css';
 
 
 function Settings() {
@@ -16,15 +17,15 @@ function Settings() {
 	const [arrayAdditionallySettingsOfBot, setArrayAdditionallySettingsOfBot] = useState([]);
 
 
-	let additionallyNameOfSetttings = "";
-	let additionallyOptionsOfSettings = "";
+	let additionallyNameOfSetttings = '';
+	let additionallyOptionsOfSettings = '';
 
 	const settingsOfBot = Object.keys(activeBotInstance.settings).map(key =>
 		<div key={key}>
 			{key}
 			<input defaultValue={activeBotInstance.settings[key]}/>
 		</div>
-	)
+	);
 
 	let saveToStorage = (event) => {
 		setStorageItem('actualKey', event.target.value);
@@ -49,7 +50,7 @@ function Settings() {
 	let changeOptionsSettings = (event) => {
 		additionallyOptionsOfSettings = event.target.value;
 		console.log(additionallyOptionsOfSettings);
-	}
+	};
 
 	return (
 		<Layout>
