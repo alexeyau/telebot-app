@@ -4,14 +4,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import App from '@/pages/app/App.jsx';
-
-import Test from './pages/test/Test.jsx';
 import Settings from '@/pages/settings/Settings.jsx';
 import Monitor from '@/pages/monitor/Monitor.jsx';
 import Create from '@/pages/create/Create.jsx';
-import './index.css';
 
-import store from '@services/Redux-store';
+import store from '@services/Redux-store.js';
+
+import Test from './pages/test/Test.jsx';
+import './index.css';
 
 const router = createBrowserRouter([
   {
@@ -37,18 +37,18 @@ const router = createBrowserRouter([
 ]);
 
 let rerenderEntireTree = () => {
-  ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
-    </React.StrictMode>,
-  );
+	ReactDOM.createRoot(document.getElementById('root')).render(
+		<React.StrictMode>
+			<Provider store={store}>
+				<RouterProvider router={router} />
+			</Provider>
+		</React.StrictMode>
+	);
 };
 
 rerenderEntireTree(store.getState());
 
 store.subscribe(() => {
-  let state = store.getState();
-  rerenderEntireTree(state);
+	let state = store.getState();
+	rerenderEntireTree(state);
 });

@@ -111,6 +111,7 @@
 
 .content-item-advertisement {
   font-size: 56px;
+  width: 1200px;
 }
 
 .content-item-list {
@@ -121,6 +122,7 @@
 .content-item-button {
   margin: 70px 250px 250px 180px;
   font-size: 20px;
+  width: 200px;
   padding: 10px 60px 10px 60px;
   background-color: blue;
   color: white;

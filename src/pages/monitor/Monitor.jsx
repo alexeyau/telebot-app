@@ -1,6 +1,7 @@
 import './Monitor.css';
 import Layout from '@/components/Layout';
 
+
 function Monitor() {
   return (
     <Layout>

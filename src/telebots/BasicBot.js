@@ -17,12 +17,12 @@ export class BasicBot {
       name,
     } = initSettings;
 
-    this.settings = {
-      test1: '1234',
-      test2: '1235',
-      test3: '1236',
-      test4: '1237',
-    };
+		this.settings = {
+			test1: '1234',
+			test2: '1235',
+			test3: '1236',
+			test4: '1237',
+		};
 
     this.onSendCallback = onSendCallback;
     this.saveProcessedMessageId = saveProcessedMessageId;
@@ -35,18 +35,18 @@ export class BasicBot {
     this.name = name || 'BasicBot';
   }
 
-  _doWork = async () => {
-    console.log(' tic/tac > ', new Date());
-    try {
-      this._processedIds = this.getProcessedMessagesIds(this.botName);
-      const messages = await this.getTelegramMessagesAsync();
-      messages
-        .filter((message) => !BasicBot.isProcessed(message, this._processedIds))
-        .forEach((message) => this._sendResponse(message));
-    } catch (e) {
-      console.log(e);
-    }
-  };
+	_doWork = async () => {
+		console.log(' tic/tac > ', new Date());
+		try {
+			this._processedIds = this.getProcessedMessagesIds(this.botName);
+			const messages = await this.getTelegramMessagesAsync();
+			messages
+				.filter((message) => !BasicBot.isProcessed(message, this._processedIds))
+				.forEach((message) => this._sendResponse(message));
+		} catch (e) {
+			console.log(e);
+		}
+	};
 
   async _sendResponse(message) {
     let answer = this.settings.greeting || 'hi!';
