@@ -4,12 +4,10 @@ import './Layout.css';
 
 function Layout(props) {
   return (
-    <div className="Layout">
-
-        <Header />
-        {props.children}
-        <Footer />
-
+    <div className='Layout'>
+      <Header />
+      {props.children}
+      <Footer />
     </div>
   );
 }
