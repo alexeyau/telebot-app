@@ -1,0 +1,18 @@
+.test_box {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 auto;
+    align-items: center;
+  }
+  
+  .Test__input {
+    font-size: 18px;
+    width: 363px;
+    border-radius: 4px;
+    outline: none;
+    border: 0.5px solid #0d1117;
+    padding: 4px;
+  }
+  

@@ -17,6 +17,13 @@ export class BasicBot {
       name,
     } = initSettings;
 
+    this.settings = {
+      test1: '1234',
+      test2: '1235',
+      test3: '1236',
+      test4: '1237',
+    };
+
     this.onSendCallback = onSendCallback;
     this.saveProcessedMessageId = saveProcessedMessageId;
     this.getProcessedMessagesIds = getProcessedMessagesIds;
@@ -42,7 +49,7 @@ export class BasicBot {
   };
 
   async _sendResponse(message) {
-    let answer = 'hi!';
+    let answer = this.settings.greeting || 'hi!';
     if (message.text === '/start') {
       answer = 'vot du yu vont?';
     }
@@ -51,7 +58,10 @@ export class BasicBot {
   }
 
   start() {
-    this.interval = setInterval(this._doWork, BasicBot.settings.intervalTime);
+    this.interval = setInterval(
+      this._doWork,
+      this.settings.intervalTime || BasicBot.settings.intervalTime,
+    );
   }
 
   stop() {
