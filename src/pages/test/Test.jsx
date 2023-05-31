@@ -7,7 +7,6 @@ import {
 } from '@services/telegramAPI.js';
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
-import { BasicBot } from '@/telebots/BasicBot';
 import Layout from '@components/Layout';
 
 import './Test.css';
@@ -18,7 +17,7 @@ let saveToStorage = (event) => {
   setStorageItem('actualKey', event.target.value);
 };
 
-function Test(props) {
+function Test() {
   const inputRef = createRef();
   const textareaRef = createRef();
   const [teleName, setTeleName] = useState('');
