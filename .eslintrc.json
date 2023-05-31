@@ -1,13 +1,6 @@
 {
   "settings": {
-    "import/resolver": {
-      "alias": {
-        "map": [
-          ["@", "./src"],
-          ["@services", "./src/services"]
-        ]
-      }
-    },
+    "import/resolver": {},
     "react": {
       "version": "detect"
     }
@@ -18,11 +11,8 @@
     "node": true
   },
   "extends": [
-    "standard",
     "eslint:recommended",
-    "plugin:import/recommended",
     "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
     "prettier",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
@@ -33,53 +23,11 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "import", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
-    // "indent": ["error", "tab"],
-    // "linebreak-style": "off",
-    // "quotes": ["error", "single", { "allowTemplateLiterals": true }],
-    // "semi": ["error", "always"],
-    // "no-whitespace-before-property": "error",
-    // "no-trailing-spaces": "error",
-    // "rest-spread-spacing": ["error", "never"],
-    // "padding-line-between-statements": [
-    //   "error",
-    //   { "blankLine": "always", "prev": "*", "next": "return" }
-    // ],
-    // "space-before-function-paren": [
-    //   "error",
-    //   {
-    //     "anonymous": "never",
-    //     "named": "never",
-    //     "asyncArrow": "always"
-    //   }
-    // ],
-    // "space-in-parens": ["error", "never"],
-    // "no-var": "error",
-    // "no-param-reassign": "error",
-    // "no-nested-ternary": "error",
-    // "no-extra-semi": "error",
-    // "no-extra-boolean-cast": "error",
-    // "no-labels": "error",
-    // "curly": "error",
-    // "camelcase": "error",
-    // "react/react-in-jsx-scope": "off",
-    // "jsx-quotes": ["error", "prefer-single"],
-    // "import/order": [
-    //   "error",
-    //   {
-    //     "groups": [
-    //       "builtin",
-    //       "external",
-    //       "internal",
-    //       "parent",
-    //       "sibling",
-    //       "index"
-    //     ],
-    //     "newlines-between": "always"
-    //   }
-    // ],
-    // "import/newline-after-import": ["error", { "count": 2 }],
-    // "import/no-duplicates": ["error", { "considerQueryString": true }]
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/prop-types": ["off"]
   }
 }

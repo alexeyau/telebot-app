@@ -1,12 +1,11 @@
-import {create} from 'zustand';
-import { getStorageItem, setStorageItem } from '../../localStorage.js';
+import { create } from 'zustand';
 
 interface BotStore {
   token: string;
 }
 
 export const useBotStore = create((set) => ({
-  token: getStorageItem('token') ? getStorageItem('token') : null,
+  token: null,
   setToken: (newToken: string) => set({ token: newToken }),
   removeToken: () => set({ token: null }),
 }));
