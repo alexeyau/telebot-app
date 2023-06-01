@@ -1,10 +1,10 @@
-import { combineReducers, createStore } from "redux";
-import { botChangeReducer } from "./Reducer";
+import { combineReducers, createStore } from 'redux';
+import { botChangeReducer } from './Reducer';
 
 let reducers = combineReducers({
-    Bots: botChangeReducer,
+  Bots: botChangeReducer,
 });
 
 let store = createStore(reducers);
 
-export default store; 
+export default store;

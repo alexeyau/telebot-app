@@ -1,10 +1,7 @@
 import Layout from '@/components/Layout';
 
-
 function App() {
-
   return (
-
     <Layout>
       <div className='content-item'>
         <div className='content-item-advertisement'>We help develop bots of any complexity</div>
