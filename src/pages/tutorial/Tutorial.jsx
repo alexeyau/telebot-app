@@ -1,13 +1,13 @@
 import Layout from '@/components/Layout';
-import './Settings.css';
 
 
-function Settings() {
+function Tutorial() {
+
 	return (
 		<Layout>
-			Settings
+			Tutorial
 		</Layout>
 	);
 }
 
-export default Settings;
+export default Tutorial;

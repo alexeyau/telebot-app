@@ -7,6 +7,8 @@ import App from '@/pages/app/App.jsx';
 import Settings from '@/pages/settings/Settings.jsx';
 import Monitor from '@/pages/monitor/Monitor.jsx';
 import Create from '@/pages/create/Create.jsx';
+import Tutorial  from '@/pages/tutorial/Tutorial.jsx';
+import './index.css';
 
 import store from '@services/Redux-store.js';
 
@@ -14,26 +16,30 @@ import Test from './pages/test/Test.jsx';
 import './index.css';
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-  },
-  {
-    path: '/test',
-    element: <Test appState={store.getState()} dispatch={store.dispatch.bind(store)} />,
-  },
-  {
-    path: '/settings',
-    element: <Settings />,
-  },
-  {
-    path: '/monitor',
-    element: <Monitor />,
-  },
-  {
-    path: '/create',
-    element: <Create />,
-  },
+	{
+		path: '/',
+		element: <App/>,
+	},
+	{
+		path: '/test',
+		element: <Test appState={store.getState()} dispatch={store.dispatch.bind(store)}/>,
+	},
+	{
+		path: '/settings',
+		element: <Settings/>,
+	},
+	{
+		path: '/monitor',
+		element: <Monitor/>,
+	},
+	{
+		path: '/create',
+		element: <Create />,
+	},
+	{
+		path: '/tutorial',
+		element: <Tutorial />
+	},
 ]);
 
 let rerenderEntireTree = () => {

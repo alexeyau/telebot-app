@@ -1,4 +1,5 @@
 import { createRef, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import {
   getTelegramBotName,
@@ -30,14 +31,13 @@ function Test() {
   const [teleMessages, setTeleMessages] = useState([]);
 
   const [responseid, setResponseId] = useState(saveResponseId);
-
+  
   useEffect(() => {
     if (getStorageItem('actualKey').length < 1) console.log('entire token');
     localStorage.setItem('responseid', JSON.stringify(responseid));
   }, [responseid]);
 
 	useEffect(() => {
-		if(getStorageItem('actualKey').length < 1) {console.log('entire token');}
 		localStorage.setItem('responseid', JSON.stringify(responseid));
 	}, [responseid]);
 
@@ -113,35 +113,42 @@ function Test() {
 				console.log('callback: message sent');
 			}
 		};
+		// dispatch({
+		// 	type: "NEW-USERS",
+		// 	body: {
+		// 		newUser: teleMessages[0].from.firstName,
+		// 	},
+		// })
+		setStorageItem('activeUser', teleMessages[0].chat.first_name);
 		const bot = new BasicBotRandom(settings);
 		bot.start();
 	};
+
+	// let getArrayUsers = (array) => {
+	// 	let x = 0;
+	// 	let y = 0;
+	// 	let arr = [];
+	// 	array.forEach((item) => {
+	// 		arr.push(item.chat.first_name)
+	// 	});
+	// 	while(x <= arr.length) {
+	// 		while(y <= arr.length) {
+	// 			if()
+	// 			y++;
+	// 		}
+	// 		x++;
+	// 	}
+	// }
 
 	return (
     <Layout>
       <div className='Test'>
         <a href={'/'}>&laquo;</a>
-        <ol className='test_box'>
-          <li>
-            Create a Telegram-bot here: <a href='https://t.me/botfather'>https://t.me/botfather</a>
-          </li>
-
-          <li>
-            Enter Token:
-            <form>
-              <div>
-                <input
-                  onChange={saveToStorage}
-                  ref={inputRef}
-                  className='Test__input'
-                  placeholder='Token to access the HTTP API'
-                  type='text'
-                  defaultValue={getStorageItem('actualKey')}
-                />
-              </div>
-            </form>
-          </li>
-
+        <ul className='test_box'>
+			<li>
+				Create a Telegram-bot here: <a href='https://t.me/botfather'>https://t.me/botfather</a>
+			</li>
+			
 			<li>
 				Enter Token:
 				<form>
@@ -158,16 +165,16 @@ function Test() {
 				</form>
 			</li>
 
-          <li>
-            Push the button:
-            <div>
-              <button className='Test__button' onClick={getName}>
-                Say my name
-              </button>
-              <br />
-              {teleName && <a href={teleNameUrl}>{teleNameUrl}</a>}
-            </div>
-          </li>
+			<li>
+				Push the button:
+				<div>
+				<button className='Test__button' onClick={getName}>
+					Say my name
+				</button>
+				<br />
+				{teleName && <a href={teleNameUrl}>{teleNameUrl}</a>}
+				</div>
+			</li>
 
 			<li>
 				Push the next button:
@@ -192,23 +199,23 @@ function Test() {
 				))}
 			</li>
 
-          <li>
-            <textarea
-              className='test__textarea'
-              ref={textareaRef}
-              placeholder='Greetings'
-            ></textarea>
-          </li>
+			<li>
+			<textarea
+				className='test__textarea'
+				ref={textareaRef}
+				placeholder='Greetings'
+			></textarea>
+			</li>
 
-          <li>
-            Create Bot Instace (try OOP):
-            <div>
-              <button className='Test__button' onClick={createBotInstance}>
-                Create!
-              </button>
-            </div>
-          </li>
-        </ol>
+			<li>
+			Create Bot Instace (try OOP):
+			<div>
+				<button className='Test__button' onClick={createBotInstance}>
+				Create!
+				</button>
+			</div>
+			</li>
+        </ul>
       </div>
     </Layout>
   );
