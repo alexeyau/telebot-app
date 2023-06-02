@@ -9,8 +9,15 @@ function Monitor() {
 
   return (
     <Layout>
-      <div>Monitor</div>
-      <div>{user}</div>
+      <h3>Monitor</h3>
+      <div className='Monitor'>
+        <ul>
+          <li>You can see what is happening (service is not ready yet)</li>
+          <li>
+            <div>user: {user}</div>
+          </li>
+        </ul>
+      </div>
     </Layout>
   );
 }

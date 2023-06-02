@@ -99,8 +99,6 @@
 
 .content {
   margin: 10px auto 0px auto;
-  display: flex;
-  flex-direction: row;
   min-height: 50vh;
 }
 
@@ -111,7 +109,6 @@
 
 .content-item-advertisement {
   font-size: 56px;
-  width: 1200px;
 }
 
 .content-item-list {
