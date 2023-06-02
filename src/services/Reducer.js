@@ -7,25 +7,17 @@ let initialState = {
 export const botChangeReducer = (state = initialState, action) => {
 	switch(action.type) {
 	case 'CHANGE-SIMPLE':
-		const nextState = {
+		return {
 			...state,
 			activeBot: 'simple',
 			activeBotInstance: action.body.activeBotInstance,
 		};
-
-		return nextState;
 
 	case 'CHANGE-RANDOM':
 		return {
 			...state,
 			activeBot: 'random',
 			activeBotInstance: action.body.activeBotInstance,
-		};
-
-	case 'NEW-USERS':
-		return {
-			...state,
-			listOfUsers: action.body.newUser,
 		};
 
 	default: return state;

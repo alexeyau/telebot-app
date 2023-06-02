@@ -31,6 +31,7 @@ function Test() {
   const [teleMessages, setTeleMessages] = useState([]);
 
   const [responseid, setResponseId] = useState(saveResponseId);
+  const teleNameUrl = teleName && `https://t.me/${teleName}`;
   
   useEffect(() => {
     if (getStorageItem('actualKey').length < 1) console.log('entire token');
@@ -148,7 +149,7 @@ function Test() {
 			<li>
 				Create a Telegram-bot here: <a href='https://t.me/botfather'>https://t.me/botfather</a>
 			</li>
-			
+
 			<li>
 				Enter Token:
 				<form>

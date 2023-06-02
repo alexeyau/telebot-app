@@ -216,7 +216,7 @@ function Create() {
 					<h3>Ключ вопросу бота и ответ</h3>
 					{settingsOfBot}
 					{arrayAdditionallySettingsOfBot.map((item, index) => {
-						return (<div> {index}
+						return (<div key={index}> {index}
 							<div>{item.name}</div>
 							<div>{item.options}</div>
 						</div>);
