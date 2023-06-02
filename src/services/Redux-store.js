@@ -2,9 +2,8 @@ import { combineReducers, createStore } from 'redux';
 
 import { botChangeReducer } from './Reducer';
 
-
 let reducers = combineReducers({
-	botsData: botChangeReducer,
+  botsData: botChangeReducer,
 });
 
 let store = createStore(reducers);
