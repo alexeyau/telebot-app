@@ -6,13 +6,19 @@ function Header() {
       <div className='header-logo'></div>
       <div className='header-menu'>
         <div className='header-text'>
+          <NavLink to='/'>Main</NavLink>
+        </div>
+        <div className='header-text'>
+          <NavLink to='/tutorial'>Tutorial</NavLink>
+        </div>
+        <div className='header-text'>
+          <NavLink to='/create'>Create</NavLink>
+        </div>
+        <div className='header-text'>
           <NavLink to='/settings'>Settings</NavLink>
         </div>
         <div className='header-text'>
           <NavLink to='/monitor'>Monitor</NavLink>
-        </div>
-        <div className='header-text'>
-          <NavLink to='/create'>Create</NavLink>
         </div>
       </div>
     </div>

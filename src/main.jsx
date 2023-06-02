@@ -4,14 +4,16 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import App from '@/pages/app/App.jsx';
-
-import Test from './pages/test/Test.jsx';
 import Settings from '@/pages/settings/Settings.jsx';
 import Monitor from '@/pages/monitor/Monitor.jsx';
 import Create from '@/pages/create/Create.jsx';
+import Tutorial from '@/pages/tutorial/Tutorial.jsx';
 import './index.css';
 
-import store from '@services/Redux-store';
+import store from '@services/Redux-store.js';
+
+import Test from './pages/test/Test.jsx';
+import './index.css';
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: '/create',
     element: <Create />,
+  },
+  {
+    path: '/tutorial',
+    element: <Tutorial />,
   },
 ]);
 

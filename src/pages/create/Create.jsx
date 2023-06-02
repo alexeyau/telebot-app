@@ -1,32 +1,53 @@
 import './Create.css';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 
-import { BasicBotRandom } from '@telebots/BasicBotRandom';
-
-import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
-
+import { BasicBotRandom } from '@/telebots/BasicBotRandom';
+import { BasicBot } from '@/telebots/BasicBot';
+import {
+  getTelegramBotName,
+  getTelegramMessages,
+  sendTelegramMessage,
+} from '@services/telegramAPI.js';
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 
 import Layout from '@/components/Layout';
 
 function Create() {
   const activeBot = useSelector((store) => store.botsData.activeBot);
+  const activeBotInstance = useSelector((store) => store.botsData.activeBotInstance);
+
   const dispatch = useDispatch();
 
   const token = getStorageItem('actualKey');
-  const isTokenActive = token.length;
   const isRandomBotActive = activeBot === 'random';
   const isSimpleBotActive = activeBot === 'simple';
 
+  //const [token, setToken] = useState(getStorageItem('actualKey'));
+  const [isClassInputBot, setisClassInputBot] = useState(true);
+  const [arrayAdditionallySettingsOfBot, setArrayAdditionallySettingsOfBot] = useState([]);
+  const [additionallyNameOfSettings, setAdditionallyNameOfSettings] = useState('');
+  const [additionallyOptionsOfSettings, setAdditionallyOptionsOfSettings] = useState('');
+
+  const settingsOfBot = activeBotInstance
+    ? Object.keys(activeBotInstance.settings).map((key) => (
+        <div key={key}>
+          {key}
+          <input defaultValue={activeBotInstance.settings[key]} />
+        </div>
+      ))
+    : null;
+
   const createBotRandomInstance = () => {
-    if (!isTokenActive) return;
+    if (!token) {
+      return;
+    }
     onCreateRandomBot();
     const botName = 'botName001';
     const settings = {
       name: botName,
       saveProcessedMessageId: (mId) => {
-        // todo move JSON to services methods
         const botData = JSON.parse(getStorageItem(botName) || '{}');
         const nextBotData = JSON.stringify({
           ...botData,
@@ -36,6 +57,7 @@ function Create() {
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
+
         return botData.processedMessagesIds || [];
       },
       getTelegramMessagesAsync: async () => {
@@ -58,13 +80,13 @@ function Create() {
   };
 
   const createBotSimpleInstance = () => {
-    if (!isTokenActive) return;
-
+    if (!token) {
+      return;
+    }
     const botName = 'botNameSimple001';
     const settings = {
       name: botName,
       saveProcessedMessageId: (mId) => {
-        // todo move JSON to services methods
         const botData = JSON.parse(getStorageItem(botName) || '{}');
         const nextBotData = JSON.stringify({
           ...botData,
@@ -74,6 +96,7 @@ function Create() {
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
+
         return botData.processedMessagesIds || [];
       },
       getTelegramMessagesAsync: async () => {
@@ -94,8 +117,36 @@ function Create() {
     const bot = new BasicBotRandom(settings);
     console.log(bot.settings, '----->');
     onCreateSimpleBot(bot);
-    console.log();
     bot.start();
+  };
+
+  let saveToStorage = (event) => {
+    setStorageItem('actualKey', event.target.value);
+    if (!event.target.value) {
+      setisClassInputBot(false);
+      alert('Enter toket');
+    }
+    if (event.target.value) {
+      setisClassInputBot(true);
+    }
+  };
+
+  let addNewSettings = () => {
+    setArrayAdditionallySettingsOfBot([
+      ...arrayAdditionallySettingsOfBot,
+      {
+        name: additionallyNameOfSettings,
+        options: additionallyOptionsOfSettings,
+      },
+    ]);
+  };
+
+  let changeNameSettings = (event) => {
+    setAdditionallyNameOfSettings(event.target.value);
+  };
+
+  let changeOptionsSettings = (event) => {
+    setAdditionallyOptionsOfSettings(event.target.value);
   };
 
   const sendSimpleBotActionCreator = (botInstance) => ({
@@ -119,36 +170,71 @@ function Create() {
   return (
     <Layout>
       <div className='Create'>
-        <h3 className='Create_H3'>Your bot token is: {token}</h3>
-        <h4 className='Create_H4'>{activeBot}</h4>
-
-        <ol className='test_box'>
-          <li className='Create_List'>
-            Create Simple Bot Instance:
-            <div>
-              <button
-                className='Create__button'
-                onClick={createBotSimpleInstance}
-                disabled={!isTokenActive || isRandomBotActive}
-              >
-                Create1!
-              </button>
-            </div>
+        <ul className='test_box'>
+          <li>
+            Enter Token:
+            <form>
+              <div>
+                <input
+                  className={isClassInputBot ? 'Settings_input' : 'Settings_input_other'}
+                  //className={classInputBot}
+                  placeholder='Token to access the HTTP API'
+                  type='text'
+                  defaultValue={getStorageItem('actualKey')}
+                  onChange={saveToStorage}
+                />
+              </div>
+            </form>
           </li>
+          <ul className='test_box'>
+            <li className='Create_List'>
+              Create Simple Bot Instance:
+              <div>
+                <button
+                  className='Create__button'
+                  onClick={createBotSimpleInstance}
+                  disabled={!token || isRandomBotActive}
+                >
+                  Create!
+                </button>
+              </div>
+            </li>
 
-          <li className='Create_List'>
-            Create Random Bot Instance:
-            <div>
-              <button
-                className='Create__button'
-                onClick={createBotRandomInstance}
-                disabled={!isTokenActive || isSimpleBotActive}
-              >
-                Create2!
-              </button>
-            </div>
-          </li>
-        </ol>
+            <li className='Create_List'>
+              Create Random Bot Instance:
+              <div>
+                <button
+                  className='Create__button'
+                  onClick={createBotRandomInstance}
+                  disabled={!token || isSimpleBotActive}
+                >
+                  Create!
+                </button>
+              </div>
+            </li>
+          </ul>
+          <h3>Ключ вопросу бота и ответ</h3>
+          {settingsOfBot}
+          {arrayAdditionallySettingsOfBot.map((item, index) => {
+            return (
+              <div key={index}>
+                {' '}
+                {index}
+                <div>{item.name}</div>
+                <div>{item.options}</div>
+              </div>
+            );
+          })}
+          <div>
+            Запрос:
+            <input onChange={changeNameSettings} />
+            Ответ:
+            <input onChange={changeOptionsSettings} />
+          </div>
+          <button className='buttoon_addNewSettings' onClick={addNewSettings}>
+            +
+          </button>
+        </ul>
       </div>
     </Layout>
   );

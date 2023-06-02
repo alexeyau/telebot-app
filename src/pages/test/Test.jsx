@@ -1,4 +1,5 @@
 import { createRef, useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import {
   getTelegramBotName,
@@ -7,7 +8,9 @@ import {
 } from '@services/telegramAPI.js';
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
-import Layout from '@components/Layout';
+import { BasicBot } from '@/telebots/BasicBot';
+
+import Layout from '@/components/Layout';
 
 import './Test.css';
 
@@ -24,16 +27,21 @@ function Test() {
   const [teleMessages, setTeleMessages] = useState([]);
 
   const [responseid, setResponseId] = useState(saveResponseId);
+  const teleNameUrl = teleName && `https://t.me/${teleName}`;
 
   useEffect(() => {
     if (getStorageItem('actualKey').length < 1) console.log('entire token');
     localStorage.setItem('responseid', JSON.stringify(responseid));
   }, [responseid]);
 
-  const teleNameUrl = teleName && `https://t.me/${teleName}`;
+  useEffect(() => {
+    localStorage.setItem('responseid', JSON.stringify(responseid));
+  }, [responseid]);
 
   const getName = () => {
-    if (getStorageItem('actualKey').length < 1) return;
+    if (getStorageItem('actualKey').length < 1) {
+      return;
+    }
     const token = inputRef.current?.value;
     getTelegramBotName(token).then((readyData) => {
       console.log(' >1> ', readyData);
@@ -43,7 +51,9 @@ function Test() {
   };
 
   const getMessages = () => {
-    if (getStorageItem('actualKey').length < 1) return;
+    if (getStorageItem('actualKey').length < 1) {
+      return;
+    }
     const token = inputRef.current?.value;
     getTelegramMessages(token).then((readyData) => {
       console.log(' >2> ', readyData);
@@ -51,13 +61,16 @@ function Test() {
     });
   };
 
-  const doGreet = (userId) => {
-    if (getStorageItem('actualKey').length < 1) return;
+  const doGreet = (userId, replyToMessageId) => {
+    if (getStorageItem('actualKey').length < 1) {
+      return;
+    }
     const token = inputRef.current?.value;
     const messageText = textareaRef.current?.value;
     console.log(textareaRef.current.value);
     sendTelegramMessage(token, {
       chat_id: userId,
+      reply_to_message_id: replyToMessageId,
       text: messageText,
     }).then((readyData) => {
       console.log(' >3> ', readyData);
@@ -66,7 +79,9 @@ function Test() {
   };
 
   const createBotInstance = () => {
-    if (getStorageItem('actualKey').length < 1) return;
+    if (getStorageItem('actualKey').length < 1) {
+      return;
+    }
     const botName = 'botName001';
     const token = inputRef.current?.value;
     const settings = {
@@ -82,6 +97,7 @@ function Test() {
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
+
         return botData.processedMessagesIds || [];
       },
       getTelegramMessagesAsync: async () => {
@@ -99,15 +115,38 @@ function Test() {
         console.log('callback: message sent');
       },
     };
+    // dispatch({
+    // 	type: "NEW-USERS",
+    // 	body: {
+    // 		newUser: teleMessages[0].from.firstName,
+    // 	},
+    // })
+    setStorageItem('activeUser', teleMessages[0].chat.first_name);
     const bot = new BasicBotRandom(settings);
     bot.start();
   };
+
+  // let getArrayUsers = (array) => {
+  // 	let x = 0;
+  // 	let y = 0;
+  // 	let arr = [];
+  // 	array.forEach((item) => {
+  // 		arr.push(item.chat.first_name)
+  // 	});
+  // 	while(x <= arr.length) {
+  // 		while(y <= arr.length) {
+  // 			if()
+  // 			y++;
+  // 		}
+  // 		x++;
+  // 	}
+  // }
 
   return (
     <Layout>
       <div className='Test'>
         <a href={'/'}>&laquo;</a>
-        <ol className='test_box'>
+        <ul className='test_box'>
           <li>
             Create a Telegram-bot here: <a href='https://t.me/botfather'>https://t.me/botfather</a>
           </li>
@@ -123,20 +162,6 @@ function Test() {
                   placeholder='Token to access the HTTP API'
                   type='text'
                   defaultValue={getStorageItem('actualKey')}
-                />
-              </div>
-            </form>
-          </li>
-
-          <li>
-            Enter Token:
-            <form>
-              <div>
-                <input
-                  ref={inputRef}
-                  className='Test__input'
-                  placeholder='Token to access the HTTP API'
-                  type='text'
                 />
               </div>
             </form>
@@ -168,7 +193,8 @@ function Test() {
                   type='button'
                   value='Greet'
                   onClick={() => {
-                    doGreet(message.from.id);
+                    console.log(message, 'месседж');
+                    doGreet(message.from.id, message.message_id);
                   }}
                 />
               </div>
@@ -191,7 +217,7 @@ function Test() {
               </button>
             </div>
           </li>
-        </ol>
+        </ul>
       </div>
     </Layout>
   );
