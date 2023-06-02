@@ -1,0 +1,26 @@
+.test_box {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.Settings_input {
+  font-size: 18px;
+  width: 363px;
+  border-radius: 4px;
+  outline: none;
+  border: 0.5px solid #0d1117;
+  padding: 4px;
+}
+
+.Settings_input_other {
+  font-size: 18px;
+  width: 363px;
+  border-radius: 5px;
+  outline: none;
+  border: 0.5px solid red;
+  padding: 4px;
+}

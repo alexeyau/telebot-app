@@ -1,0 +1,31 @@
+.Create {
+  margin: 30px auto 0px auto;
+}
+
+.Create_H3 {
+  margin-top: 10px;
+}
+
+.Create_H4 {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.test_box {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.Create_List {
+  margin-top: 15px;
+}
+
+.Create__button {
+  margin-top: 15px;
+  background-color: rgb(32, 32, 184);
+  width: 100%;
+}
