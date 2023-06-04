@@ -3,8 +3,8 @@ export class BasicBot {
     intervalTime: 15000,
   };
 
-  static isProcessed(message, processedIdArr) {
-    return processedIdArr.includes(message.message_id);
+  static isProcessed(id, processedIdArr) {
+    return processedIdArr.includes(id);
   }
 
   constructor(initSettings) {
@@ -20,8 +20,6 @@ export class BasicBot {
     this.settings = {
       test1: '1234',
       test2: '1235',
-      test3: '1236',
-      test4: '1237',
     };
 
     this.onSendCallback = onSendCallback;
@@ -39,22 +37,24 @@ export class BasicBot {
     console.log(' tic/tac > ', new Date());
     try {
       this._processedIds = this.getProcessedMessagesIds(this.botName);
-      const messages = await this.getTelegramMessagesAsync();
-      messages
-        .filter((message) => !BasicBot.isProcessed(message, this._processedIds))
-        .forEach((message) => this._sendResponse(message));
+      const updates = await this.getTelegramMessagesAsync();
+      updates
+        .filter(
+          (update) => update.message && !BasicBot.isProcessed(update.update_id, this._processedIds),
+        )
+        .forEach((update) => this._sendResponse(update));
     } catch (e) {
       console.log(e);
     }
   };
 
-  async _sendResponse(message) {
+  async _sendResponse(update) {
     let answer = this.settings.greeting || 'hi!';
-    if (message.text === '/start') {
+    if (update.message?.text === '/start') {
       answer = 'vot du yu vont?';
     }
-    await this.sendTelegramMessageAsync(message.from.id, answer);
-    this._onSend(message);
+    await this.sendTelegramMessageAsync(update.message?.from.id, answer);
+    this._onSend(update);
   }
 
   start() {
@@ -68,10 +68,10 @@ export class BasicBot {
     clearInterval(this.interval);
   }
 
-  _onSend(message) {
+  _onSend(update) {
     if (this.onSendCallback) {
-      this.onSendCallback(message);
+      this.onSendCallback(update.message);
     }
-    this.saveProcessedMessageId(message.message_id);
+    this.saveProcessedMessageId(update.update_id);
   }
 }
