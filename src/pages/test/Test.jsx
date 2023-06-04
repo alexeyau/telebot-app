@@ -91,18 +91,18 @@ function Test() {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
         const nextBotData = JSON.stringify({
           ...botData,
-          processedMessagesIds: [...(botData.processedMessagesIds || []), mId],
+          processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
         });
         setStorageItem(botName, nextBotData);
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
 
-        return botData.processedMessagesIds || [];
+        return botData.processedUpdatesIds || [];
       },
       getTelegramMessagesAsync: async () => {
         return getTelegramMessages(token).then((readyData) => {
-          return readyData.result.map((update) => update.message);
+          return readyData.result;
         });
       },
       sendTelegramMessageAsync: async (userId, messageText) => {

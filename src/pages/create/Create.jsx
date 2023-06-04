@@ -16,7 +16,7 @@ import Layout from '@/components/Layout';
 
 function Create() {
   const activeBot = useSelector((store) => store.botsData.activeBot);
-  const activeBotInstance = useSelector((store) => store.botsData.activeBotInstance);
+  const activeBotInstance = useSelector((store) => store.botsData?.activeBotInstance);
 
   const dispatch = useDispatch();
 
@@ -51,18 +51,18 @@ function Create() {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
         const nextBotData = JSON.stringify({
           ...botData,
-          processedMessagesIds: [...(botData.processedMessagesIds || []), mId],
+          processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
         });
         setStorageItem(botName, nextBotData);
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
 
-        return botData.processedMessagesIds || [];
+        return botData.processedUpdatesIds || [];
       },
       getTelegramMessagesAsync: async () => {
         return getTelegramMessages(token).then((readyData) => {
-          return readyData.result.map((update) => update.message);
+          return readyData.result;
         });
       },
       sendTelegramMessageAsync: async (userId, messageText) => {
@@ -86,22 +86,22 @@ function Create() {
     const botName = 'botNameSimple001';
     const settings = {
       name: botName,
-      saveProcessedMessageId: (mId) => {
+      saveProcessedMessageId: (uId) => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
         const nextBotData = JSON.stringify({
           ...botData,
-          processedMessagesIds: [...(botData.processedMessagesIds || []), mId],
+          processedUpdatesIds: [...(botData.processedUpdatesIds || []), uId],
         });
         setStorageItem(botName, nextBotData);
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
 
-        return botData.processedMessagesIds || [];
+        return botData.processedUpdatesIds || [];
       },
       getTelegramMessagesAsync: async () => {
         return getTelegramMessages(token).then((readyData) => {
-          return readyData.result.map((update) => update.message);
+          return readyData.result;
         });
       },
       sendTelegramMessageAsync: async (userId, messageText) => {
