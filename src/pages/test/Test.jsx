@@ -1,11 +1,12 @@
 import { createRef, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 import {
   getTelegramBotName,
   getTelegramMessages,
   sendTelegramMessage,
+  getTelegramMembers,
 } from '@services/telegramAPI.js';
+
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
@@ -14,20 +15,22 @@ import Layout from '@/components/Layout';
 
 import './Test.css';
 
-let saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
+const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
 
-let saveToStorage = (event) => {
+const saveToStorage = (event) => {
   setStorageItem('actualKey', event.target.value);
 };
 
 function Test() {
+
   const inputRef = createRef();
   const textareaRef = createRef();
   const inputRefGpt = createRef();
+
   const [teleName, setTeleName] = useState('');
   const [teleMessages, setTeleMessages] = useState([]);
-
   const [responseid, setResponseId] = useState(saveResponseId);
+
   const teleNameUrl = teleName && `https://t.me/${teleName}`;
 
   useEffect(() => {
@@ -59,6 +62,9 @@ function Test() {
     getTelegramMessages(token).then((readyData) => {
       console.log(' >2> ', readyData);
       setTeleMessages(readyData.result.map((update) => update.message));
+    });
+    getTelegramMembers(token).then((item) => {
+      console.log(item);
     });
   };
 
@@ -116,13 +122,7 @@ function Test() {
         console.log('callback: message sent');
       },
     };
-    // dispatch({
-    // 	type: "NEW-USERS",
-    // 	body: {
-    // 		newUser: teleMessages[0].from.firstName,
-    // 	},
-    // })
-    setStorageItem('activeUser', teleMessages[0].chat.first_name);
+    //setStorageItem('activeUser', teleMessages[0].chat.first_name);
     const bot = new BasicBotRandom(settings);
     bot.start();
   };
@@ -169,22 +169,6 @@ function Test() {
     const bot = new BasicBotChatGPT(settings);
     bot.start();
   };
-
-  // let getArrayUsers = (array) => {
-  // 	let x = 0;
-  // 	let y = 0;
-  // 	let arr = [];
-  // 	array.forEach((item) => {
-  // 		arr.push(item.chat.first_name)
-  // 	});
-  // 	while(x <= arr.length) {
-  // 		while(y <= arr.length) {
-  // 			if()
-  // 			y++;
-  // 		}
-  // 		x++;
-  // 	}
-  // }
 
   return (
     <Layout>

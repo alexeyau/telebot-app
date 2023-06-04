@@ -1,7 +1,4 @@
-import './Create.css';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBot } from '@/telebots/BasicBot';
@@ -11,20 +8,20 @@ import {
   sendTelegramMessage,
 } from '@services/telegramAPI.js';
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
-
+import './Create.css';
+import { useBotStore } from '@services/zustandStore';
 import Layout from '@/components/Layout';
 
 function Create() {
-  const activeBot = useSelector((store) => store.botsData.activeBot);
-  const activeBotInstance = useSelector((store) => store.botsData?.activeBotInstance);
-
-  const dispatch = useDispatch();
+  const activeBot = useBotStore((state) => state.activeBotInstance.typeOfBot);
+  const activeBotInstance = useBotStore((state) => state.activeBotInstance.instance);
+  const setBotInstance = useBotStore((state) => state.setBotInstance);
 
   const token = getStorageItem('actualKey');
+
   const isRandomBotActive = activeBot === 'random';
   const isSimpleBotActive = activeBot === 'simple';
 
-  //const [token, setToken] = useState(getStorageItem('actualKey'));
   const [isClassInputBot, setisClassInputBot] = useState(true);
   const [arrayAdditionallySettingsOfBot, setArrayAdditionallySettingsOfBot] = useState([]);
   const [additionallyNameOfSettings, setAdditionallyNameOfSettings] = useState('');
@@ -43,7 +40,7 @@ function Create() {
     if (!token) {
       return;
     }
-    onCreateRandomBot();
+    setBotInstance();
     const botName = 'botName001';
     const settings = {
       name: botName,
@@ -117,23 +114,20 @@ function Create() {
       },
     };
     const bot = new BasicBotRandom(settings);
-    console.log(bot.settings, '----->');
-    onCreateSimpleBot(bot);
+    setBotInstance('simple', bot);
     bot.start();
   };
 
-  let saveToStorage = (event) => {
+  const saveToStorage = (event) => {
     setStorageItem('actualKey', event.target.value);
-    if (!event.target.value) {
-      setisClassInputBot(false);
-      alert('Enter toket');
-    }
     if (event.target.value) {
       setisClassInputBot(true);
+    } else {
+      setisClassInputBot(false);
     }
   };
 
-  let addNewSettings = () => {
+  const addNewSettings = () => {
     setArrayAdditionallySettingsOfBot([
       ...arrayAdditionallySettingsOfBot,
       {
@@ -143,30 +137,12 @@ function Create() {
     ]);
   };
 
-  let changeNameSettings = (event) => {
+  const changeNameSettings = (event) => {
     setAdditionallyNameOfSettings(event.target.value);
   };
 
-  let changeOptionsSettings = (event) => {
+  const changeOptionsSettings = (event) => {
     setAdditionallyOptionsOfSettings(event.target.value);
-  };
-
-  const sendSimpleBotActionCreator = (botInstance) => ({
-    type: 'CHANGE-SIMPLE',
-    body: {
-      activeBotInstance: botInstance,
-    },
-  });
-  const sendRandomBotAction = {
-    type: 'CHANGE-RANDOM',
-  };
-
-  let onCreateSimpleBot = (botInstance) => {
-    dispatch(sendSimpleBotActionCreator(botInstance));
-  };
-
-  let onCreateRandomBot = () => {
-    dispatch(sendRandomBotAction);
   };
 
   return (
@@ -179,7 +155,6 @@ function Create() {
               <div>
                 <input
                   className={isClassInputBot ? 'Settings_input' : 'Settings_input_other'}
-                  //className={classInputBot}
                   placeholder='Token to access the HTTP API'
                   type='text'
                   defaultValue={getStorageItem('actualKey')}

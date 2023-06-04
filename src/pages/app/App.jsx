@@ -12,7 +12,7 @@ function App() {
           <li>A lot of users</li>
         </ul>
         <div className='content-item-button'>
-          <NavLink to={`/test`}>Test &raquo;</NavLink>
+          <NavLink to='/test'>Test &raquo;</NavLink>
         </div>
       </div>
     </Layout>

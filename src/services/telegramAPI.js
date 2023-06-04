@@ -23,3 +23,11 @@ export const sendTelegramMessage = (token, data) => {
     return data.json();
   });
 };
+
+export const getTelegramMembers = (token) => {
+  return fetch(`https://api.telegram.org/bot${token}/getChatMember?user_id=1&chat_id=1`).then(
+    (data) => {
+      return data.json();
+    },
+  );
+};
