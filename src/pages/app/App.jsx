@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import Layout from '@/components/Layout';
 
 function App() {
@@ -11,7 +12,7 @@ function App() {
           <li>A lot of users</li>
         </ul>
         <div className='content-item-button'>
-          <a href={`/test`}>Test &raquo;</a>
+          <NavLink to={`/test`}>Test &raquo;</NavLink>
         </div>
       </div>
     </Layout>

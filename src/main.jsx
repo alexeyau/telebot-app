@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import App from '@/pages/app/App.jsx';
@@ -15,7 +15,7 @@ import store from '@services/Redux-store.js';
 import Test from './pages/test/Test.jsx';
 import './index.css';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <App />,
