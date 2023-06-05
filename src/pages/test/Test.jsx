@@ -8,7 +8,7 @@ import {
 } from '@services/telegramAPI.js';
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
-import { BasicBot } from '@/telebots/BasicBot';
+import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
 
 import Layout from '@/components/Layout';
 
@@ -23,6 +23,7 @@ let saveToStorage = (event) => {
 function Test() {
   const inputRef = createRef();
   const textareaRef = createRef();
+  const inputRefGpt = createRef();
   const [teleName, setTeleName] = useState('');
   const [teleMessages, setTeleMessages] = useState([]);
 
@@ -126,6 +127,49 @@ function Test() {
     bot.start();
   };
 
+  const createBotChatGPTInstance = () => {
+    if (getStorageItem('actualKey').length < 1) {
+      return;
+    }
+    const botName = 'botName_gpt0';
+    const token = inputRef.current?.value;
+    const tokenGpt = inputRefGpt.current?.value;
+    const settings = {
+      name: botName,
+      saveProcessedMessageId: (mId) => {
+        // todo move JSON to services methods
+        const botData = JSON.parse(getStorageItem(botName) || '{}');
+        const nextBotData = JSON.stringify({
+          ...botData,
+          processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
+        });
+        setStorageItem(botName, nextBotData);
+      },
+      getProcessedMessagesIds: () => {
+        const botData = JSON.parse(getStorageItem(botName) || '{}');
+
+        return botData.processedUpdatesIds || [];
+      },
+      getTelegramMessagesAsync: async () => {
+        return getTelegramMessages(token).then((readyData) => {
+          return readyData.result;
+        });
+      },
+      sendTelegramMessageAsync: async (userId, messageText) => {
+        return sendTelegramMessage(token, {
+          chat_id: userId,
+          text: messageText,
+        });
+      },
+      onSendCallback: () => {
+        console.log('callback: message sent');
+      },
+      chatGPTKey: tokenGpt,
+    };
+    const bot = new BasicBotChatGPT(settings);
+    bot.start();
+  };
+
   // let getArrayUsers = (array) => {
   // 	let x = 0;
   // 	let y = 0;
@@ -214,6 +258,23 @@ function Test() {
             <div>
               <button className='Test__button' onClick={createBotInstance}>
                 Create!
+              </button>
+            </div>
+          </li>
+
+          <li>
+            Create GPT Bot Instance:
+            <div>
+              <input
+                ref={inputRefGpt}
+                className='Test__input'
+                placeholder='Token to access the ChatGPT API'
+                type='text'
+              />
+            </div>
+            <div>
+              <button className='Test__button' onClick={createBotChatGPTInstance}>
+                Create GPT bot!
               </button>
             </div>
           </li>
