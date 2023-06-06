@@ -7,7 +7,7 @@
   flex: 1 1 auto;
 }
 
-.test_box {
+.Test_box {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -30,7 +30,7 @@
   background-color: rgb(32, 32, 184);
 }
 
-.test__textarea {
+.Test__textarea {
   border-radius: 4px;
   border: 0.5px solid rgb(102, 95, 95);
   width: 300px;

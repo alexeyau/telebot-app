@@ -2,15 +2,14 @@ import { useState } from 'react';
 
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBot } from '@/telebots/BasicBot';
-import {
-  getTelegramBotName,
-  getTelegramMessages,
-  sendTelegramMessage,
-} from '@services/telegramAPI.js';
+
+import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
+
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
-import './Create.css';
 import { useBotStore } from '@services/zustandStore';
 import Layout from '@/components/Layout';
+
+import './Create.css';
 
 function Create() {
   const activeBot = useBotStore((state) => state.activeBotInstance.typeOfBot);
@@ -26,6 +25,7 @@ function Create() {
   const [arrayAdditionallySettingsOfBot, setArrayAdditionallySettingsOfBot] = useState([]);
   const [additionallyNameOfSettings, setAdditionallyNameOfSettings] = useState('');
   const [additionallyOptionsOfSettings, setAdditionallyOptionsOfSettings] = useState('');
+  const [botName, setBotName] = useState('');
 
   const settingsOfBot = activeBotInstance
     ? Object.keys(activeBotInstance.settings).map((key) => (
@@ -36,12 +36,10 @@ function Create() {
       ))
     : null;
 
-  const createBotRandomInstance = () => {
-    if (!token) {
-      return;
-    }
+  const createBot = () => {
+    if (!token) return;
+    if (!botName) return;
     setBotInstance();
-    const botName = 'botName001';
     const settings = {
       name: botName,
       saveProcessedMessageId: (mId) => {
@@ -54,8 +52,6 @@ function Create() {
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
-        console.log(' >', botData);
-
         return botData.processedUpdatesIds || [];
       },
       getTelegramMessagesAsync: async (lastUpdateId) => {
@@ -73,49 +69,30 @@ function Create() {
         console.log('callback: message sent');
       },
     };
-    const bot = new BasicBotRandom(settings);
-    bot.start();
+    if (botName === 'randomBot001') {
+      const bot = new BasicBotRandom(settings);
+      bot.start();
+    }
+    if (botName === 'simpleBot01') {
+      const bot = new BasicBot(settings);
+      bot.start();
+    }
   };
 
-  const createBotSimpleInstance = () => {
-    if (!token) {
-      return;
-    }
-    const botName = 'botNameSimple001';
-    const settings = {
-      name: botName,
-      saveProcessedMessageId: (uId) => {
-        const botData = JSON.parse(getStorageItem(botName) || '{}');
-        const nextBotData = JSON.stringify({
-          ...botData,
-          processedUpdatesIds: [...(botData.processedUpdatesIds || []), uId],
-        });
-        setStorageItem(botName, nextBotData);
-      },
-      getProcessedMessagesIds: () => {
-        const botData = JSON.parse(getStorageItem(botName) || '{}');
-        console.log(' >', botData);
+  const chooseBotRandom = () => {
+    setBotName('randomBot001');
+  };
 
-        return botData.processedUpdatesIds || [];
-      },
-      getTelegramMessagesAsync: async (lastUpdateId) => {
-        return getTelegramMessages(token, lastUpdateId).then((readyData) => {
-          return readyData.result;
-        });
-      },
-      sendTelegramMessageAsync: async (userId, messageText) => {
-        return sendTelegramMessage(token, {
-          chat_id: userId,
-          text: messageText,
-        });
-      },
-      onSendCallback: () => {
-        console.log('callback: message sent');
-      },
-    };
-    const bot = new BasicBotRandom(settings);
-    setBotInstance('simple', bot);
-    bot.start();
+  const chooseBotSimple = () => {
+    setBotName('simpleBot01');
+  };
+
+  const changeNameSettings = (event) => {
+    setAdditionallyNameOfSettings(event.target.value);
+  };
+
+  const changeOptionsSettings = (event) => {
+    setAdditionallyOptionsOfSettings(event.target.value);
   };
 
   const saveToStorage = (event) => {
@@ -124,7 +101,7 @@ function Create() {
       setisClassInputBot(true);
     } else {
       setisClassInputBot(false);
-    }
+    };
   };
 
   const addNewSettings = () => {
@@ -137,81 +114,81 @@ function Create() {
     ]);
   };
 
-  const changeNameSettings = (event) => {
-    setAdditionallyNameOfSettings(event.target.value);
-  };
-
-  const changeOptionsSettings = (event) => {
-    setAdditionallyOptionsOfSettings(event.target.value);
-  };
+  const listOfSettings = arrayAdditionallySettingsOfBot.map((item, index) => {
+    return (
+      <div key={index}>
+        {' '}
+        {index}
+        <div>{item.name}</div>
+        <div>{item.options}</div>
+      </div>
+    );
+  });
 
   return (
     <Layout>
       <div className='Create'>
-        <ul className='test_box'>
-          <li>
-            Enter Token:
-            <form>
-              <div>
-                <input
-                  className={isClassInputBot ? 'Settings_input' : 'Settings_input_other'}
-                  placeholder='Token to access the HTTP API'
-                  type='text'
-                  defaultValue={getStorageItem('actualKey')}
-                  onChange={saveToStorage}
-                />
-              </div>
-            </form>
-          </li>
-          <ul className='test_box'>
-            <li className='Create_List'>
-              Create Simple Bot Instance:
-              <div>
-                <button
-                  className='Create__button'
-                  onClick={createBotSimpleInstance}
-                  disabled={!token || isRandomBotActive}
-                >
-                  Create!
-                </button>
-              </div>
-            </li>
+        <li>
+          Enter Token:
+          <form>
+            <div>
+              <input
+                className={isClassInputBot ? 'Settings_input' : 'Settings_input_other'}
+                placeholder='Token to access the HTTP API'
+                type='text'
+                defaultValue={getStorageItem('actualKey')}
+                onChange={saveToStorage}
+              />
+            </div>
+          </form>
+        </li>
 
-            <li className='Create_List'>
-              Create Random Bot Instance:
-              <div>
-                <button
-                  className='Create__button'
-                  onClick={createBotRandomInstance}
-                  disabled={!token || isSimpleBotActive}
-                >
-                  Create!
-                </button>
-              </div>
-            </li>
-          </ul>
-          <h3>Ключ вопросу бота и ответ</h3>
-          {settingsOfBot}
-          {arrayAdditionallySettingsOfBot.map((item, index) => {
-            return (
-              <div key={index}>
-                {' '}
-                {index}
-                <div>{item.name}</div>
-                <div>{item.options}</div>
-              </div>
-            );
-          })}
+        <ul className='Create_ChooseBot'>
+          <li className='Create_List'>
+            Create Simple Bot Instance:
+            <div>
+              <button
+                className='Create__button'
+                onClick={chooseBotSimple}
+                disabled={!token || isRandomBotActive}
+              >
+                Choose!
+              </button>
+            </div>
+          </li>
+
+          <li className='Create_List'>
+            Create Random Bot Instance:
+            <div>
+              <button
+                className='Create__button'
+                onClick={chooseBotRandom}
+                disabled={!token || isSimpleBotActive}
+              >
+                Choose!
+              </button>
+            </div>
+          </li>
+        </ul>
+
+        <h3>Ключ вопросу бота и ответ</h3>
+
+        {settingsOfBot}
+        {listOfSettings}
+
+        <div className='Create_AddNewOptions'>
           <div>
             Запрос:
             <input onChange={changeNameSettings} />
             Ответ:
             <input onChange={changeOptionsSettings} />
           </div>
-          <button className='buttoon_addNewSettings' onClick={addNewSettings}>
+          <button className='button_addNewSettings' onClick={addNewSettings}>
             +
           </button>
-        </ul>
+        </div>
+
+        <button onClick={createBot}>Create bot!</button>
       </div>
     </Layout>
   );

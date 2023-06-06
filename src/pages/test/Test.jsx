@@ -4,7 +4,6 @@ import {
   getTelegramBotName,
   getTelegramMessages,
   sendTelegramMessage,
-  getTelegramMembers,
 } from '@services/telegramAPI.js';
 
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
@@ -63,9 +62,6 @@ function Test() {
       console.log(' >2> ', readyData);
       setTeleMessages(readyData.result.map((update) => update.message));
     });
-    getTelegramMembers(token).then((item) => {
-      console.log(item);
-    });
   };
 
   const doGreet = (userId, replyToMessageId) => {
@@ -122,7 +118,6 @@ function Test() {
         console.log('callback: message sent');
       },
     };
-    //setStorageItem('activeUser', teleMessages[0].chat.first_name);
     const bot = new BasicBotRandom(settings);
     bot.start();
   };
@@ -174,7 +169,7 @@ function Test() {
     <Layout>
       <div className='Test'>
         <a href={'/'}>&laquo;</a>
-        <ul className='test_box'>
+        <ul className='Test_box'>
           <li>
             Create a Telegram-bot here: <a href='https://t.me/botfather'>https://t.me/botfather</a>
           </li>
@@ -231,7 +226,7 @@ function Test() {
 
           <li>
             <textarea
-              className='test__textarea'
+              className='Test__textarea'
               ref={textareaRef}
               placeholder='Greetings'
             ></textarea>
