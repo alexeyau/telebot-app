@@ -101,8 +101,8 @@ function Test() {
 
         return botData.processedUpdatesIds || [];
       },
-      getTelegramMessagesAsync: async () => {
-        return getTelegramMessages(token).then((readyData) => {
+      getTelegramMessagesAsync: async (lastUpdateId) => {
+        return getTelegramMessages(token, lastUpdateId).then((readyData) => {
           return readyData.result;
         });
       },
@@ -150,8 +150,8 @@ function Test() {
 
         return botData.processedUpdatesIds || [];
       },
-      getTelegramMessagesAsync: async () => {
-        return getTelegramMessages(token).then((readyData) => {
+      getTelegramMessagesAsync: async (lastUpdateId) => {
+        return getTelegramMessages(token, lastUpdateId).then((readyData) => {
           return readyData.result;
         });
       },

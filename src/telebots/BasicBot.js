@@ -37,7 +37,9 @@ export class BasicBot {
     console.log(' tic/tac > ', new Date());
     try {
       this._processedIds = this.getProcessedMessagesIds(this.botName);
-      const updates = await this.getTelegramMessagesAsync();
+      const lastUpdateId = this._processedIds[this._processedIds.length - 1];
+      const updates = await this.getTelegramMessagesAsync(lastUpdateId + 1);
+      console.log(' > updates: ', updates);
       updates
         .filter(
           (update) => update.message && !BasicBot.isProcessed(update.update_id, this._processedIds),

@@ -57,11 +57,12 @@ function Create() {
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
+        console.log(' >', botData);
 
         return botData.processedUpdatesIds || [];
       },
-      getTelegramMessagesAsync: async () => {
-        return getTelegramMessages(token).then((readyData) => {
+      getTelegramMessagesAsync: async (lastUpdateId) => {
+        return getTelegramMessages(token, lastUpdateId).then((readyData) => {
           return readyData.result;
         });
       },
@@ -96,11 +97,12 @@ function Create() {
       },
       getProcessedMessagesIds: () => {
         const botData = JSON.parse(getStorageItem(botName) || '{}');
+        console.log(' >', botData);
 
         return botData.processedUpdatesIds || [];
       },
-      getTelegramMessagesAsync: async () => {
-        return getTelegramMessages(token).then((readyData) => {
+      getTelegramMessagesAsync: async (lastUpdateId) => {
+        return getTelegramMessages(token, lastUpdateId).then((readyData) => {
           return readyData.result;
         });
       },
