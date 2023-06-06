@@ -109,6 +109,7 @@
 
 .content-item-advertisement {
   font-size: 56px;
+  min-width: 800px;
 }
 
 .content-item-list {
@@ -117,7 +118,7 @@
 }
 
 .content-item-button {
-  margin: 70px 250px 250px 180px;
+  margin: 7px 25px 25px 18px;
   font-size: 20px;
   width: 200px;
   padding: 10px 60px 10px 60px;

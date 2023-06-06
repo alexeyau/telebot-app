@@ -1,5 +1,10 @@
 .Create {
   margin: 30px auto 0px auto;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
 }
 
 .Create_H3 {
@@ -11,7 +16,7 @@
   text-align: center;
 }
 
-.test_box {
+.Create_ChooseBot {
   list-style: none;
   display: flex;
   flex-direction: column;
