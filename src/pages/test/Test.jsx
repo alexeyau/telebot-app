@@ -21,7 +21,6 @@ const saveToStorage = (event) => {
 };
 
 function Test() {
-
   const inputRef = createRef();
   const textareaRef = createRef();
   const inputRefGpt = createRef();

@@ -101,7 +101,7 @@ function Create() {
       setisClassInputBot(true);
     } else {
       setisClassInputBot(false);
-    };
+    }
   };
 
   const addNewSettings = () => {
