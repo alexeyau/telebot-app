@@ -8,23 +8,9 @@ import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { useBotStore } from '@services/zustandStore';
 
-
-
-
-
-
-
-
-
-
 import Layout from '@/components/Layout';
 
 import './Create.css';
-
-
-
-
-
 
 function Create() {
   const activeBot = useBotStore((state) => state.activeBotInstance.typeOfBot);

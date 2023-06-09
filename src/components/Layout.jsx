@@ -4,7 +4,7 @@ import './Components.css';
 
 function Layout(props) {
   return (
-    <div className='Layout'>
+    <div className='layout'>
       <Header />
       <div className='page'>
         <div className='content'>{props.children}</div>
