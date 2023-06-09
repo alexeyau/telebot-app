@@ -14,9 +14,17 @@ import { useBotStore } from '@services/zustandStore';
 
 
 
+
+
+
 import Layout from '@/components/Layout';
 
 import './Create.css';
+
+
+
+
+
 
 function Create() {
   const activeBot = useBotStore((state) => state.activeBotInstance.typeOfBot);
@@ -155,7 +163,7 @@ function Create() {
             Create Simple Bot Instance:
             <div>
               <button
-                className='create__button'
+                className='create-button'
                 onClick={chooseBotSimple}
                 disabled={!token || isRandomBotActive}
               >
@@ -168,7 +176,7 @@ function Create() {
             Create Random Bot Instance:
             <div>
               <button
-                className='create__button'
+                className='create-button'
                 onClick={chooseBotRandom}
                 disabled={!token || isSimpleBotActive}
               >
