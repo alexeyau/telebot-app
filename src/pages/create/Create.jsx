@@ -17,6 +17,8 @@ function Create() {
   const activeBotInstance = useBotStore((state) => state.activeBotInstance.instance);
   const setBotInstance = useBotStore((state) => state.setBotInstance);
 
+  const adas = 0;
+
   const token = getStorageItem('actualKey');
 
   const isRandomBotActive = activeBot === 'random';
