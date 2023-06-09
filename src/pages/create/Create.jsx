@@ -7,6 +7,13 @@ import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.
 
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { useBotStore } from '@services/zustandStore';
+
+
+
+
+
+
+
 import Layout from '@/components/Layout';
 
 import './Create.css';
@@ -16,9 +23,6 @@ function Create() {
 
   const activeBotInstance = useBotStore((state) => state.activeBotInstance.instance);
   const setBotInstance = useBotStore((state) => state.setBotInstance);
-
-  const adas = 0;
-
   const token = getStorageItem('actualKey');
 
   const isRandomBotActive = activeBot === 'random';
@@ -130,7 +134,7 @@ function Create() {
 
   return (
     <Layout>
-      <div className='Create'>
+      <div className='create'>
         <li>
           Enter Token:
           <form>
@@ -146,12 +150,12 @@ function Create() {
           </form>
         </li>
 
-        <ul className='Create_ChooseBot'>
-          <li className='Create_List'>
+        <ul className='create-choose-bot'>
+          <li className='create-list'>
             Create Simple Bot Instance:
             <div>
               <button
-                className='Create__button'
+                className='create__button'
                 onClick={chooseBotSimple}
                 disabled={!token || isRandomBotActive}
               >
@@ -160,11 +164,11 @@ function Create() {
             </div>
           </li>
 
-          <li className='Create_List'>
+          <li className='create-list'>
             Create Random Bot Instance:
             <div>
               <button
-                className='Create__button'
+                className='create__button'
                 onClick={chooseBotRandom}
                 disabled={!token || isSimpleBotActive}
               >
@@ -179,7 +183,7 @@ function Create() {
         {settingsOfBot}
         {listOfSettings}
 
-        <div className='Create_AddNewOptions'>
+        <div className='create-addNewOptions'>
           <div>
             Запрос:
             <input onChange={changeNameSettings} />

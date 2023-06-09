@@ -1,6 +1,10 @@
 {
-  "*.(js|jsx|ts|tsx|json|css|scss)": [
+  "*.(css|scss)": [
     "prettier  --write",
-    "eslint -c .eslintrc.json --ext .js,.jsx . --cache . --fix"
+    "stylelint --fix"
+  ],
+  "*(js|jsx|ts|tsx)": [
+    "prettier  --write",
+    "eslint -c .eslintrc.json ./src --fix"
   ]
 }
