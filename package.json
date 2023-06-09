@@ -10,14 +10,8 @@
     "preview": "vite preview",
     "prepare": "husky install",
     "lint-code": "eslint -c .eslintrc.json --ext .js,.jsx . --cache .",
-    "lint-code:fix": "npm run lint-code -- --fix",
+    "lint-code:fix": "npm run lint-code --fix",
     "prettier": "prettier  --write ."
-  },
-  "lint-staged": {
-    "*.(js|jsx|ts|tsx|json|css|scss)": [
-      "npm run prettier",
-      "npm run lint-code:fix"
-    ]
   },
   "dependencies": {
     "react": "^18.2.0",
