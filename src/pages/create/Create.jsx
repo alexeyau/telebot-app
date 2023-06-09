@@ -13,6 +13,7 @@ import './Create.css';
 
 function Create() {
   const activeBot = useBotStore((state) => state.activeBotInstance.typeOfBot);
+
   const activeBotInstance = useBotStore((state) => state.activeBotInstance.instance);
   const setBotInstance = useBotStore((state) => state.setBotInstance);
 
