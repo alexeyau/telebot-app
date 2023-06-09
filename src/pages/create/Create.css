@@ -1,5 +1,5 @@
-.Create {
-  margin: 30px auto 0px auto;
+.create {
+  margin: 30px auto 0;
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -7,16 +7,16 @@
   align-items: center;
 }
 
-.Create_H3 {
+.create-h3 {
   margin-top: 10px;
 }
 
-.Create_H4 {
+.create-h4 {
   margin-top: 10px;
   text-align: center;
 }
 
-.Create_ChooseBot {
+.create-choose-bot {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -25,12 +25,12 @@
   align-items: center;
 }
 
-.Create_List {
+.create-list {
   margin-top: 15px;
 }
 
-.Create__button {
+.create-button {
   margin-top: 15px;
-  background-color: rgb(32, 32, 184);
+  background-color: rgb(32 32 184);
   width: 100%;
 }
