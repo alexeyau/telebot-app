@@ -13,6 +13,12 @@
     "lint-code:fix": "npm run lint-code -- --fix",
     "prettier": "prettier  --write ."
   },
+  "lint-staged": {
+    "*.(js|jsx|ts|tsx|json|css|scss)": [
+      "npm run prettier",
+      "npm run lint-code:fix"
+    ]
+  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -30,8 +36,9 @@
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-react": "^7.32.2",
-    "firebase-tools": "^12.1.0",
+    "firebase-tools": "^0.1.6",
     "husky": "^8.0.0",
+    "lint-staged": "^13.2.2",
     "prettier": "2.8.8",
     "vite": "^4.2.0"
   }
