@@ -21,7 +21,6 @@ const saveToStorage = (event) => {
 };
 
 function Test() {
-
   const inputRef = createRef();
   const textareaRef = createRef();
   const inputRefGpt = createRef();
@@ -220,10 +219,7 @@ function Test() {
           </li>
 
           <li>
-            <textarea
-              className='Test__textarea'
-              placeholder='Greetings'
-            ></textarea>
+            <textarea className='Test__textarea' placeholder='Greetings'></textarea>
           </li>
 
           <li>

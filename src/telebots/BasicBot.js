@@ -10,7 +10,6 @@ export class BasicBot {
   }
 
   constructor(initSettings) {
-  
     const {
       onSendCallback,
       saveProcessedMessageId,
@@ -44,13 +43,15 @@ export class BasicBot {
       const updates = await this.getTelegramMessagesAsync(lastUpdateId + 1);
       console.log(' > updates: ', updates);
       let arr = JSON.parse(getStorageItem('activeUsers'));
-      updates.forEach(item => {
+      updates.forEach((item) => {
         arr.push(item.message.chat.first_name);
-      })
-      let answer = arr.filter((name, index) => {
-        return arr.indexOf(name) === index;
-      }).sort();
-      setStorageItem("activeUsers", JSON.stringify(answer))
+      });
+      let answer = arr
+        .filter((name, index) => {
+          return arr.indexOf(name) === index;
+        })
+        .sort();
+      setStorageItem('activeUsers', JSON.stringify(answer));
       updates
         .filter(
           (update) => update.message && !BasicBot.isProcessed(update.update_id, this._processedIds),

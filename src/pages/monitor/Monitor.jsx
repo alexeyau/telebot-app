@@ -5,10 +5,12 @@ import { getStorageItem } from '@services/localStorage.js';
 import Layout from '@/components/Layout';
 
 function Monitor() {
-  const users = JSON.parse(getStorageItem('activeUsers')).map(user => {
+  const users = JSON.parse(getStorageItem('activeUsers')).map((user) => {
     return (
-      <div className='Monitor_ListOfUser_Item' key={user}>{user } </div>
-    )
+      <div className='Monitor_ListOfUser_Item' key={user}>
+        {user}{' '}
+      </div>
+    );
   });
 
   return (

@@ -45,8 +45,7 @@ function Create() {
     return (
       <div key={index}>
         {' '}
-        {index})
-        <div>{item.name}</div>
+        {index})<div>{item.name}</div>
         <div>{item.options}</div>
       </div>
     );
@@ -88,17 +87,17 @@ function Create() {
       const bot = new BasicBotRandom(settings);
       //setBotInstance("random", settings);
       bot.start();
-    };
+    }
     if (botName === 'simpleBot01') {
       const bot = new BasicBot(settings);
       //setBotInstance("simple", settings);
       bot.start();
-    };
+    }
     if (botName === 'questionBot01') {
-      const bot = new BasicBotQuestion({...settings, oleg: 5});
+      const bot = new BasicBotQuestion({ ...settings, oleg: 5 });
       //setBotInstance("question", settings);
       bot.start();
-    };
+    }
   };
 
   const chooseBotRandom = () => {
@@ -136,7 +135,7 @@ function Create() {
       setisClassInputBot(true);
     } else {
       setisClassInputBot(false);
-    };
+    }
   };
 
   const addNewSettings = () => {
@@ -168,7 +167,6 @@ function Create() {
         </li>
 
         <ul className='Create_ChooseBot'>
-
           <li className='Create_List'>
             Choose Simple Bot Instance
             <div>
@@ -207,31 +205,26 @@ function Create() {
               </button>
             </div>
           </li>
-
         </ul>
 
-        {isQuestionBotActive && <div className='Create_AddNewOptions'>
-          <h3>Ключ вопросу бота и ответ</h3>
-          {settingsOfBot}
-          {listOfSettings}
+        {isQuestionBotActive && (
+          <div className='Create_AddNewOptions'>
+            <h3>Ключ вопросу бота и ответ</h3>
+            {settingsOfBot}
+            {listOfSettings}
 
-          <div>
-            Запрос:
-            <input onChange={changeNameSettings} />
-            Ответ:
-            <input onChange={changeOptionsSettings} />
+            <div>
+              Запрос:
+              <input onChange={changeNameSettings} />
+              Ответ:
+              <input onChange={changeOptionsSettings} />
+            </div>
+
+            <button className='button_addNewSettings' onClick={addNewSettings}>
+              +
+            </button>
           </div>
-
-          <button
-            className='button_addNewSettings'
-            onClick={addNewSettings}
-            >
-            +
-          </button>
-        </div>}
-
-
-
+        )}
 
         <button onClick={createBot}>Create bot!</button>
       </div>

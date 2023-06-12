@@ -1,7 +1,7 @@
 .Monitor_ListOfUsers {
-    display: flex;
+  display: flex;
 }
 
 .Monitor_ListOfUser_Item {
-    margin: 0 10px 0 10px
+  margin: 0 10px 0 10px;
 }
