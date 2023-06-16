@@ -1,52 +1,51 @@
 import Layout from '@/components/Layout';
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { setStorageItem, getStorageItem } from '@services/localStorage.js';
 import './Settings.css';
 
 function Settings() {
-  const [stateOfQuestion, setStateOfQuestion] = useState(JSON.parse(getStorageItem('listOfQuestions')));
+  const [stateOfQuestion, setStateOfQuestion] = useState(
+    JSON.parse(getStorageItem('listOfQuestions')),
+  );
 
   const saveQuestions = (event, index) => {
     stateOfQuestion[index].question = event.target.value;
-  }
+  };
   const saveAnswer = (event, index) => {
     stateOfQuestion[index].answer = event.target.value;
-  }
+  };
 
   const saveNewOpions = () => {
     setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
-  }
+  };
 
   const addNewOpions = () => {
-    setStateOfQuestion((list) => (
-      [ 
-        ...list,
-        {
-          question: "",
-          answer: "",
-        }
-      ]
-    ));
-  }
+    setStateOfQuestion((list) => [
+      ...list,
+      {
+        question: '',
+        answer: '',
+      },
+    ]);
+  };
 
   useEffect(() => {
     setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
   }, [stateOfQuestion]);
-  
+
   const settingsOfBot = stateOfQuestion
-  ? stateOfQuestion.map((item, index) => (
-      <div key={index}>
-        {index + 1}
-        <input
-          defaultValue={item.question}
-          className='Settings_questionInInput'
-          onChange={(event) => saveQuestions(event, index)}/>
-        <input
-          defaultValue={item.answer}
-          onChange={(event) => saveAnswer(event, index)}/>
-      </div>
-    ))
-  : null;
+    ? stateOfQuestion.map((item, index) => (
+        <div key={index}>
+          {index + 1}
+          <input
+            defaultValue={item.question}
+            className='Settings_questionInInput'
+            onChange={(event) => saveQuestions(event, index)}
+          />
+          <input defaultValue={item.answer} onChange={(event) => saveAnswer(event, index)} />
+        </div>
+      ))
+    : null;
 
   return (
     <Layout>
@@ -60,20 +59,14 @@ function Settings() {
 
             {settingsOfBot}
 
-            <button
-              className='button_addNewSettings'
-              onClick={saveNewOpions}>
+            <button className='button_addNewSettings' onClick={saveNewOpions}>
               save
             </button>
 
-            <button
-              className='button_addNewSettings'
-              onClick={addNewOpions}>
+            <button className='button_addNewSettings' onClick={addNewOpions}>
               new
             </button>
-
           </div>
-
         </ul>
       </div>
     </Layout>
@@ -81,4 +74,3 @@ function Settings() {
 }
 
 export default Settings;
-

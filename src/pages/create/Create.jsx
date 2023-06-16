@@ -213,10 +213,7 @@ function Create() {
           </div>
         )}
 
-        {isRuningBot && (
-          <h2>bot is running</h2>
-        )}
-
+        {isRuningBot && <h2>bot is running</h2>}
 
         {/* {isQuestionBotActive && (
           <div className='Create_AddNewOptions'>
@@ -236,8 +233,6 @@ function Create() {
             </button>
           </div>
         )} */}
-
-
       </div>
     </Layout>
   );
