@@ -4,8 +4,10 @@ export const getTelegramBotName = (token) => {
   });
 };
 
-export const getTelegramMessages = (token) => {
-  return fetch(`https://api.telegram.org/bot${token}/getUpdates`).then((data) => {
+export const getTelegramMessages = (token, lastUpdateId) => {
+  return fetch(
+    `https://api.telegram.org/bot${token}/getUpdates?limit=20&offset=${lastUpdateId || 0}`,
+  ).then((data) => {
     return data.json();
   });
 };

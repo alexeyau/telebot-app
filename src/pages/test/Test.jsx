@@ -1,11 +1,11 @@
 import { createRef, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 import {
   getTelegramBotName,
   getTelegramMessages,
   sendTelegramMessage,
 } from '@services/telegramAPI.js';
+
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
@@ -14,9 +14,9 @@ import Layout from '@/components/Layout';
 
 import './Test.css';
 
-let saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
+const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
 
-let saveToStorage = (event) => {
+const saveToStorage = (event) => {
   setStorageItem('actualKey', event.target.value);
 };
 
@@ -26,8 +26,8 @@ function Test() {
   const inputRefGpt = createRef();
   const [teleName, setTeleName] = useState('');
   const [teleMessages, setTeleMessages] = useState([]);
-
   const [responseid, setResponseId] = useState(saveResponseId);
+
   const teleNameUrl = teleName && `https://t.me/${teleName}`;
 
   useEffect(() => {
@@ -43,8 +43,7 @@ function Test() {
     if (getStorageItem('actualKey').length < 1) {
       return;
     }
-    const token = inputRef.current?.value;
-    getTelegramBotName(token).then((readyData) => {
+    getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
       console.log(' >1> ', readyData);
       setTeleName(readyData.result.username);
       setResponseId([...responseid, { id: readyData.result.id }]);
@@ -55,8 +54,7 @@ function Test() {
     if (getStorageItem('actualKey').length < 1) {
       return;
     }
-    const token = inputRef.current?.value;
-    getTelegramMessages(token).then((readyData) => {
+    getTelegramMessages(getStorageItem('actualKey')).then((readyData) => {
       console.log(' >2> ', readyData);
       setTeleMessages(readyData.result.map((update) => update.message));
     });
@@ -66,10 +64,9 @@ function Test() {
     if (getStorageItem('actualKey').length < 1) {
       return;
     }
-    const token = inputRef.current?.value;
     const messageText = textareaRef.current?.value;
     console.log(textareaRef.current.value);
-    sendTelegramMessage(token, {
+    sendTelegramMessage(getStorageItem('actualKey'), {
       chat_id: userId,
       reply_to_message_id: replyToMessageId,
       text: messageText,
@@ -84,7 +81,6 @@ function Test() {
       return;
     }
     const botName = 'botName001';
-    const token = inputRef.current?.value;
     const settings = {
       name: botName,
       saveProcessedMessageId: (mId) => {
@@ -101,13 +97,14 @@ function Test() {
 
         return botData.processedUpdatesIds || [];
       },
-      getTelegramMessagesAsync: async () => {
-        return getTelegramMessages(token).then((readyData) => {
+
+      getTelegramMessagesAsync: async (lastUpdateId) => {
+        return getTelegramMessages(getStorageItem('actualKey'), lastUpdateId).then((readyData) => {
           return readyData.result;
         });
       },
       sendTelegramMessageAsync: async (userId, messageText) => {
-        return sendTelegramMessage(token, {
+        return sendTelegramMessage(getStorageItem('actualKey'), {
           chat_id: userId,
           text: messageText,
         });
@@ -116,13 +113,6 @@ function Test() {
         console.log('callback: message sent');
       },
     };
-    // dispatch({
-    // 	type: "NEW-USERS",
-    // 	body: {
-    // 		newUser: teleMessages[0].from.firstName,
-    // 	},
-    // })
-    setStorageItem('activeUser', teleMessages[0].chat.first_name);
     const bot = new BasicBotRandom(settings);
     bot.start();
   };
@@ -132,7 +122,7 @@ function Test() {
       return;
     }
     const botName = 'botName_gpt0';
-    const token = inputRef.current?.value;
+
     const tokenGpt = inputRefGpt.current?.value;
     const settings = {
       name: botName,
@@ -150,13 +140,14 @@ function Test() {
 
         return botData.processedUpdatesIds || [];
       },
-      getTelegramMessagesAsync: async () => {
-        return getTelegramMessages(token).then((readyData) => {
+
+      getTelegramMessagesAsync: async (lastUpdateId) => {
+        return getTelegramMessages(getStorageItem('actualKey'), lastUpdateId).then((readyData) => {
           return readyData.result;
         });
       },
       sendTelegramMessageAsync: async (userId, messageText) => {
-        return sendTelegramMessage(token, {
+        return sendTelegramMessage(getStorageItem('actualKey'), {
           chat_id: userId,
           text: messageText,
         });
@@ -170,27 +161,11 @@ function Test() {
     bot.start();
   };
 
-  // let getArrayUsers = (array) => {
-  // 	let x = 0;
-  // 	let y = 0;
-  // 	let arr = [];
-  // 	array.forEach((item) => {
-  // 		arr.push(item.chat.first_name)
-  // 	});
-  // 	while(x <= arr.length) {
-  // 		while(y <= arr.length) {
-  // 			if()
-  // 			y++;
-  // 		}
-  // 		x++;
-  // 	}
-  // }
-
   return (
     <Layout>
       <div className='Test'>
         <a href={'/'}>&laquo;</a>
-        <ul className='test_box'>
+        <ul className='Test_box'>
           <li>
             Create a Telegram-bot here: <a href='https://t.me/botfather'>https://t.me/botfather</a>
           </li>
@@ -247,7 +222,7 @@ function Test() {
 
           <li>
             <textarea
-              className='test__textarea'
+              className='Test__textarea'
               ref={textareaRef}
               placeholder='Greetings'
             ></textarea>
