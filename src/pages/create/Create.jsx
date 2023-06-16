@@ -9,21 +9,14 @@ import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { useBotStore } from '@services/zustandStore';
 
-import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
-
-import { getStorageItem, setStorageItem } from '@services/localStorage.js';
-import { useBotStore } from '@services/zustandStore';
 import Layout from '@/components/Layout';
 
 import './Create.css';
 
 function Create() {
-  const activeBot = useBotStore((state) => state.activeBotInstance.typeOfBot);
   const activeBotInstance = useBotStore((state) => state.activeBotInstance.instance);
   const setBotInstance = useBotStore((state) => state.setBotInstance);
 
-  const activeBotInstance = useBotStore((state) => state.activeBotInstance.instance);
-  const setBotInstance = useBotStore((state) => state.setBotInstance);
   const token = getStorageItem('actualKey');
   const [isRuningBot, setIsRuningBot] = useState(false);
 
@@ -156,7 +149,6 @@ function Create() {
   return (
     <Layout>
       <div className='Create'>
-
         <li>
           Enter Token:
           <form>
@@ -172,7 +164,7 @@ function Create() {
           </form>
         </li>
 
-       {!isRuningBot && (
+        {!isRuningBot && (
           <div>
             <ul className='Create_ChooseBot'>
               <li className='Create_List'>
