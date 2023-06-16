@@ -219,7 +219,11 @@ function Test() {
           </li>
 
           <li>
-            <textarea className='Test__textarea' placeholder='Greetings'></textarea>
+            <textarea
+              className='Test__textarea'
+              ref={textareaRef}
+              placeholder='Greetings'
+            ></textarea>
           </li>
 
           <li>
