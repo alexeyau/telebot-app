@@ -22,9 +22,7 @@ function Create() {
 
   // const isRandomBotActive = activeBot === 'random';
   // const isSimpleBotActive = activeBot === 'simple';
-  const [isRandomBotActive, setIsRandomBotActive] = useState(false);
-  const [isSimpleBotActive, setIsSimpleBotActive] = useState(false);
-  const [isQuestionBotActive, setIsQuestionBotActive] = useState(false);
+  const [isRuningBot, setIsRuningBot] = useState(false);
 
   const [isClassInputBot, setisClassInputBot] = useState(true);
   const [arrayAdditionallyQuestionsOfBot, setArrayAdditionallyQuestionsOfBot] = useState([]);
@@ -87,37 +85,40 @@ function Create() {
       const bot = new BasicBotRandom(settings);
       //setBotInstance("random", settings);
       bot.start();
+      setIsRuningBot(true);
     }
     if (botName === 'simpleBot01') {
       const bot = new BasicBot(settings);
       //setBotInstance("simple", settings);
       bot.start();
+      setIsRuningBot(true);
     }
     if (botName === 'questionBot01') {
       const bot = new BasicBotQuestion({ ...settings, oleg: 5 });
       //setBotInstance("question", settings);
       bot.start();
+      setIsRuningBot(true);
     }
   };
 
   const chooseBotRandom = () => {
-    setIsQuestionBotActive(false);
-    setIsSimpleBotActive(false);
-    setIsRandomBotActive(true);
+    // setIsQuestionBotActive(false);
+    // setIsSimpleBotActive(false);
+    // setIsRandomBotActive(true);
     setBotName('randomBot001');
   };
 
   const chooseBotSimple = () => {
-    setIsQuestionBotActive(false);
-    setIsSimpleBotActive(true);
-    setIsRandomBotActive(false);
+    // setIsQuestionBotActive(false);
+    // setIsSimpleBotActive(true);
+    // setIsRandomBotActive(false);
     setBotName('simpleBot01');
   };
 
   const chooseBotQuestion = () => {
-    setIsQuestionBotActive(true);
-    setIsSimpleBotActive(false);
-    setIsRandomBotActive(false);
+    // setIsQuestionBotActive(true);
+    // setIsSimpleBotActive(false);
+    // setIsRandomBotActive(false);
     setBotName('questionBot01');
   };
 
@@ -166,48 +167,58 @@ function Create() {
           </form>
         </li>
 
-        <ul className='Create_ChooseBot'>
-          <li className='Create_List'>
-            Choose Simple Bot Instance
-            <div>
-              <button
-                className='Create__button'
-                onClick={chooseBotSimple}
-                //disabled={!token || isRandomBotActive}
-              >
-                Choose!
-              </button>
-            </div>
-          </li>
+        {!isRuningBot && (
+          <div>
+            <ul className='Create_ChooseBot'>
+              <li className='Create_List'>
+                Choose Simple Bot Instance
+                <div>
+                  <button
+                    className='Create__button'
+                    onClick={chooseBotSimple}
+                    //disabled={!token || isRandomBotActive}
+                  >
+                    Choose!
+                  </button>
+                </div>
+              </li>
 
-          <li className='Create_List'>
-            Choose Random Bot Instance
-            <div>
-              <button
-                className='Create__button'
-                onClick={chooseBotRandom}
-                //disabled={!token || isSimpleBotActive}
-              >
-                Choose!
-              </button>
-            </div>
-          </li>
+              <li className='Create_List'>
+                Choose Random Bot Instance
+                <div>
+                  <button
+                    className='Create__button'
+                    onClick={chooseBotRandom}
+                    //disabled={!token || isSimpleBotActive}
+                  >
+                    Choose!
+                  </button>
+                </div>
+              </li>
 
-          <li className='Create_List'>
-            Choose Question Bot Instance
-            <div>
-              <button
-                className='Create__button'
-                onClick={chooseBotQuestion}
-                //disabled={!token || isSimpleBotActive}
-              >
-                Choose!
-              </button>
-            </div>
-          </li>
-        </ul>
+              <li className='Create_List'>
+                Choose Question Bot Instance
+                <div>
+                  <button
+                    className='Create__button'
+                    onClick={chooseBotQuestion}
+                    //disabled={!token || isSimpleBotActive}
+                  >
+                    Choose!
+                  </button>
+                </div>
+              </li>
+            </ul>
+            <button onClick={createBot}>Create bot!</button>
+          </div>
+        )}
 
-        {isQuestionBotActive && (
+        {isRuningBot && (
+          <h2>bot is running</h2>
+        )}
+
+
+        {/* {isQuestionBotActive && (
           <div className='Create_AddNewOptions'>
             <h3>Ключ вопросу бота и ответ</h3>
             {settingsOfBot}
@@ -224,9 +235,9 @@ function Create() {
               +
             </button>
           </div>
-        )}
+        )} */}
 
-        <button onClick={createBot}>Create bot!</button>
+
       </div>
     </Layout>
   );

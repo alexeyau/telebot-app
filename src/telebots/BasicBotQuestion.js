@@ -7,33 +7,54 @@ export class BasicBotQuestion extends BasicBot {
   }
 
   async _sendResponse(update) {
+
+    const questions = [
+      { question: 'Какой год основания Санкт-Петербурга? Выберите следующие ответы: A) 1689, B) 1703, C) 1721', answer: 'B' },
+      { question: 'Кто изображен на банкноте в 100 рублей? Выберите следующие ответы: A) Пушкин, B) Сталин, C) Ленин', answer: 'A' },
+      { question: 'Как называется самое высокое здание в мире? Выберите следующие ответы: A) Москва-сити, B) Бурдж Халифа, C) Пизанская башня', answer: 'B' },
+      { question: 'Какое озеро самое большое? Выберите следующие ответы: A) Байкал, B) Мисисипи, C) Оклахома', answer: 'A' },
+    ];
+
     if (!getStorageItem('numberOfQuestion')) {
       setStorageItem('numberOfQuestion', 0);
     }
 
-    const questions = [
-      { question: 'Какой год основания Санкт-Петербурга?', answer: '1703' },
-      { question: 'Кто изображен на банкноте в 100 рублей?', answer: 'Пушкин' },
-      { question: 'Как называется самое высокое здание в мире?', answer: 'Бурдж Халифа' },
-      { question: 'Какаое озеро самое большое?', answer: 'Байкал' },
-    ];
+    if (!getStorageItem('listOfQuestions')) {
+      setStorageItem('listOfQuestions', JSON.stringify(questions));
+    }
+
+    if (update.message?.text !== "/start" && update.message?.text !== "A" && update.message?.text !== "B" && update.message?.text !== "C" && update.message?.text !== "D") {
+      console.log(update.message?.text)
+      this.sendTelegramMessageAsync(update.message?.from.id, 'Ответ некорректный');
+      this._onSend(update);
+      return;
+    }
 
     if (update.message?.text === '/start') {
+      if(Number(getStorageItem('numberOfQuestion')) !== 0) {
+        this.sendTelegramMessageAsync(
+          update.message?.from.id, 
+          'Привет, видимо вы ответили не на все вопросы, продолжим,' + 
+          JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')].question
+          );
+        this._onSend(update);
+        return;
+      }
+      setStorageItem('numberOfQuestion', 0);
       this.sendTelegramMessageAsync(
         update.message?.from.id,
-        'Привет! Ответьте на первый вопрос:\n' +
-          questions[getStorageItem('numberOfQuestion')].question,
+        'Привет! Ответьте на первый вопрос:\n' + JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')].question + ' в ответе нужно указать только букву ответа',
       );
       this._onSend(update);
       return;
     }
 
-    if (update.message?.text === questions[getStorageItem('numberOfQuestion')].answer) {
+    if (update.message?.text === JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')].answer) {
       setStorageItem('numberOfQuestion', Number(getStorageItem('numberOfQuestion')) + 1);
-      if (Number(getStorageItem('numberOfQuestion')) == questions.length) {
+      if (Number(getStorageItem('numberOfQuestion')) == JSON.parse(getStorageItem('listOfQuestions')).length) {
         this.sendTelegramMessageAsync(
           update.message?.from.id,
-          'Правильно, вы ответили на все вопросы',
+          'Отлично, вы ответили на все вопросы',
         );
         this._onSend(update);
         setStorageItem('numberOfQuestion', 0);
@@ -41,14 +62,20 @@ export class BasicBotQuestion extends BasicBot {
       }
       this.sendTelegramMessageAsync(
         update.message?.from.id,
-        'Правильно, вот следующий вопрос:\n' +
-          questions[getStorageItem('numberOfQuestion')].question,
+        'Хорошо, вот следующий вопрос:\n' +
+        JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')].question,
       );
       this._onSend(update);
       return;
     } else {
-      this.sendTelegramMessageAsync(update.message?.from.id, 'Не верно, попробуйте снова');
+      setStorageItem('numberOfQuestion', Number(getStorageItem('numberOfQuestion')) + 1);
+      this.sendTelegramMessageAsync(
+        update.message?.from.id,
+        'Хорошо, вот следующий вопрос:\n' +
+        JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')].question,
+      );
       this._onSend(update);
+      return;
     }
-  }
-}
+  };
+};

@@ -24,3 +24,7 @@
   border: 0.5px solid red;
   padding: 4px;
 }
+
+.Settings_questionInInput {
+  width: 800px;
+}
