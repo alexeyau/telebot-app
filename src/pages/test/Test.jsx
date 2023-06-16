@@ -24,7 +24,6 @@ function Test() {
   const inputRef = createRef();
   const textareaRef = createRef();
   const inputRefGpt = createRef();
-
   const [teleName, setTeleName] = useState('');
   const [teleMessages, setTeleMessages] = useState([]);
   const [responseid, setResponseId] = useState(saveResponseId);
