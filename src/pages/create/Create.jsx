@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBot } from '@/telebots/BasicBot';
+import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
 
 import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
 
@@ -13,17 +14,14 @@ import Layout from '@/components/Layout';
 import './Create.css';
 
 function Create() {
-  const activeBot = useBotStore((state) => state.activeBotInstance.typeOfBot);
-
   const activeBotInstance = useBotStore((state) => state.activeBotInstance.instance);
   const setBotInstance = useBotStore((state) => state.setBotInstance);
-  const token = getStorageItem('actualKey');
 
-  const isRandomBotActive = activeBot === 'random';
-  const isSimpleBotActive = activeBot === 'simple';
+  const token = getStorageItem('actualKey');
+  const [isRuningBot, setIsRuningBot] = useState(false);
 
   const [isClassInputBot, setisClassInputBot] = useState(true);
-  const [arrayAdditionallySettingsOfBot, setArrayAdditionallySettingsOfBot] = useState([]);
+  const [arrayAdditionallyQuestionsOfBot, setArrayAdditionallyQuestionsOfBot] = useState([]);
   const [additionallyNameOfSettings, setAdditionallyNameOfSettings] = useState('');
   const [additionallyOptionsOfSettings, setAdditionallyOptionsOfSettings] = useState('');
   const [botName, setBotName] = useState('');
@@ -36,6 +34,16 @@ function Create() {
         </div>
       ))
     : null;
+
+  const listOfSettings = arrayAdditionallyQuestionsOfBot.map((item, index) => {
+    return (
+      <div key={index}>
+        {' '}
+        {index})<div>{item.name}</div>
+        <div>{item.options}</div>
+      </div>
+    );
+  });
 
   const createBot = () => {
     if (!token) return;
@@ -72,20 +80,43 @@ function Create() {
     };
     if (botName === 'randomBot001') {
       const bot = new BasicBotRandom(settings);
+      //setBotInstance("random", settings);
       bot.start();
+      setIsRuningBot(true);
     }
     if (botName === 'simpleBot01') {
       const bot = new BasicBot(settings);
+      //setBotInstance("simple", settings);
       bot.start();
+      setIsRuningBot(true);
+    }
+    if (botName === 'questionBot01') {
+      const bot = new BasicBotQuestion({ ...settings, oleg: 5 });
+      //setBotInstance("question", settings);
+      bot.start();
+      setIsRuningBot(true);
     }
   };
 
   const chooseBotRandom = () => {
+    // setIsQuestionBotActive(false);
+    // setIsSimpleBotActive(false);
+    // setIsRandomBotActive(true);
     setBotName('randomBot001');
   };
 
   const chooseBotSimple = () => {
+    // setIsQuestionBotActive(false);
+    // setIsSimpleBotActive(true);
+    // setIsRandomBotActive(false);
     setBotName('simpleBot01');
+  };
+
+  const chooseBotQuestion = () => {
+    // setIsQuestionBotActive(true);
+    // setIsSimpleBotActive(false);
+    // setIsRandomBotActive(false);
+    setBotName('questionBot01');
   };
 
   const changeNameSettings = (event) => {
@@ -106,8 +137,8 @@ function Create() {
   };
 
   const addNewSettings = () => {
-    setArrayAdditionallySettingsOfBot([
-      ...arrayAdditionallySettingsOfBot,
+    setArrayAdditionallyQuestionsOfBot([
+      ...arrayAdditionallyQuestionsOfBot,
       {
         name: additionallyNameOfSettings,
         options: additionallyOptionsOfSettings,
@@ -115,20 +146,9 @@ function Create() {
     ]);
   };
 
-  const listOfSettings = arrayAdditionallySettingsOfBot.map((item, index) => {
-    return (
-      <div key={index}>
-        {' '}
-        {index}
-        <div>{item.name}</div>
-        <div>{item.options}</div>
-      </div>
-    );
-  });
-
   return (
     <Layout>
-      <div className='create'>
+      <div className='Create'>
         <li>
           Enter Token:
           <form>
@@ -144,52 +164,72 @@ function Create() {
           </form>
         </li>
 
-        <ul className='create-choose-bot'>
-          <li className='create-list'>
-            Create Simple Bot Instance:
-            <div>
-              <button
-                className='create-button'
-                onClick={chooseBotSimple}
-                disabled={!token || isRandomBotActive}
-              >
-                Choose!
-              </button>
-            </div>
-          </li>
-
-          <li className='create-list'>
-            Create Random Bot Instance:
-            <div>
-              <button
-                className='create-button'
-                onClick={chooseBotRandom}
-                disabled={!token || isSimpleBotActive}
-              >
-                Choose!
-              </button>
-            </div>
-          </li>
-        </ul>
-
-        <h3>Ключ вопросу бота и ответ</h3>
-
-        {settingsOfBot}
-        {listOfSettings}
-
-        <div className='create-addNewOptions'>
+        {!isRuningBot && (
           <div>
-            Запрос:
-            <input onChange={changeNameSettings} />
-            Ответ:
-            <input onChange={changeOptionsSettings} />
-          </div>
-          <button className='button_addNewSettings' onClick={addNewSettings}>
-            +
-          </button>
-        </div>
+            <ul className='Create_ChooseBot'>
+              <li className='Create_List'>
+                Choose Simple Bot Instance
+                <div>
+                  <button
+                    className='Create__button'
+                    onClick={chooseBotSimple}
+                    //disabled={!token || isRandomBotActive}
+                  >
+                    Choose!
+                  </button>
+                </div>
+              </li>
 
-        <button onClick={createBot}>Create bot!</button>
+              <li className='Create_List'>
+                Choose Random Bot Instance
+                <div>
+                  <button
+                    className='Create__button'
+                    onClick={chooseBotRandom}
+                    //disabled={!token || isSimpleBotActive}
+                  >
+                    Choose!
+                  </button>
+                </div>
+              </li>
+
+              <li className='Create_List'>
+                Choose Question Bot Instance
+                <div>
+                  <button
+                    className='Create__button'
+                    onClick={chooseBotQuestion}
+                    //disabled={!token || isSimpleBotActive}
+                  >
+                    Choose!
+                  </button>
+                </div>
+              </li>
+            </ul>
+            <button onClick={createBot}>Create bot!</button>
+          </div>
+        )}
+
+        {isRuningBot && <h2>bot is running</h2>}
+
+        {/* {isQuestionBotActive && (
+          <div className='Create_AddNewOptions'>
+            <h3>Ключ вопросу бота и ответ</h3>
+            {settingsOfBot}
+            {listOfSettings}
+
+            <div>
+              Запрос:
+              <input onChange={changeNameSettings} />
+              Ответ:
+              <input onChange={changeOptionsSettings} />
+            </div>
+
+            <button className='button_addNewSettings' onClick={addNewSettings}>
+              +
+            </button>
+          </div>
+        )} */}
       </div>
     </Layout>
   );

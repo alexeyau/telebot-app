@@ -44,8 +44,7 @@ function Test() {
     if (getStorageItem('actualKey').length < 1) {
       return;
     }
-    const token = inputRef.current?.value;
-    getTelegramBotName(token).then((readyData) => {
+    getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
       console.log(' >1> ', readyData);
       setTeleName(readyData.result.username);
       setResponseId([...responseid, { id: readyData.result.id }]);
@@ -56,8 +55,7 @@ function Test() {
     if (getStorageItem('actualKey').length < 1) {
       return;
     }
-    const token = inputRef.current?.value;
-    getTelegramMessages(token).then((readyData) => {
+    getTelegramMessages(getStorageItem('actualKey')).then((readyData) => {
       console.log(' >2> ', readyData);
       setTeleMessages(readyData.result.map((update) => update.message));
     });
@@ -67,10 +65,9 @@ function Test() {
     if (getStorageItem('actualKey').length < 1) {
       return;
     }
-    const token = inputRef.current?.value;
     const messageText = textareaRef.current?.value;
     console.log(textareaRef.current.value);
-    sendTelegramMessage(token, {
+    sendTelegramMessage(getStorageItem('actualKey'), {
       chat_id: userId,
       reply_to_message_id: replyToMessageId,
       text: messageText,
@@ -85,7 +82,6 @@ function Test() {
       return;
     }
     const botName = 'botName001';
-    const token = inputRef.current?.value;
     const settings = {
       name: botName,
       saveProcessedMessageId: (mId) => {
@@ -103,12 +99,12 @@ function Test() {
         return botData.processedUpdatesIds || [];
       },
       getTelegramMessagesAsync: async (lastUpdateId) => {
-        return getTelegramMessages(token, lastUpdateId).then((readyData) => {
+        return getTelegramMessages(getStorageItem('actualKey'), lastUpdateId).then((readyData) => {
           return readyData.result;
         });
       },
       sendTelegramMessageAsync: async (userId, messageText) => {
-        return sendTelegramMessage(token, {
+        return sendTelegramMessage(getStorageItem('actualKey'), {
           chat_id: userId,
           text: messageText,
         });
@@ -126,7 +122,6 @@ function Test() {
       return;
     }
     const botName = 'botName_gpt0';
-    const token = inputRef.current?.value;
     const tokenGpt = inputRefGpt.current?.value;
     const settings = {
       name: botName,
@@ -145,12 +140,12 @@ function Test() {
         return botData.processedUpdatesIds || [];
       },
       getTelegramMessagesAsync: async (lastUpdateId) => {
-        return getTelegramMessages(token, lastUpdateId).then((readyData) => {
+        return getTelegramMessages(getStorageItem('actualKey'), lastUpdateId).then((readyData) => {
           return readyData.result;
         });
       },
       sendTelegramMessageAsync: async (userId, messageText) => {
-        return sendTelegramMessage(token, {
+        return sendTelegramMessage(getStorageItem('actualKey'), {
           chat_id: userId,
           text: messageText,
         });

@@ -19,7 +19,7 @@
 .create-choose-bot {
   list-style: none;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
   margin: 0 auto;
   align-items: center;
@@ -27,6 +27,7 @@
 
 .create-list {
   margin-top: 15px;
+  margin-left: 20px;
 }
 
 .create-button {
