@@ -1,7 +1,7 @@
 {
   "*.(js|jsx|ts|tsx)": [
     "prettier  --write",
-    "eslint --ext 'src/*{.ts,.tsx,.js,.jsx}' --fix"
+    "eslint --ext 'src/*{.ts,.tsx,.js,.jsx}' --fix src/"
   ],
   "*.(css|scss)": [
     "prettier  --write",
