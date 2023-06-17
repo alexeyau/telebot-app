@@ -5,6 +5,6 @@
   ],
   "*.(css|scss)": [
     "prettier  --write",
-    "stylelint '**/*{.css,.scss}' --fix"
+    "stylelint 'src/*{.css,.scss}' --fix"
   ]
 }
