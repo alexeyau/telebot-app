@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "prepare": "husky install",
     "lint": "eslint --ext .ts,.tsx,.js,.jsx src/.",
-    "lint:fix": "eslint --ext .ts,.tsx,.js,.jsx . --fix",
+    "lint:fix": "eslint --ext .ts,.tsx,.js,.jsx src/. --fix",
     "stylelint": "stylelint 'src/*{.css,.scss}'",
     "stylelint:fix": "stylelint 'src/*{.css,.scss}' --fix",
     "prettier": "prettier  --write ."
