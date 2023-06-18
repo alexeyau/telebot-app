@@ -1,30 +1,31 @@
 import './Monitor.css';
-
+import { useMemo } from 'react';
 import { getStorageItem } from '@services/localStorage.js';
-
 import Layout from '@/components/Layout';
 
 function Monitor() {
-  const users = JSON.parse(getStorageItem('activeUsers')).map((user) => {
-    return (
-      <div className='Monitor_ListOfUser_Item' key={user}>
-        {user}{' '}
-      </div>
-    );
-  });
+  const activeUsers = useMemo(() => getStorageItem('activeUsers'), []);
+  const users = useMemo(() => {
+    if (!activeUsers) return null;
+    return JSON.parse(activeUsers)?.map((user) => (
+      <li className='Monitor_ListOfUser_Item' key={user}>
+        {user}
+      </li>
+    ));
+  }, [activeUsers]);
 
   return (
     <Layout>
       <h3>Monitor</h3>
       <div className='Monitor'>
         <ul>
-          <li>You can see what is happening (service is not ready yet)</li>
-          <li>
+          <div>You can see what is happening (service is not ready yet)</div>
+          <div>
             <div className='Monitor_ListOfUsers'>
-              <div>user:</div>
+              {Boolean(activeUsers) && <div>user:</div>}
               {users}
             </div>
-          </li>
+          </div>
         </ul>
       </div>
     </Layout>

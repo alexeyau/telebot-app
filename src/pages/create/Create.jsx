@@ -167,12 +167,12 @@ function Create() {
 
         {!isRuningBot && (
           <div>
-            <ul className='Create_ChooseBot'>
-              <li className='Create_List'>
+            <ul className='create-choose-bot'>
+              <li className='create_List'>
                 Choose Simple Bot Instance
                 <div>
                   <button
-                    className='Create__button'
+                    className='create__button'
                     onClick={chooseBotSimple}
                     //disabled={!token || isRandomBotActive}
                   >
@@ -181,11 +181,11 @@ function Create() {
                 </div>
               </li>
 
-              <li className='Create_List'>
+              <li className='create_List'>
                 Choose Random Bot Instance
                 <div>
                   <button
-                    className='Create__button'
+                    className='create__button'
                     onClick={chooseBotRandom}
                     //disabled={!token || isSimpleBotActive}
                   >
@@ -194,11 +194,11 @@ function Create() {
                 </div>
               </li>
 
-              <li className='Create_List'>
+              <li className='create_List'>
                 Choose Question Bot Instance
                 <div>
                   <button
-                    className='Create__button'
+                    className='create__button'
                     onClick={chooseBotQuestion}
                     //disabled={!token || isSimpleBotActive}
                   >
