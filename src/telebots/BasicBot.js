@@ -43,7 +43,10 @@ export class BasicBot {
       const lastUpdateId = this._processedIds[this._processedIds.length - 1];
       const updates = await this.getTelegramMessagesAsync(lastUpdateId + 1);
       console.log(' > updates: ', updates);
-      let arr = JSON.parse(getStorageItem('activeUsers'));
+      let arr = [];
+      if (JSON.parse(getStorageItem('activeUsers'))) {
+        arr = JSON.parse(getStorageItem('activeUsers'));
+      }
       updates.forEach((item) => {
         arr.push(item.message.chat.first_name);
       });
