@@ -1,20 +1,18 @@
 import './Monitor.css';
-
+import { useMemo } from 'react';
 import { getStorageItem } from '@services/localStorage.js';
-
 import Layout from '@/components/Layout';
 
 function Monitor() {
-  const activeUsers = getStorageItem('activeUsers');
-  const users = activeUsers
-    ? JSON.parse(activeUsers).map((user) => {
-        return (
-          <div className='Monitor_ListOfUser_Item' key={user}>
-            {user}{' '}
-          </div>
-        );
-      })
-    : null;
+  const activeUsers = useMemo(() => getStorageItem('activeUsers'), []);
+  const users = useMemo(() => {
+    if (!activeUsers) return null;
+    return JSON.parse(activeUsers)?.map((user) => (
+      <li className='Monitor_ListOfUser_Item' key={user}>
+        {user}
+      </li>
+    ));
+  }, [activeUsers]);
 
   return (
     <Layout>
@@ -25,7 +23,6 @@ function Monitor() {
           <div>
             <div className='Monitor_ListOfUsers'>
               {Boolean(activeUsers) && <div>user:</div>}
-
               {users}
             </div>
           </div>
