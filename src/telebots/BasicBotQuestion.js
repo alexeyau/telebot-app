@@ -80,7 +80,7 @@ export class BasicBotQuestion extends BasicBot {
     ) {
       setStorageItem('numberOfQuestion', Number(getStorageItem('numberOfQuestion')) + 1);
       if (
-        Number(getStorageItem('numberOfQuestion')) ==
+        Number(getStorageItem('numberOfQuestion')) >=
         JSON.parse(getStorageItem('listOfQuestions')).length
       ) {
         this.sendTelegramMessageAsync(
@@ -101,6 +101,18 @@ export class BasicBotQuestion extends BasicBot {
       return;
     } else {
       setStorageItem('numberOfQuestion', Number(getStorageItem('numberOfQuestion')) + 1);
+      if (
+        Number(getStorageItem('numberOfQuestion')) >=
+        JSON.parse(getStorageItem('listOfQuestions')).length
+      ) {
+        this.sendTelegramMessageAsync(
+          update.message?.from.id,
+          'Отлично, вы ответили на все вопросы',
+        );
+        this._onSend(update);
+        setStorageItem('numberOfQuestion', 0);
+        return;
+      }
       this.sendTelegramMessageAsync(
         update.message?.from.id,
         'Хорошо, вот следующий вопрос:\n' +
