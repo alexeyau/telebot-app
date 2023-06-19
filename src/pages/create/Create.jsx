@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBot } from '@/telebots/BasicBot';
@@ -7,48 +7,61 @@ import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
 import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
 
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
-import { useBotStore } from '@services/zustandStore';
+//import { useBotStore } from '@services/zustandStore';
 
 import Layout from '@/components/Layout';
 
 import './Create.css';
 
 function Create() {
-  const activeBotInstance = useBotStore((state) => state.activeBotInstance.instance);
-  const setBotInstance = useBotStore((state) => state.setBotInstance);
+  const questions = [
+    {
+      question:
+        'Какой год основания Санкт-Петербурга? Выберите следующие ответы: A) 1689, B) 1703, C) 1721',
+      answer: 'B',
+    },
+    {
+      question:
+        'Кто изображен на банкноте в 100 рублей? Выберите следующие ответы: A) Пушкин, B) Сталин, C) Ленин',
+      answer: 'A',
+    },
+    {
+      question:
+        'Как называется самое высокое здание в мире? Выберите следующие ответы: A) Москва-сити, B) Бурдж Халифа, C) Пизанская башня',
+      answer: 'B',
+    },
+    {
+      question:
+        'Какое озеро самое большое? Выберите следующие ответы: A) Байкал, B) Мисисипи, C) Оклахома',
+      answer: 'A',
+    },
+  ];
+  //const setBotInstance = useBotStore((state) => state.setBotInstance);
+
+  const [stateOfQuestion, setStateOfQuestion] = useState(
+    JSON.parse(getStorageItem('listOfQuestions')),
+  );
+
+  const saveQuestions = (event, index) => {
+    stateOfQuestion[index].question = event.target.value;
+  };
+  const saveAnswer = (event, index) => {
+    stateOfQuestion[index].answer = event.target.value;
+  };
+
+  const saveNewOpions = () => {
+    setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
+  };
 
   const token = getStorageItem('actualKey');
   const [isRuningBot, setIsRuningBot] = useState(false);
-
   const [isClassInputBot, setisClassInputBot] = useState(true);
-  const [arrayAdditionallyQuestionsOfBot, setArrayAdditionallyQuestionsOfBot] = useState([]);
-  const [additionallyNameOfSettings, setAdditionallyNameOfSettings] = useState('');
-  const [additionallyOptionsOfSettings, setAdditionallyOptionsOfSettings] = useState('');
   const [botName, setBotName] = useState('');
-
-  const settingsOfBot = activeBotInstance
-    ? Object.keys(activeBotInstance.settings).map((key) => (
-        <div key={key}>
-          {key}
-          <input defaultValue={activeBotInstance.settings[key]} />
-        </div>
-      ))
-    : null;
-
-  const listOfSettings = arrayAdditionallyQuestionsOfBot.map((item, index) => {
-    return (
-      <div key={index}>
-        {' '}
-        {index})<div>{item.name}</div>
-        <div>{item.options}</div>
-      </div>
-    );
-  });
+  const [isQuestionBotActive, setIsQuestionBotActive] = useState(false);
 
   const createBot = () => {
     if (!token) return;
     if (!botName) return;
-    setBotInstance();
     const settings = {
       name: botName,
       saveProcessedMessageId: (mId) => {
@@ -80,52 +93,40 @@ function Create() {
     };
     if (botName === 'randomBot001') {
       const bot = new BasicBotRandom(settings);
-      //setBotInstance("random", settings);
       bot.start();
       setIsRuningBot(true);
     }
     if (botName === 'simpleBot01') {
       const bot = new BasicBot(settings);
-      //setBotInstance("simple", settings);
       bot.start();
       setIsRuningBot(true);
     }
     if (botName === 'questionBot01') {
       const bot = new BasicBotQuestion({ ...settings, oleg: 5 });
-      //setBotInstance("question", settings);
       bot.start();
       setIsRuningBot(true);
     }
   };
 
   const chooseBotRandom = () => {
-    // setIsQuestionBotActive(false);
-    // setIsSimpleBotActive(false);
-    // setIsRandomBotActive(true);
     setBotName('randomBot001');
   };
 
   const chooseBotSimple = () => {
-    // setIsQuestionBotActive(false);
-    // setIsSimpleBotActive(true);
-    // setIsRandomBotActive(false);
     setBotName('simpleBot01');
   };
 
   const chooseBotQuestion = () => {
-    // setIsQuestionBotActive(true);
-    // setIsSimpleBotActive(false);
-    // setIsRandomBotActive(false);
+    if (getStorageItem('listOfQuestions') == 'false') {
+      setStorageItem('listOfQuestions', JSON.stringify(questions));
+    }
+    setIsQuestionBotActive(true);
     setBotName('questionBot01');
   };
 
-  const changeNameSettings = (event) => {
-    setAdditionallyNameOfSettings(event.target.value);
-  };
-
-  const changeOptionsSettings = (event) => {
-    setAdditionallyOptionsOfSettings(event.target.value);
-  };
+  useEffect(() => {
+    setStateOfQuestion(JSON.parse(getStorageItem('listOfQuestions')));
+  }, [getStorageItem('listOfQuestions')]);
 
   const saveToStorage = (event) => {
     setStorageItem('actualKey', event.target.value);
@@ -136,15 +137,29 @@ function Create() {
     }
   };
 
-  const addNewSettings = () => {
-    setArrayAdditionallyQuestionsOfBot([
-      ...arrayAdditionallyQuestionsOfBot,
+  const addNewOpions = () => {
+    setStateOfQuestion((list) => [
+      ...list,
       {
-        name: additionallyNameOfSettings,
-        options: additionallyOptionsOfSettings,
+        question: '',
+        answer: '',
       },
     ]);
   };
+
+  const settingsOfBot = stateOfQuestion
+    ? stateOfQuestion.map((item, index) => (
+        <div key={index}>
+          {index + 1}
+          <input
+            defaultValue={item.question}
+            className='Settings_questionInInput'
+            onChange={(event) => saveQuestions(event, index)}
+          />
+          <input defaultValue={item.answer} onChange={(event) => saveAnswer(event, index)} />
+        </div>
+      ))
+    : null;
 
   return (
     <Layout>
@@ -206,30 +221,27 @@ function Create() {
                 </div>
               </li>
             </ul>
+
+            {isQuestionBotActive && (
+              <div>
+                <h4>Тут вы можете редактировать и добавлять вопросы</h4>
+                {settingsOfBot}
+
+                <button className='button_addNewSettings' onClick={saveNewOpions}>
+                  save
+                </button>
+
+                <button className='button_addNewSettings' onClick={addNewOpions}>
+                  new
+                </button>
+              </div>
+            )}
+
             <button onClick={createBot}>Create bot!</button>
           </div>
         )}
 
         {isRuningBot && <h2>bot is running</h2>}
-
-        {/* {isQuestionBotActive && (
-          <div className='Create_AddNewOptions'>
-            <h3>Ключ вопросу бота и ответ</h3>
-            {settingsOfBot}
-            {listOfSettings}
-
-            <div>
-              Запрос:
-              <input onChange={changeNameSettings} />
-              Ответ:
-              <input onChange={changeOptionsSettings} />
-            </div>
-
-            <button className='button_addNewSettings' onClick={addNewSettings}>
-              +
-            </button>
-          </div>
-        )} */}
       </div>
     </Layout>
   );
