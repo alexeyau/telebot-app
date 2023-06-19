@@ -36,7 +36,6 @@ function Create() {
       answer: 'A',
     },
   ];
-  //const setBotInstance = useBotStore((state) => state.setBotInstance);
 
   const [stateOfQuestion, setStateOfQuestion] = useState(
     JSON.parse(getStorageItem('listOfQuestions')),

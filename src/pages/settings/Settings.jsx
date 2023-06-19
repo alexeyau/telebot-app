@@ -51,8 +51,8 @@ function Settings() {
     <Layout>
       <h3>Settings</h3>
       <div className='Settings'>
-        <ul>
-          <li>You can change some settings after bot is started</li>
+        <div>
+          <div>You can change some settings after bot is started</div>
 
           <div className='Create_AddNewOptions'>
             {Boolean(settingsOfBot) && (
@@ -70,7 +70,7 @@ function Settings() {
               </div>
             )}
           </div>
-        </ul>
+        </div>
       </div>
     </Layout>
   );
