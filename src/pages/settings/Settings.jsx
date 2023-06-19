@@ -7,14 +7,12 @@ function Settings() {
   const [stateOfQuestion, setStateOfQuestion] = useState(
     getStorageItem('listOfQuestions') ? JSON.parse(getStorageItem('listOfQuestions')) : false,
   );
-
   const saveQuestions = (event, index) => {
     stateOfQuestion[index].question = event.target.value;
   };
   const saveAnswer = (event, index) => {
     stateOfQuestion[index].answer = event.target.value;
   };
-
   const saveNewOpions = () => {
     setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
   };
@@ -51,17 +49,13 @@ function Settings() {
     <Layout>
       <h3>Settings</h3>
       <div className='Settings'>
-        <ul>
-          <li>You can change some settings after bot is started</li>
+        <div>
+          <div>You can change some settings after bot is started</div>
 
           <div className='Create_AddNewOptions'>
             {Boolean(settingsOfBot) && (
               <div>
                 <h4>Тут вы можете редактировать и добавлять вопросы</h4>
-                {settingsOfBot}
-
-            {Boolean(settingsOfBot) && (
-              <div>
                 {settingsOfBot}
 
                 <button className='button_addNewSettings' onClick={saveNewOpions}>
@@ -74,7 +68,7 @@ function Settings() {
               </div>
             )}
           </div>
-        </ul>
+        </div>
       </div>
     </Layout>
   );
