@@ -97,6 +97,7 @@ function Test() {
 
         return botData.processedUpdatesIds || [];
       },
+
       getTelegramMessagesAsync: async (lastUpdateId) => {
         return getTelegramMessages(getStorageItem('actualKey'), lastUpdateId).then((readyData) => {
           return readyData.result;
@@ -121,6 +122,7 @@ function Test() {
       return;
     }
     const botName = 'botName_gpt0';
+
     const tokenGpt = inputRefGpt.current?.value;
     const settings = {
       name: botName,
@@ -138,6 +140,7 @@ function Test() {
 
         return botData.processedUpdatesIds || [];
       },
+
       getTelegramMessagesAsync: async (lastUpdateId) => {
         return getTelegramMessages(getStorageItem('actualKey'), lastUpdateId).then((readyData) => {
           return readyData.result;

@@ -96,6 +96,7 @@ function Create() {
       bot.start();
       setIsRuningBot(true);
     }
+
     if (botName === 'simpleBot01') {
       const bot = new BasicBot(settings);
       bot.start();

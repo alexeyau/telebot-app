@@ -60,6 +60,10 @@ function Settings() {
                 <h4>Тут вы можете редактировать и добавлять вопросы</h4>
                 {settingsOfBot}
 
+            {Boolean(settingsOfBot) && (
+              <div>
+                {settingsOfBot}
+
                 <button className='button_addNewSettings' onClick={saveNewOpions}>
                   save
                 </button>
