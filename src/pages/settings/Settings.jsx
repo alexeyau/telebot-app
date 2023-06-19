@@ -7,14 +7,12 @@ function Settings() {
   const [stateOfQuestion, setStateOfQuestion] = useState(
     getStorageItem('listOfQuestions') ? JSON.parse(getStorageItem('listOfQuestions')) : false,
   );
-
   const saveQuestions = (event, index) => {
     stateOfQuestion[index].question = event.target.value;
   };
   const saveAnswer = (event, index) => {
     stateOfQuestion[index].answer = event.target.value;
   };
-
   const saveNewOpions = () => {
     setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
   };

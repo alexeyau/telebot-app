@@ -7,7 +7,6 @@ import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
 import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
 
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
-//import { useBotStore } from '@services/zustandStore';
 
 import Layout from '@/components/Layout';
 
@@ -110,11 +109,9 @@ function Create() {
   const chooseBotRandom = () => {
     setBotName('randomBot001');
   };
-
   const chooseBotSimple = () => {
     setBotName('simpleBot01');
   };
-
   const chooseBotQuestion = () => {
     if (getStorageItem('listOfQuestions') == 'false') {
       setStorageItem('listOfQuestions', JSON.stringify(questions));
