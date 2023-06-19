@@ -27,7 +27,7 @@ jobs:
         shell: bash
       - run: git --work-tree dist add --all
         shell: bash
-      - run: git commit -m "Automatic Build and Deploy run by GitHub Actions"
+      - run: git commit -m "Automatic Build and Deploy run by GitHub Actions" -n
         shell: bash
       - run: git push origin HEAD:gh-pages --force
         shell: bash
