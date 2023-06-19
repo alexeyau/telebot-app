@@ -5,7 +5,7 @@ import './Settings.css';
 
 function Settings() {
   const [stateOfQuestion, setStateOfQuestion] = useState(
-    JSON.parse(getStorageItem('listOfQuestions')),
+    getStorageItem('listOfQuestions') ? JSON.parse(getStorageItem('listOfQuestions')) : false,
   );
 
   const saveQuestions = (event, index) => {
@@ -55,7 +55,10 @@ function Settings() {
           <li>You can change some settings after bot is started</li>
 
           <div className='Create_AddNewOptions'>
-            <h4>Тут вы можете редактировать и добавлять вопросы</h4>
+            {Boolean(settingsOfBot) && (
+              <div>
+                <h4>Тут вы можете редактировать и добавлять вопросы</h4>
+                {settingsOfBot}
 
             {Boolean(settingsOfBot) && (
               <div>
