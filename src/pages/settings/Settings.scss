@@ -7,24 +7,36 @@
   align-items: center;
 }
 
-.Settings_input {
+.settings_input {
   font-size: 18px;
-  width: 363px;
+  box-sizing: border-box;
+  width: auto;
   border-radius: 4px;
   outline: none;
   border: 0.5px solid #0d1117;
   padding: 4px;
 }
 
-.Settings_input_other {
+.settings_input_other {
   font-size: 18px;
-  width: 363px;
+  box-sizing: border-box;
+  width: auto;
   border-radius: 5px;
   outline: none;
   border: 0.5px solid red;
   padding: 4px;
 }
 
-.Settings_questionInInput {
+.settings_questionInInput {
   width: 800px;
+  height: 40px;
+}
+
+.settings_answerInInput {
+  min-width: 40px;
+  width: auto;
+}
+
+.settings_button {
+  background-color: rgb(32 32 184);
 }
