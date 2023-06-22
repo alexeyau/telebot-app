@@ -1,0 +1,26 @@
+.monitor {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+
+  h3 {
+    font-size: 32px;
+  }
+
+  ul {
+    margin: 10px 0 0 15px;
+
+    div {
+      font-size: 20px;
+    }
+  }
+}
+
+.monitor_ListOfUsers {
+  display: flex;
+  flex-direction: row;
+}
+
+.monitor_ListOfUsers_Item {
+  margin: 0 10px;
+}

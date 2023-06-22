@@ -16,22 +16,50 @@
   text-align: center;
 }
 
+.create-entry-token {
+  display: flex;
+  flex-direction: row;
+}
+
+.create-runing {
+  text-align: center;
+}
+
 .create-choose-bot {
+  width: 100%;
   list-style: none;
   display: flex;
   flex-direction: row;
   gap: 10px;
+  text-align: center;
   margin: 0 auto;
-  align-items: center;
 }
 
 .create-list {
+  text-align: center;
   margin-top: 15px;
-  margin-left: 20px;
+  margin-left: 40px;
 }
 
-.create-button {
+.create-button-choose {
+  display: inline-block;
   margin-top: 15px;
   background-color: rgb(32 32 184);
-  width: 100%;
+  width: 100px;
+}
+
+.create-button-bot {
+  display: inline-block;
+  margin-top: 25px;
+  background-color: rgb(32 32 184);
+  width: 140px;
+  margin-left: 5%;
+}
+
+.create-buttons {
+  display: inline-block;
+  margin: 20px 10px 0;
+  background-color: rgb(32 32 184);
+  width: 80px;
+  margin-left: 5%;
 }

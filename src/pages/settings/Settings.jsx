@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import React, { useState, useEffect } from 'react';
 import { setStorageItem, getStorageItem } from '@services/localStorage.js';
-import './Settings.css';
+import './Settings.scss';
 
 function Settings() {
   const [stateOfQuestion, setStateOfQuestion] = useState(
@@ -29,7 +29,18 @@ function Settings() {
     ]);
   };
 
+  const deleteListItem = (index) => {
+    console.log(index, '-------------------------------------------');
+    setStateOfQuestion((prev) => {
+      const newArr = [...prev];
+      console.log(newArr, '==============================================');
+      newArr.splice(index, 1);
+      return newArr;
+    });
+  };
+
   useEffect(() => {
+    console.log(stateOfQuestion, '++++++++++++++++++++++++++++++++++++++');
     setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
   }, [stateOfQuestion]);
 
@@ -37,12 +48,20 @@ function Settings() {
     ? stateOfQuestion.map((item, index) => (
         <div key={index}>
           {index + 1}
-          <input
+          <textarea
             defaultValue={item.question}
-            className='Settings_questionInInput'
+            className='settings_questionInInput'
             onChange={(event) => saveQuestions(event, index)}
+          ></textarea>
+          <input
+            defaultValue={item.answer}
+            onChange={(event) => saveAnswer(event, index)}
+            className='settings_answerInInput'
+            contentEditable='true'
           />
-          <input defaultValue={item.answer} onChange={(event) => saveAnswer(event, index)} />
+          <button onClick={() => deleteListItem(index)} className='settings_button'>
+            delete
+          </button>
         </div>
       ))
     : null;
@@ -50,9 +69,9 @@ function Settings() {
   return (
     <Layout>
       <h3>Settings</h3>
-      <div className='Settings'>
-        <ul>
-          <li>You can change some settings after bot is started</li>
+      <div className='settings'>
+        <div>
+          <div>You can change some settings after bot is started</div>
 
           <div className='Create_AddNewOptions'>
             {Boolean(settingsOfBot) && (
@@ -60,21 +79,17 @@ function Settings() {
                 <h4>Тут вы можете редактировать и добавлять вопросы</h4>
                 {settingsOfBot}
 
-            {Boolean(settingsOfBot) && (
-              <div>
-                {settingsOfBot}
-
-                <button className='button_addNewSettings' onClick={saveNewOpions}>
+                <button className='settings_button' onClick={saveNewOpions}>
                   save
                 </button>
 
-                <button className='button_addNewSettings' onClick={addNewOpions}>
+                <button className='settings_button' onClick={addNewOpions}>
                   new
                 </button>
               </div>
             )}
           </div>
-        </ul>
+        </div>
       </div>
     </Layout>
   );

@@ -101,13 +101,12 @@
 }
 
 .content {
-  margin: 10px auto 0;
+  margin: 0 auto;
   min-height: 50vh;
 }
 
 .content-item {
-  width: 50%;
-  padding-top: 150px;
+  padding-top: 50px;
 }
 
 .content-item-advertisement {
@@ -116,14 +115,15 @@
 }
 
 .content-item-list {
-  padding-top: 20px;
+  padding-top: 16px;
+  padding-left: 60px;
   font-size: 20px;
 }
 
 .content-item-button {
-  margin: 7px 25px 25px 18px;
+  margin: 27px 25px 25px 18px;
   font-size: 20px;
-  width: 200px;
+  width: 180px;
   padding: 10px 60px;
   background-color: blue;
   color: white;

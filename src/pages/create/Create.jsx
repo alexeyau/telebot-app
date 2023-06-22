@@ -7,7 +7,6 @@ import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
 import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
 
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
-//import { useBotStore } from '@services/zustandStore';
 
 import Layout from '@/components/Layout';
 
@@ -118,7 +117,7 @@ function Create() {
   };
 
   const chooseBotQuestion = () => {
-    if (getStorageItem('listOfQuestions') == 'false') {
+    if (getStorageItem('listOfQuestions') == 'false' || !getStorageItem('listOfQuestions')) {
       setStorageItem('listOfQuestions', JSON.stringify(questions));
     }
     setIsQuestionBotActive(true);
@@ -154,7 +153,7 @@ function Create() {
           {index + 1}
           <input
             defaultValue={item.question}
-            className='Settings_questionInInput'
+            className='settings_questionInInput'
             onChange={(event) => saveQuestions(event, index)}
           />
           <input defaultValue={item.answer} onChange={(event) => saveAnswer(event, index)} />
@@ -164,81 +163,62 @@ function Create() {
 
   return (
     <Layout>
-      <div className='Create'>
-        <li>
-          Enter Token:
-          <form>
-            <div>
-              <input
-                className={isClassInputBot ? 'Settings_input' : 'Settings_input_other'}
-                placeholder='Token to access the HTTP API'
-                type='text'
-                defaultValue={getStorageItem('actualKey')}
-                onChange={saveToStorage}
-              />
-            </div>
-          </form>
-        </li>
+      <div className='create'>
+        <div className='create-entry-token'>
+          <h3>Enter Token:</h3>
+          <input
+            className={isClassInputBot ? 'settings_input' : 'settings_input_other'}
+            placeholder='Token to access the HTTP API'
+            type='text'
+            defaultValue={getStorageItem('actualKey')}
+            onChange={saveToStorage}
+          />
+        </div>
 
         {!isRuningBot && (
-          <div>
+          <div className='create-runing'>
             <ul className='create-choose-bot'>
-              <li className='create_List'>
-                Choose Simple Bot Instance
-                <div>
-                  <button
-                    className='create__button'
-                    onClick={chooseBotSimple}
-                    //disabled={!token || isRandomBotActive}
-                  >
-                    Choose!
-                  </button>
-                </div>
+              <li className='create-list'>
+                <div>Choose Random Bot Instance</div>
+                <button className='create-button-choose' onClick={chooseBotSimple}>
+                  Choose!
+                </button>
               </li>
 
-              <li className='create_List'>
-                Choose Random Bot Instance
-                <div>
-                  <button
-                    className='create__button'
-                    onClick={chooseBotRandom}
-                    //disabled={!token || isSimpleBotActive}
-                  >
-                    Choose!
-                  </button>
-                </div>
+              <li className='create-list'>
+                <div>Choose Random Bot Instance</div>
+                <button className='create-button-choose' onClick={chooseBotRandom}>
+                  Choose!
+                </button>
               </li>
 
-              <li className='create_List'>
-                Choose Question Bot Instance
-                <div>
-                  <button
-                    className='create__button'
-                    onClick={chooseBotQuestion}
-                    //disabled={!token || isSimpleBotActive}
-                  >
-                    Choose!
-                  </button>
-                </div>
+              <li className='create-list'>
+                <div>Choose Random Bot Instance</div>
+                <button className='create-button-choose' onClick={chooseBotQuestion}>
+                  Choose!
+                </button>
               </li>
             </ul>
 
             {isQuestionBotActive && (
               <div>
                 <h4>Тут вы можете редактировать и добавлять вопросы</h4>
+
                 {settingsOfBot}
 
-                <button className='button_addNewSettings' onClick={saveNewOpions}>
+                <button className='create-buttons' onClick={saveNewOpions}>
                   save
                 </button>
 
-                <button className='button_addNewSettings' onClick={addNewOpions}>
+                <button className='create-buttons' onClick={addNewOpions}>
                   new
                 </button>
               </div>
             )}
 
-            <button onClick={createBot}>Create bot!</button>
+            <button onClick={createBot} className='create-button-bot'>
+              Create bot!
+            </button>
           </div>
         )}
 
