@@ -35,7 +35,6 @@ function Create() {
       answer: 'A',
     },
   ];
-  //const setBotInstance = useBotStore((state) => state.setBotInstance);
 
   const [stateOfQuestion, setStateOfQuestion] = useState(
     JSON.parse(getStorageItem('listOfQuestions')),
@@ -111,11 +110,9 @@ function Create() {
   const chooseBotRandom = () => {
     setBotName('randomBot001');
   };
-
   const chooseBotSimple = () => {
     setBotName('simpleBot01');
   };
-
   const chooseBotQuestion = () => {
     if (getStorageItem('listOfQuestions') == 'false' || !getStorageItem('listOfQuestions')) {
       setStorageItem('listOfQuestions', JSON.stringify(questions));
