@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import Layout from '@/components/Layout';
+import './Tutorial.scss';
 
 function Tutorial() {
   return (
     <Layout>
-      <h3>Tutorial</h3>
-      <div className='Tutorial'>
+      <div className='tutorial'>
+        <h3>Tutorial</h3>
         <ul>
           <li>Every bot on this project is running in your browser.</li>
           <li>
