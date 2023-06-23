@@ -35,7 +35,9 @@ function Settings() {
     });
   };
 
+
   useEffect(() => {
+    console.log(stateOfQuestion, '++++++++++++++++++++++++++++++++++++++');
     setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
   }, [stateOfQuestion]);
 
