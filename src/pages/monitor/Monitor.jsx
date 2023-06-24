@@ -11,6 +11,9 @@ function Monitor() {
     return JSON.parse(activeUsers)?.map((user) => (
       <div className='monitor_ListOfUsers_Item' key={user}>
         {user}
+        {JSON.parse(getStorageItem(user)).map((item) => {
+          return <div key={Math.floor(100 * Math.random())}>{item}</div>;
+        })}
       </div>
     ));
   }, [activeUsers]);

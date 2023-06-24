@@ -13,32 +13,36 @@ import Layout from '@/components/Layout';
 import './Create.css';
 
 function Create() {
+  const listOfQuestion = getStorageItem('listOfQuestions');
+
   const questions = [
     {
       question:
         'Какой год основания Санкт-Петербурга? Выберите следующие ответы: A) 1689, B) 1703, C) 1721',
       answer: 'B',
+      id: 0,
     },
     {
       question:
         'Кто изображен на банкноте в 100 рублей? Выберите следующие ответы: A) Пушкин, B) Сталин, C) Ленин',
       answer: 'A',
+      id: 1,
     },
     {
       question:
         'Как называется самое высокое здание в мире? Выберите следующие ответы: A) Москва-сити, B) Бурдж Халифа, C) Пизанская башня',
       answer: 'B',
+      id: 2,
     },
     {
       question:
         'Какое озеро самое большое? Выберите следующие ответы: A) Байкал, B) Мисисипи, C) Оклахома',
       answer: 'A',
+      id: 3,
     },
   ];
 
-  const [stateOfQuestion, setStateOfQuestion] = useState(
-    JSON.parse(getStorageItem('listOfQuestions')),
-  );
+  const [stateOfQuestion, setStateOfQuestion] = useState(JSON.parse(listOfQuestion));
 
   const saveQuestions = (event, index) => {
     stateOfQuestion[index].question = event.target.value;
@@ -101,7 +105,7 @@ function Create() {
       setIsRuningBot(true);
     }
     if (botName === 'questionBot01') {
-      const bot = new BasicBotQuestion({ ...settings, oleg: 5 });
+      const bot = new BasicBotQuestion(settings);
       bot.start();
       setIsRuningBot(true);
     }
@@ -114,7 +118,7 @@ function Create() {
     setBotName('simpleBot01');
   };
   const chooseBotQuestion = () => {
-    if (getStorageItem('listOfQuestions') == 'false' || !getStorageItem('listOfQuestions')) {
+    if (listOfQuestion == 'false' || !listOfQuestion) {
       setStorageItem('listOfQuestions', JSON.stringify(questions));
     }
     setIsQuestionBotActive(true);
@@ -122,8 +126,8 @@ function Create() {
   };
 
   useEffect(() => {
-    setStateOfQuestion(JSON.parse(getStorageItem('listOfQuestions')));
-  }, [getStorageItem('listOfQuestions')]);
+    setStateOfQuestion(JSON.parse(listOfQuestion));
+  }, [listOfQuestion]);
 
   const saveToStorage = (event) => {
     setStorageItem('actualKey', event.target.value);
@@ -190,7 +194,7 @@ function Create() {
               </li>
 
               <li className='create-list'>
-                <div>Choose Random Bot Instance</div>
+                <div>Choose Question Bot Instance</div>
                 <button className='create-button-choose' onClick={chooseBotQuestion}>
                   Choose!
                 </button>

@@ -28,14 +28,13 @@ function Settings() {
   };
 
   const deleteListItem = (index) => {
-    console.log(index, '-------------------------------------------');
     setStateOfQuestion((prev) => {
       const newArr = [...prev];
-      console.log(newArr, '==============================================');
       newArr.splice(index, 1);
       return newArr;
     });
   };
+
 
   useEffect(() => {
     console.log(stateOfQuestion, '++++++++++++++++++++++++++++++++++++++');
@@ -44,7 +43,7 @@ function Settings() {
 
   const settingsOfBot = stateOfQuestion
     ? stateOfQuestion.map((item, index) => (
-        <div key={index}>
+        <div key={item.question}>
           {index + 1}
           <textarea
             defaultValue={item.question}

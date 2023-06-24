@@ -7,35 +7,12 @@ export class BasicBotQuestion extends BasicBot {
   }
 
   async _sendResponse(update) {
-    const questions = [
-      {
-        question:
-          'Какой год основания Санкт-Петербурга? Выберите следующие ответы: A) 1689, B) 1703, C) 1721',
-        answer: 'B',
-      },
-      {
-        question:
-          'Кто изображен на банкноте в 100 рублей? Выберите следующие ответы: A) Пушкин, B) Сталин, C) Ленин',
-        answer: 'A',
-      },
-      {
-        question:
-          'Как называется самое высокое здание в мире? Выберите следующие ответы: A) Москва-сити, B) Бурдж Халифа, C) Пизанская башня',
-        answer: 'B',
-      },
-      {
-        question:
-          'Какое озеро самое большое? Выберите следующие ответы: A) Байкал, B) Мисисипи, C) Оклахома',
-        answer: 'A',
-      },
-    ];
-
     if (!getStorageItem('numberOfQuestion')) {
       setStorageItem('numberOfQuestion', 0);
     }
 
-    if (!getStorageItem('listOfQuestions')) {
-      setStorageItem('listOfQuestions', JSON.stringify(questions));
+    if (!getStorageItem(update.message.chat.first_name)) {
+      setStorageItem(update.message.chat.first_name, JSON.stringify([]));
     }
 
     if (
@@ -45,7 +22,14 @@ export class BasicBotQuestion extends BasicBot {
       update.message?.text !== 'C' &&
       update.message?.text !== 'D'
     ) {
-      console.log(update.message?.text);
+      if (getStorageItem('numberOfQuestion') == 0) {
+        this.sendTelegramMessageAsync(
+          update.message?.from.id,
+          'Привет, это бот-опросник, для начала введите "/start"',
+        );
+        this._onSend(update);
+        return;
+      }
       this.sendTelegramMessageAsync(update.message?.from.id, 'Ответ некорректный');
       this._onSend(update);
       return;
@@ -83,6 +67,21 @@ export class BasicBotQuestion extends BasicBot {
         Number(getStorageItem('numberOfQuestion')) >=
         JSON.parse(getStorageItem('listOfQuestions')).length
       ) {
+        ///////////
+
+        let newAnswer = JSON.parse(getStorageItem(update.message.chat.first_name));
+        newAnswer.push(update.message?.text);
+        if (
+          JSON.parse(getStorageItem(update.message.chat.first_name)).length >=
+          JSON.parse(getStorageItem('listOfQuestions')).length
+        ) {
+          newAnswer = [];
+        }
+        console.log(newAnswer);
+        setStorageItem(update.message.chat.first_name, JSON.stringify(newAnswer));
+
+        //////////////
+
         this.sendTelegramMessageAsync(
           update.message?.from.id,
           'Отлично, вы ответили на все вопросы',
@@ -97,6 +96,29 @@ export class BasicBotQuestion extends BasicBot {
           JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
             .question,
       );
+
+      ////////////////////////////////////////////
+
+      if (JSON.parse(getStorageItem(update.message.chat.first_name)).length > 0) {
+        let newAnswer = JSON.parse(getStorageItem(update.message.chat.first_name));
+        newAnswer.push(update.message?.text);
+        if (
+          JSON.parse(getStorageItem(update.message.chat.first_name)).length >=
+          JSON.parse(getStorageItem('listOfQuestions')).length
+        ) {
+          newAnswer = [];
+        }
+        console.log(newAnswer);
+        setStorageItem(update.message.chat.first_name, JSON.stringify(newAnswer));
+      }
+
+      if (JSON.parse(getStorageItem(update.message.chat.first_name)).length == 0) {
+        let newAnswer = [update.message?.text];
+        console.log(newAnswer);
+        setStorageItem(update.message.chat.first_name, JSON.stringify(newAnswer));
+      }
+
+      ///////////////////////////////////////////////
       this._onSend(update);
       return;
     } else {
@@ -105,6 +127,14 @@ export class BasicBotQuestion extends BasicBot {
         Number(getStorageItem('numberOfQuestion')) >=
         JSON.parse(getStorageItem('listOfQuestions')).length
       ) {
+        ///////////
+
+        let newAnswer = JSON.parse(getStorageItem(update.message.chat.first_name));
+        newAnswer.push(update.message?.text);
+        console.log(newAnswer);
+        setStorageItem(update.message.chat.first_name, JSON.stringify(newAnswer));
+
+        //////////////
         this.sendTelegramMessageAsync(
           update.message?.from.id,
           'Отлично, вы ответили на все вопросы',
@@ -119,6 +149,28 @@ export class BasicBotQuestion extends BasicBot {
           JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
             .question,
       );
+      //////////////////////////////////////////////////////////////////////
+
+      if (JSON.parse(getStorageItem(update.message.chat.first_name)).length > 0) {
+        let newAnswer = JSON.parse(getStorageItem(update.message.chat.first_name));
+        newAnswer.push(update.message?.text);
+        if (
+          JSON.parse(getStorageItem(update.message.chat.first_name)).length >=
+          JSON.parse(getStorageItem('listOfQuestions')).length
+        ) {
+          newAnswer = [];
+        }
+        console.log(newAnswer);
+        setStorageItem(update.message.chat.first_name, JSON.stringify(newAnswer));
+      }
+
+      if (JSON.parse(getStorageItem(update.message.chat.first_name)).length == 0) {
+        let newAnswer = [update.message?.text];
+        console.log(newAnswer);
+        setStorageItem(update.message.chat.first_name, JSON.stringify(newAnswer));
+      }
+
+      /////////////////////////////////////////////////////////
       this._onSend(update);
       return;
     }
