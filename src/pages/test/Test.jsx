@@ -31,7 +31,7 @@ function Test() {
   const teleNameUrl = teleName && `https://t.me/${teleName}`;
 
   useEffect(() => {
-    if (getStorageItem('actualKey').length < 1) console.log('entire token');
+    if (!getStorageItem('actualKey')) console.log('entire token');
     localStorage.setItem('responseid', JSON.stringify(responseid));
   }, [responseid]);
 
@@ -40,7 +40,7 @@ function Test() {
   }, [responseid]);
 
   const getName = () => {
-    if (getStorageItem('actualKey').length < 1) {
+    if (!getStorageItem('actualKey')) {
       return;
     }
     getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
@@ -51,7 +51,7 @@ function Test() {
   };
 
   const getMessages = () => {
-    if (getStorageItem('actualKey').length < 1) {
+    if (!getStorageItem('actualKey')) {
       return;
     }
     getTelegramMessages(getStorageItem('actualKey')).then((readyData) => {

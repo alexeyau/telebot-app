@@ -4,25 +4,35 @@ import { setStorageItem, getStorageItem } from '@services/localStorage.js';
 export class BasicBotQuestion extends BasicBot {
   constructor(initSettings) {
     super(initSettings);
+    this.initQuestion();
   }
 
-  async _sendResponse(update) {
+  initQuestion() {
     if (!getStorageItem('numberOfQuestion')) {
       setStorageItem('numberOfQuestion', 0);
     }
+  }
+
+  async _sendResponse(update) {
+    // if (!getStorageItem('numberOfQuestion')) {
+    //   setStorageItem('numberOfQuestion', 0);
+    // };
 
     if (!getStorageItem(update.message.chat.first_name)) {
       setStorageItem(update.message.chat.first_name, JSON.stringify([]));
     }
+    const isTextCurrectAnswer =
+      update.message?.text === 'A' ||
+      update.message?.text === 'B' ||
+      update.message?.text === 'C' ||
+      update.message?.text === 'D';
+    const isTextStart = update.message?.text === '/start';
+    const currentQuestion = getStorageItem('numberOfQuestion');
+    const questionsList = JSON.parse(getStorageItem('listOfQuestions'));
+    const isCurrentQuestionFirst = Number(currentQuestion) === 0;
 
-    if (
-      update.message?.text !== '/start' &&
-      update.message?.text !== 'A' &&
-      update.message?.text !== 'B' &&
-      update.message?.text !== 'C' &&
-      update.message?.text !== 'D'
-    ) {
-      if (getStorageItem('numberOfQuestion') == 0) {
+    if (!isTextStart && !isTextCurrectAnswer) {
+      if (isCurrentQuestionFirst) {
         this.sendTelegramMessageAsync(
           update.message?.from.id,
           'Привет, это бот-опросник, для начала введите "/start"',
@@ -35,13 +45,12 @@ export class BasicBotQuestion extends BasicBot {
       return;
     }
 
-    if (update.message?.text === '/start') {
-      if (Number(getStorageItem('numberOfQuestion')) !== 0) {
+    if (isTextStart) {
+      if (!isCurrentQuestionFirst) {
         this.sendTelegramMessageAsync(
           update.message?.from.id,
           'Привет, видимо вы ответили не на все вопросы, продолжим,' +
-            JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
-              .question,
+            questionsList[currentQuestion].question,
         );
         this._onSend(update);
         return;
@@ -50,30 +59,22 @@ export class BasicBotQuestion extends BasicBot {
       this.sendTelegramMessageAsync(
         update.message?.from.id,
         'Привет! Ответьте на первый вопрос:\n' +
-          JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
-            .question +
+          questionsList[currentQuestion].question +
           ' в ответе нужно указать только букву ответа',
       );
       this._onSend(update);
       return;
     }
 
-    if (
-      update.message?.text ===
-      JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')].answer
-    ) {
-      setStorageItem('numberOfQuestion', Number(getStorageItem('numberOfQuestion')) + 1);
-      if (
-        Number(getStorageItem('numberOfQuestion')) >=
-        JSON.parse(getStorageItem('listOfQuestions')).length
-      ) {
+    if (update.message?.text === questionsList[currentQuestion].answer) {
+      setStorageItem('numberOfQuestion', Number(currentQuestion) + 1);
+      if (Number(currentQuestion) >= questionsList.length) {
         ///////////
 
         let newAnswer = JSON.parse(getStorageItem(update.message.chat.first_name));
         newAnswer.push(update.message?.text);
         if (
-          JSON.parse(getStorageItem(update.message.chat.first_name)).length >=
-          JSON.parse(getStorageItem('listOfQuestions')).length
+          JSON.parse(getStorageItem(update.message.chat.first_name)).length >= questionsList.length
         ) {
           newAnswer = [];
         }
@@ -92,9 +93,7 @@ export class BasicBotQuestion extends BasicBot {
       }
       this.sendTelegramMessageAsync(
         update.message?.from.id,
-        'Хорошо, вот следующий вопрос:\n' +
-          JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
-            .question,
+        'Хорошо, вот следующий вопрос:\n' + questionsList[currentQuestion].question,
       );
 
       ////////////////////////////////////////////
@@ -103,8 +102,7 @@ export class BasicBotQuestion extends BasicBot {
         let newAnswer = JSON.parse(getStorageItem(update.message.chat.first_name));
         newAnswer.push(update.message?.text);
         if (
-          JSON.parse(getStorageItem(update.message.chat.first_name)).length >=
-          JSON.parse(getStorageItem('listOfQuestions')).length
+          JSON.parse(getStorageItem(update.message.chat.first_name)).length >= questionsList.length
         ) {
           newAnswer = [];
         }
@@ -122,11 +120,8 @@ export class BasicBotQuestion extends BasicBot {
       this._onSend(update);
       return;
     } else {
-      setStorageItem('numberOfQuestion', Number(getStorageItem('numberOfQuestion')) + 1);
-      if (
-        Number(getStorageItem('numberOfQuestion')) >=
-        JSON.parse(getStorageItem('listOfQuestions')).length
-      ) {
+      setStorageItem('numberOfQuestion', Number(currentQuestion) + 1);
+      if (Number(currentQuestion) >= questionsList.length) {
         ///////////
 
         let newAnswer = JSON.parse(getStorageItem(update.message.chat.first_name));
@@ -145,9 +140,7 @@ export class BasicBotQuestion extends BasicBot {
       }
       this.sendTelegramMessageAsync(
         update.message?.from.id,
-        'Хорошо, вот следующий вопрос:\n' +
-          JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
-            .question,
+        'Хорошо, вот следующий вопрос:\n' + questionsList[currentQuestion].question,
       );
       //////////////////////////////////////////////////////////////////////
 
@@ -155,8 +148,7 @@ export class BasicBotQuestion extends BasicBot {
         let newAnswer = JSON.parse(getStorageItem(update.message.chat.first_name));
         newAnswer.push(update.message?.text);
         if (
-          JSON.parse(getStorageItem(update.message.chat.first_name)).length >=
-          JSON.parse(getStorageItem('listOfQuestions')).length
+          JSON.parse(getStorageItem(update.message.chat.first_name)).length >= questionsList.length
         ) {
           newAnswer = [];
         }
