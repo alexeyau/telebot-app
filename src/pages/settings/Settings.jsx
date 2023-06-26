@@ -4,9 +4,8 @@ import { setStorageItem, getStorageItem } from '@services/localStorage.js';
 import './Settings.scss';
 
 function Settings() {
-  const [stateOfQuestion, setStateOfQuestion] = useState(
-    getStorageItem('listOfQuestions') ? JSON.parse(getStorageItem('listOfQuestions')) : false,
-  );
+  const localStorageQuestions = getStorageItem('listOfQuestions');
+  const [stateOfQuestion, setStateOfQuestion] = useState(JSON.parse(localStorageQuestions));
   const saveQuestions = (event, index) => {
     stateOfQuestion[index].question = event.target.value;
   };
@@ -35,10 +34,10 @@ function Settings() {
     });
   };
 
-
   useEffect(() => {
-    console.log(stateOfQuestion, '++++++++++++++++++++++++++++++++++++++');
-    setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
+    if (stateOfQuestion) {
+      setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
+    }
   }, [stateOfQuestion]);
 
   const settingsOfBot = stateOfQuestion
