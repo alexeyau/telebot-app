@@ -3,15 +3,13 @@ import { useState, useEffect, createRef } from 'react';
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBot } from '@/telebots/BasicBot';
 import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
-import {
-  getTelegramBotName,
-  getTelegramMessages,
-  sendTelegramMessage,
-} from '@services/telegramAPI.js';
+import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
 
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 
 import Layout from '@/components/Layout';
+import EditQuestions from '@/components/EditQuestion';
+import AboutBot from '@/components/AboutBot';
 
 import './Create.css';
 import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
@@ -46,35 +44,15 @@ function Create() {
     },
   ];
 
-  const saveQuestions = (event, index) => {
-    stateOfQuestion[index].question = event.target.value;
-  };
-  const saveAnswer = (event, index) => {
-    stateOfQuestion[index].answer = event.target.value;
-  };
-
-  const saveNewOpions = () => {
-    setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
-  };
-
-  const [teleName, setTeleName] = useState('');
-  const [stateOfQuestion, setStateOfQuestion] = useState(JSON.parse(listOfQuestion));
-  const [teleMessages, setTeleMessages] = useState([]);
-
-  const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
-
   const token = getStorageItem('actualKey');
   const [isRuningBot, setIsRuningBot] = useState(false);
   const [isClassInputBot, setisClassInputBot] = useState(true);
   const [botName, setBotName] = useState('');
-  const [responseid, setResponseId] = useState(saveResponseId);
 
   const [isSimpleBotActive, setIsSimpleBotActive] = useState(false);
   const [isRandomBotActive, setIsRandomBotActive] = useState(false);
   const [isQuestionBotActive, setIsQuestionBotActive] = useState(false);
   const [isGPTBotActive, setIsGPTBotActive] = useState(false);
-
-  const teleNameUrl = teleName && `https://t.me/${teleName}`;
 
   const createBot = () => {
     if (!token) return;
@@ -164,10 +142,6 @@ function Create() {
     setBotName(QUESTION_BOT_NAME);
   };
 
-  useEffect(() => {
-    setStateOfQuestion(JSON.parse(listOfQuestion));
-  }, [listOfQuestion]);
-
   const saveToStorage = (event) => {
     setStorageItem('actualKey', event.target.value);
     if (event.target.value) {
@@ -176,51 +150,6 @@ function Create() {
       setisClassInputBot(false);
     }
   };
-
-  const addNewOpions = () => {
-    setStateOfQuestion((list) => [
-      ...list,
-      {
-        question: '',
-        answer: '',
-      },
-    ]);
-  };
-
-  const getName = () => {
-    if (!getStorageItem('actualKey')) {
-      return;
-    }
-    getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
-      console.log(' >1> ', readyData);
-      setTeleName(readyData.result.username);
-      setResponseId([...responseid, { id: readyData.result.id }]);
-    });
-  };
-
-  const getMessages = () => {
-    if (!getStorageItem('actualKey')) {
-      return;
-    }
-    getTelegramMessages(getStorageItem('actualKey')).then((readyData) => {
-      console.log(' >2> ', readyData);
-      setTeleMessages(readyData.result.map((update) => update.message));
-    });
-  };
-
-  const settingsOfBot = stateOfQuestion
-    ? stateOfQuestion.map((item, index) => (
-        <div key={index}>
-          {index + 1}
-          <input
-            defaultValue={item.question}
-            className='settings_questionInInput'
-            onChange={(event) => saveQuestions(event, index)}
-          />
-          <input defaultValue={item.answer} onChange={(event) => saveAnswer(event, index)} />
-        </div>
-      ))
-    : null;
 
   return (
     <Layout>
@@ -236,30 +165,7 @@ function Create() {
           />
         </div>
 
-        <div className='create-botInfo'>
-          <div className='create-botInfo_getName'>
-            <button className='create-button-choose' onClick={getName}>
-              Get bot name
-            </button>
-            <br />
-            {teleName && <a href={teleNameUrl}>{teleNameUrl}</a>}
-          </div>
-
-          <div className='create-botInfo_getMessage'>
-            <div>
-              <button className='create-button-choose' onClick={getMessages}>
-                Get messages
-              </button>
-            </div>
-            {teleMessages.map((message, index) => (
-              <div key={index}>
-                <h3>{message.text}</h3>
-                <sup>{message.from.first_name}</sup>
-                <input type='button' value='Greet' />
-              </div>
-            ))}
-          </div>
-        </div>
+        <AboutBot />
 
         {!isRuningBot && (
           <div className='create-runing'>
@@ -319,14 +225,12 @@ function Create() {
               <li className='create-list'>
                 <h2>Choose chatGPT Bot Instance</h2>
                 <h3>для его использования понадобиться отдельный chatGPT токен.</h3>
-
                 <input
                   ref={inputRefGpt}
                   className='Test__input'
                   placeholder='Token to access the ChatGPT API'
                   type='text'
                 />
-
                 <button
                   className={
                     isGPTBotActive ? 'create-button-choose_active' : 'create-button-choose'
@@ -338,21 +242,7 @@ function Create() {
               </li>
             </ul>
 
-            {isQuestionBotActive && (
-              <div>
-                <h4>Тут вы можете редактировать и добавлять вопросы</h4>
-
-                {settingsOfBot}
-
-                <button className='create-buttons' onClick={saveNewOpions}>
-                  save
-                </button>
-
-                <button className='create-buttons' onClick={addNewOpions}>
-                  new
-                </button>
-              </div>
-            )}
+            {isQuestionBotActive && <EditQuestions />}
 
             <button onClick={createBot} disabled={!botName} className='create-button-bot'>
               Create bot!
