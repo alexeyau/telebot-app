@@ -8,6 +8,7 @@ function Monitor() {
   const activeUsers = useMemo(() => JSON.parse(getStorageItem('users')), []);
   const users = useMemo(() => {
     if (!activeUsers) return null;
+
     return Object.values(activeUsers).map((user) => (
       <div className='monitor_ListOfUsers_Item' key={user.name}>
         {user.name}
