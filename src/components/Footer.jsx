@@ -1,7 +1,7 @@
 function Footer() {
   return (
     <div className='footer'>
-      <div className='footer-text'>Footer</div>
+      <div className='footer-text'>Telebot</div>
     </div>
   );
 }

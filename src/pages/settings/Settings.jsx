@@ -4,9 +4,8 @@ import { setStorageItem, getStorageItem } from '@services/localStorage.js';
 import './Settings.scss';
 
 function Settings() {
-  const [stateOfQuestion, setStateOfQuestion] = useState(
-    getStorageItem('listOfQuestions') ? JSON.parse(getStorageItem('listOfQuestions')) : false,
-  );
+  const localStorageQuestions = getStorageItem('listOfQuestions');
+  const [stateOfQuestion, setStateOfQuestion] = useState(JSON.parse(localStorageQuestions));
   const saveQuestions = (event, index) => {
     stateOfQuestion[index].question = event.target.value;
   };
@@ -28,23 +27,22 @@ function Settings() {
   };
 
   const deleteListItem = (index) => {
-    console.log(index, '-------------------------------------------');
     setStateOfQuestion((prev) => {
       const newArr = [...prev];
-      console.log(newArr, '==============================================');
       newArr.splice(index, 1);
       return newArr;
     });
   };
 
   useEffect(() => {
-    console.log(stateOfQuestion, '++++++++++++++++++++++++++++++++++++++');
-    setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
+    if (stateOfQuestion) {
+      setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
+    }
   }, [stateOfQuestion]);
 
   const settingsOfBot = stateOfQuestion
     ? stateOfQuestion.map((item, index) => (
-        <div key={index}>
+        <div key={item.question}>
           {index + 1}
           <textarea
             defaultValue={item.question}

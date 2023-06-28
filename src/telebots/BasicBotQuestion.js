@@ -6,121 +6,104 @@ export class BasicBotQuestion extends BasicBot {
     super(initSettings);
   }
 
+  // initQuestion() {
+  // }
+
   async _sendResponse(update) {
-    const questions = [
-      {
-        question:
-          'Какой год основания Санкт-Петербурга? Выберите следующие ответы: A) 1689, B) 1703, C) 1721',
-        answer: 'B',
-      },
-      {
-        question:
-          'Кто изображен на банкноте в 100 рублей? Выберите следующие ответы: A) Пушкин, B) Сталин, C) Ленин',
-        answer: 'A',
-      },
-      {
-        question:
-          'Как называется самое высокое здание в мире? Выберите следующие ответы: A) Москва-сити, B) Бурдж Халифа, C) Пизанская башня',
-        answer: 'B',
-      },
-      {
-        question:
-          'Какое озеро самое большое? Выберите следующие ответы: A) Байкал, B) Мисисипи, C) Оклахома',
-        answer: 'A',
-      },
-    ];
-
-    if (!getStorageItem('numberOfQuestion')) {
-      setStorageItem('numberOfQuestion', 0);
+    if (!getStorageItem('users')) {
+      setStorageItem(
+        'users',
+        JSON.stringify({
+          [update.message.chat.id]: {
+            name: update.message.chat.first_name,
+            numberOfQuestions: 0,
+            answers: [],
+          },
+        }),
+      );
     }
 
-    if (!getStorageItem('listOfQuestions')) {
-      setStorageItem('listOfQuestions', JSON.stringify(questions));
+    const isTextCurrectAnswer =
+      update.message?.text === '1' ||
+      update.message?.text === '2' ||
+      update.message?.text === '3' ||
+      update.message?.text === '4';
+    const isTextStart = update.message?.text === '/start';
+    const questionsList = JSON.parse(getStorageItem('listOfQuestions'));
+    const users = JSON.parse(getStorageItem('users'));
+    const isCurrentQuestionFirst = Number(users[update.message.chat.id].numberOfQuestions) === 0;
+    const localUser = users;
+    const isCurrentUser = Object.keys(users).find(
+      (item) => item.name == update.message.chat.first_name,
+    );
+
+    if (users) {
+      if (isCurrentUser) {
+        users[update.message.chat.id] = {
+          name: update.message.chat.first_name,
+          numberOfQuestions: 0,
+          answers: [],
+        };
+        setStorageItem('users', users);
+      }
     }
 
-    if (
-      update.message?.text !== '/start' &&
-      update.message?.text !== 'A' &&
-      update.message?.text !== 'B' &&
-      update.message?.text !== 'C' &&
-      update.message?.text !== 'D'
-    ) {
-      console.log(update.message?.text);
+    if (!isTextStart && !isTextCurrectAnswer) {
+      if (isCurrentQuestionFirst) {
+        this.sendTelegramMessageAsync(
+          update.message?.from.id,
+          'Привет, это бот-опросник, для начала введите "/start"',
+        );
+        this._onSend(update);
+        return;
+      }
       this.sendTelegramMessageAsync(update.message?.from.id, 'Ответ некорректный');
       this._onSend(update);
       return;
     }
 
-    if (update.message?.text === '/start') {
-      if (Number(getStorageItem('numberOfQuestion')) !== 0) {
+    if (isTextStart) {
+      if (!isCurrentQuestionFirst) {
         this.sendTelegramMessageAsync(
           update.message?.from.id,
           'Привет, видимо вы ответили не на все вопросы, продолжим,' +
-            JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
-              .question,
+            questionsList[users[update.message.chat.id].numberOfQuestions].question,
         );
         this._onSend(update);
         return;
       }
-      setStorageItem('numberOfQuestion', 0);
       this.sendTelegramMessageAsync(
         update.message?.from.id,
         'Привет! Ответьте на первый вопрос:\n' +
-          JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
-            .question +
+          questionsList[users[update.message.chat.id].numberOfQuestions].question +
           ' в ответе нужно указать только букву ответа',
       );
       this._onSend(update);
       return;
     }
 
-    if (
-      update.message?.text ===
-      JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')].answer
-    ) {
-      setStorageItem('numberOfQuestion', Number(getStorageItem('numberOfQuestion')) + 1);
-      if (
-        Number(getStorageItem('numberOfQuestion')) >=
-        JSON.parse(getStorageItem('listOfQuestions')).length
-      ) {
-        this.sendTelegramMessageAsync(
-          update.message?.from.id,
-          'Отлично, вы ответили на все вопросы',
-        );
-        this._onSend(update);
-        setStorageItem('numberOfQuestion', 0);
-        return;
-      }
-      this.sendTelegramMessageAsync(
-        update.message?.from.id,
-        'Хорошо, вот следующий вопрос:\n' +
-          JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
-            .question,
-      );
+    localUser[update.message.chat.id].numberOfQuestions++;
+    setStorageItem('users', JSON.stringify(localUser));
+
+    if (Number(users[update.message.chat.id].numberOfQuestions) >= questionsList.length) {
+      localUser[update.message.chat.id].numberOfQuestions = 0;
+      setStorageItem('users', JSON.stringify(localUser));
+      this.sendTelegramMessageAsync(update.message?.from.id, 'Отлично, вы ответили на все вопросы');
       this._onSend(update);
-      return;
-    } else {
-      setStorageItem('numberOfQuestion', Number(getStorageItem('numberOfQuestion')) + 1);
-      if (
-        Number(getStorageItem('numberOfQuestion')) >=
-        JSON.parse(getStorageItem('listOfQuestions')).length
-      ) {
-        this.sendTelegramMessageAsync(
-          update.message?.from.id,
-          'Отлично, вы ответили на все вопросы',
-        );
-        this._onSend(update);
-        setStorageItem('numberOfQuestion', 0);
-        return;
-      }
-      this.sendTelegramMessageAsync(
-        update.message?.from.id,
-        'Хорошо, вот следующий вопрос:\n' +
-          JSON.parse(getStorageItem('listOfQuestions'))[getStorageItem('numberOfQuestion')]
-            .question,
-      );
-      this._onSend(update);
+      localUser[update.message.chat.id].answers.push(update.message?.text);
+      localUser[update.message.chat.id].numberOfQuestions = 0;
+      setStorageItem('users', JSON.stringify(localUser));
       return;
     }
+
+    this.sendTelegramMessageAsync(
+      update.message?.from.id,
+      'Хорошо, вот следующий вопрос:\n' +
+        questionsList[users[update.message.chat.id].numberOfQuestions].question,
+    );
+    this._onSend(update);
+
+    localUser[update.message.chat.id].answers.push(update.message?.text);
+    setStorageItem('users', JSON.stringify(localUser));
   }
 }

@@ -36,15 +36,37 @@
 }
 
 .create-list {
+  width: 33%;
   text-align: center;
   margin-top: 15px;
   margin-left: 40px;
+}
+
+.create-botInfo {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.create-botInfo_getName {
+  margin-left: 35%;
+}
+
+.create-botInfo_getMessage {
+  margin-right: 35%;
 }
 
 .create-button-choose {
   display: inline-block;
   margin-top: 15px;
   background-color: rgb(32 32 184);
+  width: 100px;
+}
+
+.create-button-choose_active {
+  display: inline-block;
+  margin-top: 15px;
+  background-color: rgb(32 32 95);
   width: 100px;
 }
 
