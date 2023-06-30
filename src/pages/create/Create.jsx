@@ -1,15 +1,17 @@
-import { useState, useEffect, createRef } from 'react';
+import { useState, createRef, useEffect } from 'react';
 
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBot } from '@/telebots/BasicBot';
 import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
-import { getTelegramMessages, sendTelegramMessage } from '@services/telegramAPI.js';
+import {
+  getTelegramMessages,
+  sendTelegramMessage,
+  getTelegramBotName,
+} from '@services/telegramAPI.js';
 
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 
 import Layout from '@/components/Layout';
-import EditQuestions from '@/components/EditQuestion';
-import AboutBot from '@/components/AboutBot';
 
 import './Create.css';
 import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
@@ -27,19 +29,16 @@ function Create() {
     {
       question:
         'Какой год основания Санкт-Петербурга? Выберите следующие ответы: 1) 1689, 2) 1703, 3) 1721',
-      answer: '2',
       id: 0,
     },
     {
       question:
         'Кто изображен на банкноте в 100 рублей? Выберите следующие ответы: 1) Пушкин, 2) Сталин, 3) Ленин',
-      answer: '1',
       id: 1,
     },
     {
       question:
         'Как называется самое высокое здание в мире? Выберите следующие ответы: 1) Москва-сити, 2) Бурдж Халифа, 3) Пизанская башня',
-      answer: '2',
       id: 2,
     },
   ];
@@ -53,6 +52,11 @@ function Create() {
   const [isRandomBotActive, setIsRandomBotActive] = useState(false);
   const [isQuestionBotActive, setIsQuestionBotActive] = useState(false);
   const [isGPTBotActive, setIsGPTBotActive] = useState(false);
+
+  const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
+  const [teleName, setTeleName] = useState('');
+  const teleNameUrl = teleName && `https://t.me/${teleName}`;
+  const [responseid, setResponseId] = useState(saveResponseId);
 
   const createBot = () => {
     if (!token) return;
@@ -88,6 +92,53 @@ function Create() {
       },
       chatGPTKey: tokenGpt,
     };
+
+    // const createBot = () => {
+    //   if (!token) return;
+    //   if (!botName) return;
+    //   const tokenGpt = inputRefGpt.current?.value;
+    //   const settings = {
+    //     name: botName,
+    //     saveProcessedMessageId: (mId) => {
+    //       console.log('========================================');
+    //       const botData = JSON.parse(getStorageItem(botName) || '{}');
+    //       const nextBotData = ({
+    //         ...botData,
+    //         processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
+    //       });
+    //       const dataInBot = {
+    //         messages: nextBotData,
+    //         users: {},
+    //       }
+    //       setStorageItem(botName, JSON.stringify(dataInBot));
+    //     },
+    //     getProcessedMessagesIds: () => {
+    //       const botData = JSON.parse(getStorageItem(botName) || '{}');
+    //       return botData.processedUpdatesIds || [];
+    //     },
+    //     getTelegramMessagesAsync: async (lastUpdateId) => {
+    //       return getTelegramMessages(token, lastUpdateId).then((readyData) => {
+    //         return readyData.result;
+    //       });
+    //     },
+    //     sendTelegramMessageAsync: async (userId, messageText) => {
+    //       return sendTelegramMessage(token, {
+    //         chat_id: userId,
+    //         text: messageText,
+    //       });
+    //     },
+    //     onSendCallback: () => {
+    //       console.log('callback: message sent');
+    //     },
+    //     chatGPTKey: tokenGpt,
+    //   };
+
+    getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
+      console.log(' >1> ', readyData);
+      setTeleName(readyData.result.username);
+      setResponseId([...responseid, { id: readyData.result.id }]);
+    });
+
     if (botName === RANDOM_BOT_NAME) {
       const bot = new BasicBotRandom(settings);
       bot.start();
@@ -142,6 +193,10 @@ function Create() {
     setBotName(QUESTION_BOT_NAME);
   };
 
+  useEffect(() => {
+    createBot();
+  }, [botName]);
+
   const saveToStorage = (event) => {
     setStorageItem('actualKey', event.target.value);
     if (event.target.value) {
@@ -165,8 +220,6 @@ function Create() {
           />
         </div>
 
-        <AboutBot />
-
         {!isRuningBot && (
           <div className='create-runing'>
             <ul className='create-choose-bot'>
@@ -181,7 +234,7 @@ function Create() {
                   }
                   onClick={chooseBotSimple}
                 >
-                  Choose!
+                  Start
                 </button>
               </li>
 
@@ -200,7 +253,7 @@ function Create() {
                   }
                   onClick={chooseBotRandom}
                 >
-                  Choose!
+                  Start
                 </button>
               </li>
 
@@ -218,7 +271,7 @@ function Create() {
                   }
                   onClick={chooseBotQuestion}
                 >
-                  Choose!
+                  Start
                 </button>
               </li>
 
@@ -237,20 +290,19 @@ function Create() {
                   }
                   onClick={chooseBotGPT}
                 >
-                  Choose!
+                  Start
                 </button>
               </li>
             </ul>
-
-            {isQuestionBotActive && <EditQuestions />}
-
-            <button onClick={createBot} disabled={!botName} className='create-button-bot'>
-              Create bot!
-            </button>
           </div>
         )}
 
-        {isRuningBot && <h2>bot is running</h2>}
+        {isRuningBot && (
+          <div>
+            <h2>bot is running</h2>
+            {teleName && <a href={teleNameUrl}>{teleNameUrl}</a>}
+          </div>
+        )}
       </div>
     </Layout>
   );
