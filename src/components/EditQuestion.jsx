@@ -1,6 +1,8 @@
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 import { useState, useEffect } from 'react';
 
+import './Components.css';
+
 function EditQuestions() {
   const listOfQuestion = getStorageItem('listOfQuestions');
   const [stateOfQuestion, setStateOfQuestion] = useState(JSON.parse(listOfQuestion));
@@ -11,8 +13,13 @@ function EditQuestions() {
   const saveQuestions = (event, index) => {
     stateOfQuestion[index].question = event.target.value;
   };
-  const saveAnswer = (event, index) => {
-    stateOfQuestion[index].answer = event.target.value;
+
+  const deleteListItem = (index) => {
+    setStateOfQuestion((prev) => {
+      const newArr = [...prev];
+      newArr.splice(index, 1);
+      return newArr;
+    });
   };
 
   useEffect(() => {
@@ -31,31 +38,35 @@ function EditQuestions() {
 
   const settingsOfBot = stateOfQuestion
     ? stateOfQuestion.map((item, index) => (
-        <div key={index}>
+        <div key={index} className='editQuestions_list'>
           {index + 1}
           <input
             defaultValue={item.question}
-            className='settings_questionInInput'
+            className='editQuestions_questionInInput'
             onChange={(event) => saveQuestions(event, index)}
           />
-          <input defaultValue={item.answer} onChange={(event) => saveAnswer(event, index)} />
+          <button className='create-buttons' onClick={() => deleteListItem(index)}>
+            delete
+          </button>
         </div>
       ))
     : null;
 
   return (
-    <div className='EditQuestions'>
+    <div className='editQuestions'>
       <h4>Тут вы можете редактировать и добавлять вопросы</h4>
 
       {settingsOfBot}
 
-      <button className='create-buttons' onClick={saveNewOpions}>
-        save
-      </button>
+      <div>
+        <button className='create-buttons' onClick={saveNewOpions}>
+          save
+        </button>
 
-      <button className='create-buttons' onClick={addNewOpions}>
-        new
-      </button>
+        <button className='create-buttons' onClick={addNewOpions}>
+          new
+        </button>
+      </div>
     </div>
   );
 }
