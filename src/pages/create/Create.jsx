@@ -3,6 +3,7 @@ import { useState, createRef, useEffect } from 'react';
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBot } from '@/telebots/BasicBot';
 import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
+
 import {
   getTelegramMessages,
   sendTelegramMessage,
@@ -12,6 +13,8 @@ import {
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 
 import Layout from '@/components/Layout';
+import EditQuestions from '@/components/EditQuestion';
+import AboutBot from '@/components/AboutBot';
 
 import './Create.css';
 import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
@@ -39,6 +42,7 @@ function Create() {
     {
       question:
         'Как называется самое высокое здание в мире? Выберите следующие ответы: 1) Москва-сити, 2) Бурдж Халифа, 3) Пизанская башня',
+
       id: 2,
     },
   ];
@@ -92,46 +96,6 @@ function Create() {
       },
       chatGPTKey: tokenGpt,
     };
-
-    // const createBot = () => {
-    //   if (!token) return;
-    //   if (!botName) return;
-    //   const tokenGpt = inputRefGpt.current?.value;
-    //   const settings = {
-    //     name: botName,
-    //     saveProcessedMessageId: (mId) => {
-    //       console.log('========================================');
-    //       const botData = JSON.parse(getStorageItem(botName) || '{}');
-    //       const nextBotData = ({
-    //         ...botData,
-    //         processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
-    //       });
-    //       const dataInBot = {
-    //         messages: nextBotData,
-    //         users: {},
-    //       }
-    //       setStorageItem(botName, JSON.stringify(dataInBot));
-    //     },
-    //     getProcessedMessagesIds: () => {
-    //       const botData = JSON.parse(getStorageItem(botName) || '{}');
-    //       return botData.processedUpdatesIds || [];
-    //     },
-    //     getTelegramMessagesAsync: async (lastUpdateId) => {
-    //       return getTelegramMessages(token, lastUpdateId).then((readyData) => {
-    //         return readyData.result;
-    //       });
-    //     },
-    //     sendTelegramMessageAsync: async (userId, messageText) => {
-    //       return sendTelegramMessage(token, {
-    //         chat_id: userId,
-    //         text: messageText,
-    //       });
-    //     },
-    //     onSendCallback: () => {
-    //       console.log('callback: message sent');
-    //     },
-    //     chatGPTKey: tokenGpt,
-    //   };
 
     getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
       console.log(' >1> ', readyData);
@@ -219,6 +183,8 @@ function Create() {
             onChange={saveToStorage}
           />
         </div>
+
+        <AboutBot />
 
         {!isRuningBot && (
           <div className='create-runing'>
