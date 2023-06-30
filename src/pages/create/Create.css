@@ -36,10 +36,15 @@
 }
 
 .create-list {
-  width: 33%;
+  width: 25%;
   text-align: center;
   margin-top: 15px;
   margin-left: 40px;
+}
+
+.create-list h3 {
+  text-align: left;
+  margin-top: 15px;
 }
 
 .create-botInfo {
@@ -75,13 +80,10 @@
   margin-top: 25px;
   background-color: rgb(32 32 184);
   width: 140px;
-  margin-left: 5%;
 }
 
 .create-buttons {
   display: inline-block;
-  margin: 20px 10px 0;
   background-color: rgb(32 32 184);
   width: 80px;
-  margin-left: 5%;
 }
