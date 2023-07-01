@@ -1,9 +1,9 @@
 import { useState, createRef, useEffect } from 'react';
 
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
-import { BasicBot } from '@/telebots/BasicBot';
+import { BasicBot, adapterBrowser } from 'telebot-lib';
 import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
-
+import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
 import {
   getTelegramMessages,
   sendTelegramMessage,
@@ -17,7 +17,6 @@ import EditQuestions from '@/components/EditQuestion';
 import AboutBot from '@/components/AboutBot';
 
 import './Create.css';
-import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
 
 const RANDOM_BOT_NAME = 'randomBot001';
 const SIMPLE_BOT_NAME = 'simpleBot01';
@@ -74,6 +73,7 @@ function Create() {
           ...botData,
           processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
         });
+        console.log('========================================');
         setStorageItem(botName, nextBotData);
       },
       getProcessedMessagesIds: () => {
@@ -97,6 +97,46 @@ function Create() {
       chatGPTKey: tokenGpt,
     };
 
+    // const createBot = () => {
+    //   if (!token) return;
+    //   if (!botName) return;
+    //   const tokenGpt = inputRefGpt.current?.value;
+    //   const settings = {
+    //     name: botName,
+    //     saveProcessedMessageId: (mId) => {
+    //       console.log('========================================');
+    //       const botData = JSON.parse(getStorageItem(botName) || '{}');
+    //       const nextBotData = ({
+    //         ...botData.messages,
+    //         processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
+    //       });
+    //       const dataInBot = {
+    //         messages: nextBotData,
+    //         users: {},
+    //       }
+    //       setStorageItem(botName, JSON.stringify(dataInBot));
+    //     },
+    //     getProcessedMessagesIds: () => {
+    //       const botData = JSON.parse(getStorageItem(botName) || '{}');
+    //       return botData.processedUpdatesIds || [];
+    //     },
+    //     getTelegramMessagesAsync: async (lastUpdateId) => {
+    //       return getTelegramMessages(token, lastUpdateId).then((readyData) => {
+    //         return readyData.result;
+    //       });
+    //     },
+    //     sendTelegramMessageAsync: async (userId, messageText) => {
+    //       return sendTelegramMessage(token, {
+    //         chat_id: userId,
+    //         text: messageText,
+    //       });
+    //     },
+    //     onSendCallback: () => {
+    //       console.log('callback: message sent');
+    //     },
+    //     chatGPTKey: tokenGpt,
+    //   };
+
     getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
       console.log(' >1> ', readyData);
       setTeleName(readyData.result.username);
@@ -109,7 +149,7 @@ function Create() {
       setIsRuningBot(true);
     }
     if (botName === SIMPLE_BOT_NAME) {
-      const bot = new BasicBot(settings);
+      const bot = adapterBrowser(BasicBot, settings);
       bot.start();
       setIsRuningBot(true);
     }
