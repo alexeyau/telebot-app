@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import './Monitor.scss';
 
 function Monitor() {
-  const activeUsers = useMemo(() => JSON.parse(getStorageItem('users')), []);
+  const activeUsers = useMemo(() => JSON.parse(getStorageItem('questionBot01')).users, []);
   const users = useMemo(() => {
     if (!activeUsers) return null;
 

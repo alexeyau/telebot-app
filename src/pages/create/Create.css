@@ -29,22 +29,25 @@
   width: 100%;
   list-style: none;
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   gap: 10px;
   text-align: center;
   margin: 0 auto;
 }
 
 .create-list {
-  width: 25%;
+  width: 49%;
   text-align: center;
   margin-top: 15px;
-  margin-left: 40px;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .create-list h3 {
   text-align: left;
   margin-top: 15px;
+  font-size: 18px;
+  font-weight: 100;
 }
 
 .create-botInfo {
@@ -62,17 +65,17 @@
 }
 
 .create-button-choose {
+  position: relative;
   display: inline-block;
-  margin-top: 15px;
-  background-color: rgb(32 32 184);
-  width: 100px;
-}
-
-.create-button-choose_active {
-  display: inline-block;
-  margin-top: 15px;
-  background-color: rgb(32 32 95);
-  width: 100px;
+  padding: 8px 18px;
+  margin: 10px;
+  font-size: 1.5em;
+  line-height: 20px;
+  border: 1px solid rgb(56 56 56);
+  background-color: rgb(37 37 49);
+  border-radius: 6px;
+  appearance: none;
+  vertical-align: middle;
 }
 
 .create-button-bot {
