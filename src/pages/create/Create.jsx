@@ -7,6 +7,7 @@ import { BasicBotRandom } from '@/telebots/BasicBotRandom';
 import { BasicBot, adapterBrowser } from 'telebot-lib';
 import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
 import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
+
 import {
   getTelegramMessages,
   sendTelegramMessage,
@@ -51,6 +52,11 @@ function Create() {
   const [isRuningBot, setIsRuningBot] = useState(false);
   const [isClassInputBot, setisClassInputBot] = useState(true);
   const [botName, setBotName] = useState('');
+
+  const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
+  const [teleName, setTeleName] = useState('');
+  const teleNameUrl = teleName && `https://t.me/${teleName}`;
+  const [responseid, setResponseId] = useState(saveResponseId);
 
   const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
   const [teleName, setTeleName] = useState('');

@@ -50,6 +50,11 @@
   font-weight: 100;
 }
 
+.create-list h3 {
+  text-align: left;
+  margin-top: 15px;
+}
+
 .create-botInfo {
   display: flex;
   justify-content: space-between;
