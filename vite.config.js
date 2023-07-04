@@ -16,4 +16,9 @@ export default defineConfig({
   },
   base: './',
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      external: ['telebot-lib'],
+    },
+  },
 });
