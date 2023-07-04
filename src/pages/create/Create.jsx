@@ -58,11 +58,6 @@ function Create() {
   const teleNameUrl = teleName && `https://t.me/${teleName}`;
   const [responseid, setResponseId] = useState(saveResponseId);
 
-  const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
-  const [teleName, setTeleName] = useState('');
-  const teleNameUrl = teleName && `https://t.me/${teleName}`;
-  const [responseid, setResponseId] = useState(saveResponseId);
-
   const createBot = () => {
     if (!token) return;
     if (!botName) return;
