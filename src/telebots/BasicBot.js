@@ -6,6 +6,7 @@ export class BasicBot {
   };
 
   static isProcessed(id, processedIdArr) {
+    console.log('isProcessed', processedIdArr, id);
     return processedIdArr.includes(id);
   }
 
@@ -91,6 +92,7 @@ export class BasicBot {
     if (this.onSendCallback) {
       this.onSendCallback(update.message);
     }
+    console.log('onSend', update.update_id);
     this.saveProcessedMessageId(update.update_id);
   }
 }

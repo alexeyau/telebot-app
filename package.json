@@ -23,6 +23,7 @@
     "redux": "^4.2.1",
     "sass": "^1.63.5",
     "scss": "^0.2.4",
+    "telebot-lib": "^1.0.5",
     "zustand": "^4.3.8"
   },
   "devDependencies": {

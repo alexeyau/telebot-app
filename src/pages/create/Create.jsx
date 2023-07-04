@@ -1,8 +1,12 @@
 import { useState, createRef, useEffect } from 'react';
 
+//const { BasicBot, adapterBrowser } = require('telebot-lib');
+
+//import { BasicBot } from '@/telebots/BasicBot';
 import { BasicBotRandom } from '@/telebots/BasicBotRandom';
-import { BasicBot } from '@/telebots/BasicBot';
+import { BasicBot, adapterBrowser } from 'telebot-lib';
 import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
+import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
 
 import {
   getTelegramMessages,
@@ -13,11 +17,8 @@ import {
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 
 import Layout from '@/components/Layout';
-import EditQuestions from '@/components/EditQuestion';
-import AboutBot from '@/components/AboutBot';
 
 import './Create.css';
-import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
 
 const RANDOM_BOT_NAME = 'randomBot001';
 const SIMPLE_BOT_NAME = 'simpleBot01';
@@ -52,10 +53,10 @@ function Create() {
   const [isClassInputBot, setisClassInputBot] = useState(true);
   const [botName, setBotName] = useState('');
 
-  const [isSimpleBotActive, setIsSimpleBotActive] = useState(false);
-  const [isRandomBotActive, setIsRandomBotActive] = useState(false);
-  const [isQuestionBotActive, setIsQuestionBotActive] = useState(false);
-  const [isGPTBotActive, setIsGPTBotActive] = useState(false);
+  const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
+  const [teleName, setTeleName] = useState('');
+  const teleNameUrl = teleName && `https://t.me/${teleName}`;
+  const [responseid, setResponseId] = useState(saveResponseId);
 
   const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
   const [teleName, setTeleName] = useState('');
@@ -74,6 +75,7 @@ function Create() {
           ...botData,
           processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
         });
+        console.log('nextBotData', nextBotData);
         setStorageItem(botName, nextBotData);
       },
       getProcessedMessagesIds: () => {
@@ -95,6 +97,8 @@ function Create() {
         console.log('callback: message sent');
       },
       chatGPTKey: tokenGpt,
+      token: token,
+      botName: botName,
     };
 
     getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
@@ -109,7 +113,8 @@ function Create() {
       setIsRuningBot(true);
     }
     if (botName === SIMPLE_BOT_NAME) {
-      const bot = new BasicBot(settings);
+      const bot = adapterBrowser(BasicBot, settings);
+      //const bot = new BasicBot(settings);
       bot.start();
       setIsRuningBot(true);
     }
@@ -127,33 +132,17 @@ function Create() {
 
   const chooseBotRandom = () => {
     setBotName(RANDOM_BOT_NAME);
-    setIsQuestionBotActive(false);
-    setIsSimpleBotActive(false);
-    setIsRandomBotActive(true);
-    setIsGPTBotActive(false);
   };
   const chooseBotSimple = () => {
     setBotName(SIMPLE_BOT_NAME);
-    setIsQuestionBotActive(false);
-    setIsSimpleBotActive(true);
-    setIsRandomBotActive(false);
-    setIsGPTBotActive(false);
   };
   const chooseBotGPT = () => {
     setBotName(GPT_BOT_NAME);
-    setIsQuestionBotActive(false);
-    setIsSimpleBotActive(false);
-    setIsRandomBotActive(false);
-    setIsGPTBotActive(true);
   };
   const chooseBotQuestion = () => {
     if (!listOfQuestion) {
       setStorageItem('listOfQuestions', JSON.stringify(questions));
     }
-    setIsQuestionBotActive(true);
-    setIsSimpleBotActive(false);
-    setIsRandomBotActive(false);
-    setIsGPTBotActive(false);
     setBotName(QUESTION_BOT_NAME);
   };
 
@@ -184,26 +173,9 @@ function Create() {
           />
         </div>
 
-        <AboutBot />
-
         {!isRuningBot && (
           <div className='create-runing'>
             <ul className='create-choose-bot'>
-              <li className='create-list'>
-                <h2>Choose Simple Bot Instance</h2>
-                <h3>
-                  Наш телеграмм бот - это универсальный помощник для вашей повседневной жизни.
-                </h3>
-                <button
-                  className={
-                    isSimpleBotActive ? 'create-button-choose_active' : 'create-button-choose'
-                  }
-                  onClick={chooseBotSimple}
-                >
-                  Start
-                </button>
-              </li>
-
               <li className='create-list'>
                 <h2>Choose Random Bot Instance</h2>
                 <h3>
@@ -213,12 +185,7 @@ function Create() {
                   чистые случайные числа, чтобы помочь вам в любом задании, которое требует
                   использования случайных данных!
                 </h3>
-                <button
-                  className={
-                    isRandomBotActive ? 'create-button-choose_active' : 'create-button-choose'
-                  }
-                  onClick={chooseBotRandom}
-                >
+                <button className='create-button-choose' onClick={chooseBotRandom}>
                   Start
                 </button>
               </li>
@@ -231,12 +198,17 @@ function Create() {
                   вопросами и вариантами ответов, и быстро отправлять их вашей аудитории или друзьям
                   в Телеграм.
                 </h3>
-                <button
-                  className={
-                    isQuestionBotActive ? 'create-button-choose_active' : 'create-button-choose'
-                  }
-                  onClick={chooseBotQuestion}
-                >
+                <button className='create-button-choose' onClick={chooseBotQuestion}>
+                  Start
+                </button>
+              </li>
+
+              <li className='create-list'>
+                <h2>Choose Simple Bot Instance</h2>
+                <h3>
+                  Наш телеграмм бот - это универсальный помощник для вашей повседневной жизни.
+                </h3>
+                <button className='create-button-choose' onClick={chooseBotSimple}>
                   Start
                 </button>
               </li>
@@ -244,18 +216,15 @@ function Create() {
               <li className='create-list'>
                 <h2>Choose chatGPT Bot Instance</h2>
                 <h3>для его использования понадобиться отдельный chatGPT токен.</h3>
-                <input
-                  ref={inputRefGpt}
-                  className='Test__input'
-                  placeholder='Token to access the ChatGPT API'
-                  type='text'
-                />
-                <button
-                  className={
-                    isGPTBotActive ? 'create-button-choose_active' : 'create-button-choose'
-                  }
-                  onClick={chooseBotGPT}
-                >
+                <div>
+                  <input
+                    ref={inputRefGpt}
+                    className='Test__input'
+                    placeholder='Token to access the ChatGPT API'
+                    type='text'
+                  />
+                </div>
+                <button className='create-button-choose' onClick={chooseBotGPT}>
                   Start
                 </button>
               </li>
