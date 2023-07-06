@@ -1,19 +1,12 @@
 import { useState, createRef, useEffect } from 'react';
-
-//const { BasicBot, adapterBrowser } = require('telebot-lib');
-
-//import { BasicBot } from '@/telebots/BasicBot';
-import { BasicBotRandom } from '@/telebots/BasicBotRandom';
-import { BasicBot, adapterBrowser } from 'telebot-lib';
-import { BasicBotQuestion } from '@/telebots/BasicBotQuestion';
-import { BasicBotChatGPT } from '@/telebots/BasicBotChatGPT';
-
 import {
-  getTelegramMessages,
-  sendTelegramMessage,
-  getTelegramBotName,
-} from '@services/telegramAPI.js';
-
+  BasicBot,
+  BasicBotQuestion,
+  BasicBotChatGPT,
+  BasicBotRandom,
+  adapterBrowser,
+} from 'telebot-lib';
+import { getTelegramBotName } from '@services/telegramAPI.js';
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 
 import Layout from '@/components/Layout';
@@ -63,34 +56,6 @@ function Create() {
     if (!botName) return;
     const tokenGpt = inputRefGpt.current?.value;
     const settings = {
-      name: botName,
-      saveProcessedMessageId: (mId) => {
-        const botData = JSON.parse(getStorageItem(botName) || '{}');
-        const nextBotData = JSON.stringify({
-          ...botData,
-          processedUpdatesIds: [...(botData.processedUpdatesIds || []), mId],
-        });
-        console.log('nextBotData', nextBotData);
-        setStorageItem(botName, nextBotData);
-      },
-      getProcessedMessagesIds: () => {
-        const botData = JSON.parse(getStorageItem(botName) || '{}');
-        return botData.processedUpdatesIds || [];
-      },
-      getTelegramMessagesAsync: async (lastUpdateId) => {
-        return getTelegramMessages(token, lastUpdateId).then((readyData) => {
-          return readyData.result;
-        });
-      },
-      sendTelegramMessageAsync: async (userId, messageText) => {
-        return sendTelegramMessage(token, {
-          chat_id: userId,
-          text: messageText,
-        });
-      },
-      onSendCallback: () => {
-        console.log('callback: message sent');
-      },
       chatGPTKey: tokenGpt,
       token: token,
       botName: botName,
@@ -103,23 +68,22 @@ function Create() {
     });
 
     if (botName === RANDOM_BOT_NAME) {
-      const bot = new BasicBotRandom(settings);
+      const bot = new adapterBrowser(BasicBotRandom, settings);
       bot.start();
       setIsRuningBot(true);
     }
     if (botName === SIMPLE_BOT_NAME) {
       const bot = adapterBrowser(BasicBot, settings);
-      //const bot = new BasicBot(settings);
       bot.start();
       setIsRuningBot(true);
     }
     if (botName === QUESTION_BOT_NAME) {
-      const bot = new BasicBotQuestion(settings);
+      const bot = new adapterBrowser(BasicBotQuestion, settings);
       bot.start();
       setIsRuningBot(true);
     }
     if (botName === GPT_BOT_NAME) {
-      const bot = new BasicBotChatGPT(settings);
+      const bot = new adapterBrowser(BasicBotChatGPT, settings);
       bot.start();
       setIsRuningBot(true);
     }
@@ -157,7 +121,7 @@ function Create() {
   return (
     <Layout>
       <div className='create'>
-        <div className='create-entry-token'>
+        <div className='create-entry_token'>
           <h3>Enter Token:</h3>
           <input
             className={isClassInputBot ? 'settings_input' : 'settings_input_other'}
@@ -170,56 +134,59 @@ function Create() {
 
         {!isRuningBot && (
           <div className='create-runing'>
-            <ul className='create-choose-bot'>
+            <ul className='create-choose_bot'>
               <li className='create-list'>
                 <h2>Choose Random Bot Instance</h2>
-                <h3>
+                <div>
                   Этот телеграмм бот - ваш личный генератор случайных чисел! Бот генерирует числа с
                   использованием настоящего случайного алгоритма, что гарантирует их полную
                   случайность и непредсказуемость. Никаких повторений, никаких шаблонов - только
                   чистые случайные числа, чтобы помочь вам в любом задании, которое требует
                   использования случайных данных!
-                </h3>
-                <button className='create-button-choose' onClick={chooseBotRandom}>
+                </div>
+                <button className='create-button_choose' onClick={chooseBotRandom}>
                   Start
                 </button>
               </li>
 
               <li className='create-list'>
                 <h2>Choose Question Bot Instance</h2>
-                <h3>
+                <div>
                   Наш телеграмм бот - это удобный опросник, который поможет вам получить нужные
                   данные в считанные минуты. Он позволяет создавать кастомные опросы с любыми
                   вопросами и вариантами ответов, и быстро отправлять их вашей аудитории или друзьям
                   в Телеграм.
-                </h3>
-                <button className='create-button-choose' onClick={chooseBotQuestion}>
+                </div>
+                <button className='create-button_choose' onClick={chooseBotQuestion}>
                   Start
                 </button>
               </li>
 
               <li className='create-list'>
                 <h2>Choose Simple Bot Instance</h2>
-                <h3>
+                <div>
                   Наш телеграмм бот - это универсальный помощник для вашей повседневной жизни.
-                </h3>
-                <button className='create-button-choose' onClick={chooseBotSimple}>
+                </div>
+                <button className='create-button_choose' onClick={chooseBotSimple}>
                   Start
                 </button>
               </li>
 
               <li className='create-list'>
                 <h2>Choose chatGPT Bot Instance</h2>
-                <h3>для его использования понадобиться отдельный chatGPT токен.</h3>
                 <div>
+                  chatGPT который возвращает стихи на выбранную тему. Для его использования
+                  понадобиться отдельный chatGPT токен.
+                </div>
+                <div className='create-input_shell'>
                   <input
                     ref={inputRefGpt}
-                    className='Test__input'
+                    className='create-input'
                     placeholder='Token to access the ChatGPT API'
                     type='text'
                   />
                 </div>
-                <button className='create-button-choose' onClick={chooseBotGPT}>
+                <button className='create-button_choose' onClick={chooseBotGPT}>
                   Start
                 </button>
               </li>

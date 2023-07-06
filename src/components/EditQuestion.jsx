@@ -38,11 +38,11 @@ function EditQuestions() {
 
   const settingsOfBot = stateOfQuestion
     ? stateOfQuestion.map((item, index) => (
-        <div key={index} className='editQuestions_list'>
+        <div key={item.id} className='editQuestions_list'>
           {index + 1}
           <input
             defaultValue={item.question}
-            className='editQuestions_questionInInput'
+            className='edit-questions_questionInInput'
             onChange={(event) => saveQuestions(event, index)}
           />
           <button className='create-buttons' onClick={() => deleteListItem(index)}>
@@ -53,7 +53,7 @@ function EditQuestions() {
     : null;
 
   return (
-    <div className='editQuestions'>
+    <div className='edit-questions'>
       <h4>Тут вы можете редактировать и добавлять вопросы</h4>
 
       {settingsOfBot}
