@@ -83,12 +83,17 @@
 
 .content-item-button {
   margin: 27px 25px 25px 18px;
-  font-size: 20px;
-  width: 180px;
-  padding: 10px 60px;
-  background-color: blue;
+  padding: 15px 50px;
   color: white;
   border-radius: 7px;
+  position: relative;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 20px;
+  border: 1px solid rgb(56 56 56);
+  background-color: rgb(37 37 49);
+  appearance: none;
+  vertical-align: middle;
 }
 
 .content-links {
@@ -110,13 +115,13 @@
   margin-right: 100px;
 }
 
-.editQuestions {
+.edit-questions {
   display: flex;
   flex-direction: column;
   text-align: center;
 }
 
-.editQuestions_questionInInput {
+.edit-questions_questionInInput {
   width: 800px;
   height: 40px;
 }

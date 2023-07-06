@@ -8,7 +8,6 @@ import Settings from '@/pages/settings/Settings.jsx';
 import Monitor from '@/pages/monitor/Monitor.jsx';
 import Create from '@/pages/create/Create.jsx';
 import Tutorial from '@/pages/tutorial/Tutorial.jsx';
-import Test from './pages/test/Test.jsx';
 
 import './index.css';
 
@@ -16,10 +15,6 @@ const router = createHashRouter([
   {
     path: '/',
     element: <App />,
-  },
-  {
-    path: '/test',
-    element: <Test />,
   },
   {
     path: '/settings',
