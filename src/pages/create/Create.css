@@ -23,33 +23,42 @@
   display: flex;
   flex-flow: row wrap;
   gap: 10px;
-  text-align: center;
   margin: 0 auto;
 }
 
-.create-list {
+.bot-card {
   width: 49%;
-  padding: 20px;
+  padding: 40px;
+  padding-top: 15px;
   display: block;
-  justify-content: center;
   border: 1px solid grey;
   border-radius: 10px;
 }
 
-.create-list div {
-  text-align: left;
-  margin-top: 15px;
-  font-size: 18px;
-  font-weight: 100;
+.bot-card__title {
+  font-size: 2.5em;
+  font-weight: 400;
 }
 
-.create-button_choose {
+.bot-card__description {
+  text-align: left;
+  font-size: 18px;
+  font-weight: 100;
+  margin-right: 30px;
+}
+
+.bot-card__content-wrap {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.bot-card__start {
   position: relative;
   display: inline-block;
   padding: 8px 18px;
-  margin: 16px;
-  font-size: 1.5em;
-  line-height: 20px;
+  font-size: 2.5em;
+  font-weight: 400;
   border: 1px solid rgb(56 56 56);
   background-color: rgb(37 37 49);
   border-radius: 6px;

@@ -38,14 +38,14 @@ function EditQuestions() {
 
   const settingsOfBot = stateOfQuestion
     ? stateOfQuestion.map((item, index) => (
-        <div key={item.id} className='editQuestions_list'>
+        <div key={item.id} className='edit-questions__list'>
           {index + 1}
           <input
             defaultValue={item.question}
-            className='edit-questions_questionInInput'
+            className='edit-questions__question-in-input'
             onChange={(event) => saveQuestions(event, index)}
           />
-          <button className='create-buttons' onClick={() => deleteListItem(index)}>
+          <button className='edit-questions__buttons' onClick={() => deleteListItem(index)}>
             delete
           </button>
         </div>
@@ -59,11 +59,11 @@ function EditQuestions() {
       {settingsOfBot}
 
       <div>
-        <button className='create-buttons' onClick={saveNewOpions}>
+        <button className='edit-questions__buttons' onClick={saveNewOpions}>
           save
         </button>
 
-        <button className='create-buttons' onClick={addNewOpions}>
+        <button className='edit-questions__buttons' onClick={addNewOpions}>
           new
         </button>
       </div>

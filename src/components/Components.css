@@ -52,9 +52,9 @@
 }
 
 .page {
-  width: 70%;
+  width: 80%;
   height: 100%;
-  margin: 0 auto 0 15%;
+  margin: 0 auto 0 10%;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -64,36 +64,6 @@
 .content {
   margin: 0 auto;
   min-height: 50vh;
-}
-
-.content-item {
-  padding-top: 50px;
-}
-
-.content-item-advertisement {
-  font-size: 56px;
-  min-width: 800px;
-}
-
-.content-item-list {
-  padding-top: 16px;
-  padding-left: 60px;
-  font-size: 20px;
-}
-
-.content-item-button {
-  margin: 27px 25px 25px 18px;
-  padding: 15px 50px;
-  color: white;
-  border-radius: 7px;
-  position: relative;
-  display: inline-block;
-  font-size: 25px;
-  line-height: 20px;
-  border: 1px solid rgb(56 56 56);
-  background-color: rgb(37 37 49);
-  appearance: none;
-  vertical-align: middle;
 }
 
 .content-links {
@@ -121,7 +91,7 @@
   text-align: center;
 }
 
-.edit-questions_questionInInput {
+.edit-questions__question-in-input {
   width: 800px;
   height: 40px;
 }

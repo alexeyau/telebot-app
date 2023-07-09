@@ -1,0 +1,42 @@
+.app {
+  padding-top: 50px;
+}
+
+.app__table {
+  font-size: 40px;
+}
+
+.app__list-first {
+  padding-top: 16px;
+  padding-left: 60px;
+  font-size: 20px;
+}
+
+.app__list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  text-align: center;
+  width: 100%;
+}
+
+.app__button {
+  margin: 27px 25px 25px 18px;
+  padding: 15px 50px;
+  color: white;
+  border-radius: 7px;
+  position: relative;
+  display: inline-block;
+  font-size: 25px;
+  line-height: 20px;
+  border: 1px solid rgb(56 56 56);
+  background-color: rgb(37 37 49);
+  appearance: none;
+  vertical-align: middle;
+}
+
+.app__wrap {
+  width: 400px;
+  height: 700px;
+  background-color: black;
+}
