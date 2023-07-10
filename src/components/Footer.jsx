@@ -1,8 +1,8 @@
 function Footer() {
   return (
-    <div className='footer'>
-      <div className='footer-text'>Telebot</div>
-    </div>
+    <footer className='footer'>
+      <h2 className='footer__text'>Telebot</h2>
+    </footer>
   );
 }
 
