@@ -39,7 +39,7 @@ function EditQuestions() {
   const settingsOfBot = stateOfQuestion
     ? stateOfQuestion.map((item, index) => (
         <div key={item.id} className='edit-questions__list'>
-          {index + 1}
+          <span className='edit-questions__qustion-number'>{index + 1}) </span>
           <input
             defaultValue={item.question}
             className='edit-questions__question-in-input'
@@ -54,7 +54,7 @@ function EditQuestions() {
 
   return (
     <div className='edit-questions'>
-      <h4>Тут вы можете редактировать и добавлять вопросы</h4>
+      <h4 className='edit-questions__title'>Тут вы можете редактировать и добавлять вопросы</h4>
 
       {settingsOfBot}
 

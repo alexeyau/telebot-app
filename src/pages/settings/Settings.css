@@ -1,0 +1,11 @@
+.settings__title {
+  margin-top: 20px;
+  font-size: 40px;
+  font-weight: 400;
+}
+
+.settings__content {
+  margin-top: 15px;
+  font-size: 20px;
+  font-weight: 100;
+}

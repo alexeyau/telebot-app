@@ -18,7 +18,9 @@
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #0d1117;
+
+  /* //background-color: #0d1117; */
+  background-color: rgb(12 15 22);
   font-weight: 600;
   font-size: 16px;
 }
@@ -31,7 +33,7 @@
   background-color: #010409;
 }
 
-.header-logo {
+.header__logo {
   width: 32px;
   height: 32px;
   margin-right: 16px;
@@ -39,14 +41,15 @@
   background-color: black;
 }
 
-.header-menu {
+.header__menu {
+  list-style-type: none;
   margin-left: auto;
   margin-right: 20px;
   display: flex;
   flex-direction: row;
 }
 
-.header-text {
+.header__text {
   margin-right: 56px;
   color: rgb(235 234 234);
 }
@@ -78,11 +81,12 @@
   border-top: 1px solid dimgray;
 }
 
-.footer-text {
+.footer__text {
   padding-top: 20px;
   padding-bottom: 20px;
   margin-left: auto;
   margin-right: 100px;
+  font-weight: 200;
 }
 
 .edit-questions {
@@ -91,7 +95,18 @@
   text-align: center;
 }
 
+.edit-questions__title {
+  font-size: 20px;
+  font-weight: 100;
+}
+
 .edit-questions__question-in-input {
   width: 800px;
   height: 40px;
+  font-size: 20px;
+}
+
+.edit-questions__qustion-number {
+  font-size: 20px;
+  font-weight: 100;
 }

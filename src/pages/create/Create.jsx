@@ -24,7 +24,7 @@ function BotCard(props) {
       <h2 className='bot-card__title'>{props.title}</h2>
       {props.customEl}
       <div className='bot-card__content-wrap'>
-        <div className='bot-card__description'>{props.description}</div>
+        <span className='bot-card__description'>{props.description}</span>
         <div className='bot-card__start-wrap'>
           <button className='bot-card__start' onClick={props.handler}>
             Start
@@ -139,7 +139,7 @@ function Create() {
     {
       id: 1,
       title: 'Random Bot Instance',
-      description: `Этот телеграмм бот - ваш личный генератор случайных чисел! Бот генерирует числа с
+      description: `Этот телеграм бот - ваш личный генератор случайных чисел! Бот генерирует числа с
         использованием настоящего случайного алгоритма, что гарантирует их полную
         случайность и непредсказуемость. Никаких повторений, никаких шаблонов - только
         чистые случайные числа, чтобы помочь вам в любом задании, которое требует
@@ -150,10 +150,10 @@ function Create() {
     {
       id: 2,
       title: 'Question Bot Instance',
-      description: `Наш телеграмм бот - это удобный опросник, который поможет вам получить нужные
+      description: `Наш телеграм бот - это удобный опросник, который поможет вам получить нужные
         данные в считанные минуты. Он позволяет создавать кастомные опросы с любыми
         вопросами и вариантами ответов, и быстро отправлять их вашей аудитории или друзьям
-        в Телеграмм`,
+        в Телеграм`,
       handler: chooseBotQuestion,
     },
 
@@ -171,10 +171,10 @@ function Create() {
         понадобиться отдельный chatGPT токен.`,
       handler: chooseBotGPT,
       customEl: (
-        <div className='create-input_shell'>
+        <div className='create__input-shell'>
           <input
             ref={inputRefGpt}
-            className='create-input'
+            className='create__input'
             placeholder='Token to access the ChatGPT API'
             type='text'
           />
@@ -186,10 +186,10 @@ function Create() {
   return (
     <Layout>
       <div className='create'>
-        <div className='create-entry_token'>
+        <div className='create__entry-token'>
           <h3>Enter Token:</h3>
           <input
-            className={isClassInputBot ? 'settings_input' : 'settings_input_other'}
+            className={isClassInputBot ? 'create__input-disable' : 'create__input-active'}
             placeholder='Token to access the HTTP API'
             type='text'
             defaultValue={getStorageItem('actualKey')}
@@ -198,8 +198,8 @@ function Create() {
         </div>
 
         {!isRuningBot && (
-          <div className='create-runing'>
-            <ul className='create-choose_bot'>
+          <div className='create__runing'>
+            <ul className='create__choose-bot'>
               {botArr.map((cardInfo) => (
                 <BotCard
                   key={cardInfo.id}
