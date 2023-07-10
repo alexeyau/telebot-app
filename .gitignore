@@ -1,9 +1,0 @@
-/node_modules
-/dist
-
-.eslintcache
-.firebase/
-.firebaserc
-dist/
-firebase.json
-public/index.html
