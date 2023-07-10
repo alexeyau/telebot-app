@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { getStorageItem } from '@services/localStorage.js';
 import Layout from '@/components/Layout';
 
-import './Monitor.scss';
+import './Monitor.css';
 
 function Monitor() {
   const activeUsers = useMemo(() => JSON.parse(getStorageItem('questionBot01')).users, []);
@@ -10,28 +10,35 @@ function Monitor() {
     if (!activeUsers) return null;
 
     return Object.values(activeUsers).map((user) => (
-      <div className='monitor_ListOfUsers_Item' key={user.name}>
+      <li className='users__item' key={user.name}>
         {user.name}
         {user.answers.map((item) => {
-          return <div key={Math.floor(100 * Math.random())}>{item}</div>;
+          return (
+            <div className='users__answers' key={Math.floor(100 * Math.random())}>
+              {item}
+            </div>
+          );
         })}
-      </div>
+      </li>
     ));
   }, [activeUsers]);
 
   return (
     <Layout>
       <div className='monitor'>
-        <h3>Monitor</h3>
-        <ul>
-          <div>You can see what is happening (service is not ready yet)</div>
-          <div>
-            <div className='monitor_ListOfUsers'>
-              {Boolean(activeUsers) && <div>user:</div>}
+        <h3 className='monitor__title'>Monitor</h3>
+        <div className='monitor__wrap'>
+          <span className='monitor__list-title'>
+            You can see what is happening (service is not ready yet)
+          </span>
+
+          <div className='monitor__wrap-list-item'>
+            <ul className='monitor__list'>
+              {Boolean(activeUsers) && <h3 className='monitor__list-name'>user:</h3>}
               {users}
-            </div>
+            </ul>
           </div>
-        </ul>
+        </div>
       </div>
     </Layout>
   );

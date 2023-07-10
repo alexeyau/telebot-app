@@ -7,61 +7,30 @@
   align-items: center;
 }
 
-.create-entry_token {
+.create__entry-token {
   display: flex;
   flex-direction: row;
 }
 
-.create-runing {
+.create__runing {
   text-align: center;
   margin-top: 25px;
 }
 
-.create-choose_bot {
+.create__choose-bot {
   width: 100%;
   list-style: none;
   display: flex;
   flex-flow: row wrap;
   gap: 10px;
-  text-align: center;
   margin: 0 auto;
 }
 
-.create-list {
-  width: 49%;
-  padding: 20px;
-  display: block;
-  justify-content: center;
-  border: 1px solid grey;
-  border-radius: 10px;
-}
-
-.create-list div {
-  text-align: left;
-  margin-top: 15px;
-  font-size: 18px;
-  font-weight: 100;
-}
-
-.create-button_choose {
-  position: relative;
-  display: inline-block;
-  padding: 8px 18px;
-  margin: 16px;
-  font-size: 1.5em;
-  line-height: 20px;
-  border: 1px solid rgb(56 56 56);
-  background-color: rgb(37 37 49);
-  border-radius: 6px;
-  appearance: none;
-  vertical-align: middle;
-}
-
-.create-input_shell {
+.create__input-shell {
   display: flex;
 }
 
-.create-input {
+.create__input {
   font-size: 18px;
   width: 263px;
   border-radius: 4px;
@@ -71,4 +40,64 @@
   margin: 0 auto;
   font-weight: 100;
   text-align: center;
+}
+
+.create__input-disable {
+  font-size: 18px;
+  box-sizing: border-box;
+  width: auto;
+  border-radius: 4px;
+  outline: none;
+  border: 0.5px solid #0d1117;
+  padding: 4px;
+}
+
+.create__input-active {
+  font-size: 18px;
+  box-sizing: border-box;
+  width: auto;
+  border-radius: 5px;
+  outline: none;
+  border: 0.5px solid red;
+  padding: 4px;
+}
+
+.bot-card {
+  width: 49%;
+  padding: 40px;
+  padding-top: 15px;
+  display: block;
+  border: 1px solid grey;
+  border-radius: 10px;
+}
+
+.bot-card__title {
+  font-size: 2.5em;
+  font-weight: 400;
+}
+
+.bot-card__description {
+  text-align: left;
+  font-size: 18px;
+  font-weight: 100;
+  margin-right: 30px;
+}
+
+.bot-card__content-wrap {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+.bot-card__start {
+  position: relative;
+  display: inline-block;
+  padding: 8px 18px;
+  font-size: 2.5em;
+  font-weight: 400;
+  border: 1px solid rgb(56 56 56);
+  background-color: rgb(37 37 49);
+  border-radius: 6px;
+  appearance: none;
+  vertical-align: middle;
 }

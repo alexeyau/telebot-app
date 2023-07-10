@@ -18,6 +18,23 @@ const SIMPLE_BOT_NAME = 'simpleBot01';
 const QUESTION_BOT_NAME = 'questionBot01';
 const GPT_BOT_NAME = 'botName_gpt0';
 
+function BotCard(props) {
+  return (
+    <li className='bot-card'>
+      <h2 className='bot-card__title'>{props.title}</h2>
+      {props.customEl}
+      <div className='bot-card__content-wrap'>
+        <span className='bot-card__description'>{props.description}</span>
+        <div className='bot-card__start-wrap'>
+          <button className='bot-card__start' onClick={props.handler}>
+            Start
+          </button>
+        </div>
+      </div>
+    </li>
+  );
+}
+
 function Create() {
   const listOfQuestion = getStorageItem('listOfQuestions');
   const inputRefGpt = createRef();
@@ -118,13 +135,61 @@ function Create() {
     }
   };
 
+  const botArr = [
+    {
+      id: 1,
+      title: 'Random Bot Instance',
+      description: `Этот телеграм бот - ваш личный генератор случайных чисел! Бот генерирует числа с
+        использованием настоящего случайного алгоритма, что гарантирует их полную
+        случайность и непредсказуемость. Никаких повторений, никаких шаблонов - только
+        чистые случайные числа, чтобы помочь вам в любом задании, которое требует
+        использования случайных данных!`,
+      handler: chooseBotRandom,
+    },
+
+    {
+      id: 2,
+      title: 'Question Bot Instance',
+      description: `Наш телеграм бот - это удобный опросник, который поможет вам получить нужные
+        данные в считанные минуты. Он позволяет создавать кастомные опросы с любыми
+        вопросами и вариантами ответов, и быстро отправлять их вашей аудитории или друзьям
+        в Телеграм`,
+      handler: chooseBotQuestion,
+    },
+
+    {
+      id: 3,
+      title: 'Simple Bot Instance',
+      description: `Наш телеграмм бот - это универсальный помощник для вашей повседневной жизни.`,
+      handler: chooseBotSimple,
+    },
+
+    {
+      id: 4,
+      title: 'ChatGPT Bot Instance',
+      description: `chatGPT который возвращает стихи на выбранную тему. Для его использования
+        понадобиться отдельный chatGPT токен.`,
+      handler: chooseBotGPT,
+      customEl: (
+        <div className='create__input-shell'>
+          <input
+            ref={inputRefGpt}
+            className='create__input'
+            placeholder='Token to access the ChatGPT API'
+            type='text'
+          />
+        </div>
+      ),
+    },
+  ];
+
   return (
     <Layout>
       <div className='create'>
-        <div className='create-entry_token'>
+        <div className='create__entry-token'>
           <h3>Enter Token:</h3>
           <input
-            className={isClassInputBot ? 'settings_input' : 'settings_input_other'}
+            className={isClassInputBot ? 'create__input-disable' : 'create__input-active'}
             placeholder='Token to access the HTTP API'
             type='text'
             defaultValue={getStorageItem('actualKey')}
@@ -133,63 +198,17 @@ function Create() {
         </div>
 
         {!isRuningBot && (
-          <div className='create-runing'>
-            <ul className='create-choose_bot'>
-              <li className='create-list'>
-                <h2>Choose Random Bot Instance</h2>
-                <div>
-                  Этот телеграмм бот - ваш личный генератор случайных чисел! Бот генерирует числа с
-                  использованием настоящего случайного алгоритма, что гарантирует их полную
-                  случайность и непредсказуемость. Никаких повторений, никаких шаблонов - только
-                  чистые случайные числа, чтобы помочь вам в любом задании, которое требует
-                  использования случайных данных!
-                </div>
-                <button className='create-button_choose' onClick={chooseBotRandom}>
-                  Start
-                </button>
-              </li>
-
-              <li className='create-list'>
-                <h2>Choose Question Bot Instance</h2>
-                <div>
-                  Наш телеграмм бот - это удобный опросник, который поможет вам получить нужные
-                  данные в считанные минуты. Он позволяет создавать кастомные опросы с любыми
-                  вопросами и вариантами ответов, и быстро отправлять их вашей аудитории или друзьям
-                  в Телеграм.
-                </div>
-                <button className='create-button_choose' onClick={chooseBotQuestion}>
-                  Start
-                </button>
-              </li>
-
-              <li className='create-list'>
-                <h2>Choose Simple Bot Instance</h2>
-                <div>
-                  Наш телеграмм бот - это универсальный помощник для вашей повседневной жизни.
-                </div>
-                <button className='create-button_choose' onClick={chooseBotSimple}>
-                  Start
-                </button>
-              </li>
-
-              <li className='create-list'>
-                <h2>Choose chatGPT Bot Instance</h2>
-                <div>
-                  chatGPT который возвращает стихи на выбранную тему. Для его использования
-                  понадобиться отдельный chatGPT токен.
-                </div>
-                <div className='create-input_shell'>
-                  <input
-                    ref={inputRefGpt}
-                    className='create-input'
-                    placeholder='Token to access the ChatGPT API'
-                    type='text'
-                  />
-                </div>
-                <button className='create-button_choose' onClick={chooseBotGPT}>
-                  Start
-                </button>
-              </li>
+          <div className='create__runing'>
+            <ul className='create__choose-bot'>
+              {botArr.map((cardInfo) => (
+                <BotCard
+                  key={cardInfo.id}
+                  title={cardInfo.title}
+                  description={cardInfo.description}
+                  handler={cardInfo.handler}
+                  customEl={cardInfo.customEl}
+                />
+              ))}
             </ul>
           </div>
         )}
