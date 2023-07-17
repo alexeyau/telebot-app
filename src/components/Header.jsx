@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import cube from '@/assets/cube.svg';
 
 function List(props) {
   return (
@@ -40,7 +41,8 @@ function Header() {
   return (
     <header className='header'>
       <div className='header__logo'>
-        <img alt='nan'></img>
+        <img className='header__logo-img' alt='nan' src={cube}></img>
+        <span className='header__logo-title'>Telebot</span>
       </div>
       <ul className='header__menu'>
         {listOfLinks.map((linkInfo) => (
