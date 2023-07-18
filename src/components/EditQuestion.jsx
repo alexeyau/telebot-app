@@ -1,16 +1,23 @@
-import { getStorageItem, setStorageItem } from '@services/localStorage.js';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+
+import useBotStore from '@/services/zustandStore.js';
 
 import './Components.css';
 
 function EditQuestions() {
-  const listOfQuestion = getStorageItem('listOfQuestions');
-  const [stateOfQuestion, setStateOfQuestion] = useState(JSON.parse(listOfQuestion));
+  const { botInstance } = useBotStore();
+
+  console.log(botInstance);
+
+  const listOfQuestion = useMemo(() => botInstance.getQuestions('listOfQuestions'), []);
+  //const listOfQuestion = botInstance.getQuestions('listOfQuestions');
+  const [stateOfQuestion, setStateOfQuestion] = useState(listOfQuestion);
 
   const saveNewOpions = () => {
-    setStorageItem('listOfQuestions', JSON.stringify(stateOfQuestion));
+    botInstance.setQuestions(stateOfQuestion);
   };
-  const saveQuestions = (event, index) => {
+
+  const correctQuestions = (event, index) => {
     stateOfQuestion[index].question = event.target.value;
   };
 
@@ -22,16 +29,12 @@ function EditQuestions() {
     });
   };
 
-  useEffect(() => {
-    setStateOfQuestion(JSON.parse(listOfQuestion));
-  }, [listOfQuestion]);
-
   const addNewOpions = () => {
     setStateOfQuestion((list) => [
       ...list,
       {
         question: '',
-        answer: '',
+        id: stateOfQuestion.length + 1,
       },
     ]);
   };
@@ -43,7 +46,7 @@ function EditQuestions() {
           <input
             defaultValue={item.question}
             className='edit-questions__question-in-input'
-            onChange={(event) => saveQuestions(event, index)}
+            onChange={(event) => correctQuestions(event, index)}
           />
           <button className='edit-questions__buttons' onClick={() => deleteListItem(index)}>
             delete

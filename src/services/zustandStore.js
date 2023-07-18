@@ -1,18 +1,16 @@
 import { create } from 'zustand';
 
-export const useBotStore = create((set) => ({
-  activeBotInstance: {
-    typeOfBot: 'none',
-    instance: null,
+const useBotStore = create((set) => ({
+  botInstance: {
+    setQuestions() {
+      console.log('not a choose');
+    },
+    getQuestions() {
+      console.log('not a choose');
+    },
   },
 
-  setBotInstance: (type, instance) =>
-    set((state) => {
-      return {
-        activeBotInstance: {
-          typeOfBot: type,
-          instance: instance,
-        },
-      };
-    }),
+  setBotInstance: (data) => set((state) => (state.botInstance = data)),
 }));
+
+export default useBotStore;

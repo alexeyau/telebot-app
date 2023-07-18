@@ -5,17 +5,23 @@ import Layout from '@/components/Layout';
 import './Monitor.css';
 
 function Monitor() {
-  const activeUsers = useMemo(() => JSON.parse(getStorageItem('questionBot01')).users, []);
+  let activeUsers = '';
+  if (!JSON.parse(getStorageItem('questionBot01'))) {
+    activeUsers = false;
+  } else {
+    activeUsers = useMemo(() => JSON.parse(getStorageItem('questionBot01')).users, []);
+  }
+
   const users = useMemo(() => {
     if (!activeUsers) return null;
 
     return Object.values(activeUsers).map((user) => (
       <li className='users__item' key={user.name}>
         {user.name}
-        {user.answers.map((item) => {
+        {user.answers.map((item, index) => {
           return (
             <div className='users__answers' key={Math.floor(100 * Math.random())}>
-              {item}
+              {index + 1}) {item}
             </div>
           );
         })}

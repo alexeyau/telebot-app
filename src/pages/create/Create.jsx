@@ -9,6 +9,8 @@ import {
 import { getTelegramBotName } from '@services/telegramAPI.js';
 import { getStorageItem, setStorageItem } from '@services/localStorage.js';
 
+import useBotStore from '@/services/zustandStore.js';
+
 import Layout from '@/components/Layout';
 
 import './Create.css';
@@ -19,6 +21,18 @@ const QUESTION_BOT_NAME = 'questionBot01';
 const GPT_BOT_NAME = 'botName_gpt0';
 
 function BotCard(props) {
+  // const [teleName, setTeleName] = useState('');
+  // const teleNameUrl = teleName && `https://t.me/${teleName}`;
+
+  // const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
+  // const [responseid, setResponseId] = useState(saveResponseId);
+
+  // getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
+  //   console.log(' >1> ', readyData);
+  //   setTeleName(readyData.result.username);
+  //   setResponseId([...responseid, { id: readyData.result.id }]);
+  // });
+
   return (
     <li className='bot-card'>
       <h2 className='bot-card__title'>{props.title}</h2>
@@ -26,47 +40,35 @@ function BotCard(props) {
       <div className='bot-card__content-wrap'>
         <span className='bot-card__description'>{props.description}</span>
         <div className='bot-card__start-wrap'>
-          <button className='bot-card__start' onClick={props.handler}>
+          <button
+            // className={isInputActive ? 'bot-card__start_disable' : 'bot-card__start'}
+            className='bot-card__start'
+            onClick={props.handler}
+          >
             Start
           </button>
         </div>
+      </div>
+      <div className={props.isActive ? 'bot-card__bot-active' : 'bot-card__bot-disable'}>
+        <span className='bot-card__bot-active'>bot is running</span>
+        {/* <a className='bot-card__link' href={teleNameUrl}>{teleNameUrl}</a> */}
       </div>
     </li>
   );
 }
 
 function Create() {
-  const listOfQuestion = getStorageItem('listOfQuestions');
+  const { setBotInstance } = useBotStore();
   const inputRefGpt = createRef();
 
-  const questions = [
-    {
-      question:
-        'Какой год основания Санкт-Петербурга? Выберите следующие ответы: 1) 1689, 2) 1703, 3) 1721',
-      id: 0,
-    },
-    {
-      question:
-        'Кто изображен на банкноте в 100 рублей? Выберите следующие ответы: 1) Пушкин, 2) Сталин, 3) Ленин',
-      id: 1,
-    },
-    {
-      question:
-        'Как называется самое высокое здание в мире? Выберите следующие ответы: 1) Москва-сити, 2) Бурдж Халифа, 3) Пизанская башня',
-
-      id: 2,
-    },
-  ];
-
   const token = getStorageItem('actualKey');
-  const [isRuningBot, setIsRuningBot] = useState(false);
-  const [isClassInputBot, setisClassInputBot] = useState(true);
+  const [isInputActive, setisInputActive] = useState(true);
   const [botName, setBotName] = useState('');
 
-  const saveResponseId = JSON.parse(localStorage.getItem('responseid')) ?? [];
-  const [teleName, setTeleName] = useState('');
-  const teleNameUrl = teleName && `https://t.me/${teleName}`;
-  const [responseid, setResponseId] = useState(saveResponseId);
+  const [isSimpleBotActive, setIsSimpleBotActive] = useState(false);
+  const [isRandomBotActive, setIsRandomBotActive] = useState(false);
+  const [isQuestionBotActive, setIsQuestionBotActive] = useState(false);
+  const [isGPTBotActive, setIsGPTBotActive] = useState(false);
 
   const createBot = () => {
     if (!token) return;
@@ -78,48 +80,79 @@ function Create() {
       botName: botName,
     };
 
-    getTelegramBotName(getStorageItem('actualKey')).then((readyData) => {
-      console.log(' >1> ', readyData);
-      setTeleName(readyData.result.username);
-      setResponseId([...responseid, { id: readyData.result.id }]);
-    });
-
     if (botName === RANDOM_BOT_NAME) {
       const bot = new adapterBrowser(BasicBotRandom, settings);
       bot.start();
-      setIsRuningBot(true);
+      setBotInstance(bot);
+
+      setIsRandomBotActive(true);
+      setIsSimpleBotActive(false);
+      setIsQuestionBotActive(false);
+      setIsGPTBotActive(false);
     }
     if (botName === SIMPLE_BOT_NAME) {
       const bot = adapterBrowser(BasicBot, settings);
       bot.start();
-      setIsRuningBot(true);
+      setBotInstance(bot);
+
+      setIsRandomBotActive(false);
+      setIsSimpleBotActive(true);
+      setIsQuestionBotActive(false);
+      setIsGPTBotActive(false);
     }
     if (botName === QUESTION_BOT_NAME) {
       const bot = new adapterBrowser(BasicBotQuestion, settings);
       bot.start();
-      setIsRuningBot(true);
+      setBotInstance(bot);
+
+      setIsRandomBotActive(false);
+      setIsSimpleBotActive(false);
+      setIsQuestionBotActive(true);
+      setIsGPTBotActive(false);
     }
     if (botName === GPT_BOT_NAME) {
       const bot = new adapterBrowser(BasicBotChatGPT, settings);
       bot.start();
-      setIsRuningBot(true);
+      setBotInstance(bot);
+
+      setIsRandomBotActive(false);
+      setIsSimpleBotActive(false);
+      setIsQuestionBotActive(false);
+      setIsGPTBotActive(true);
     }
   };
 
   const chooseBotRandom = () => {
+    if (token) {
+      setisInputActive(true);
+    } else {
+      setisInputActive(false);
+    }
     setBotName(RANDOM_BOT_NAME);
   };
   const chooseBotSimple = () => {
     setBotName(SIMPLE_BOT_NAME);
+    if (token) {
+      setisInputActive(true);
+    } else {
+      setisInputActive(false);
+    }
   };
   const chooseBotGPT = () => {
     setBotName(GPT_BOT_NAME);
+    if (token) {
+      setisInputActive(true);
+    } else {
+      setisInputActive(false);
+    }
   };
   const chooseBotQuestion = () => {
-    if (!listOfQuestion) {
-      setStorageItem('listOfQuestions', JSON.stringify(questions));
-    }
     setBotName(QUESTION_BOT_NAME);
+    if (token) {
+      setisInputActive(true);
+    } else {
+      setisInputActive(false);
+    }
   };
 
   useEffect(() => {
@@ -129,9 +162,9 @@ function Create() {
   const saveToStorage = (event) => {
     setStorageItem('actualKey', event.target.value);
     if (event.target.value) {
-      setisClassInputBot(true);
+      setisInputActive(true);
     } else {
-      setisClassInputBot(false);
+      setisInputActive(false);
     }
   };
 
@@ -145,6 +178,7 @@ function Create() {
         чистые случайные числа, чтобы помочь вам в любом задании, которое требует
         использования случайных данных!`,
       handler: chooseBotRandom,
+      isActive: isRandomBotActive,
     },
 
     {
@@ -155,6 +189,7 @@ function Create() {
         вопросами и вариантами ответов, и быстро отправлять их вашей аудитории или друзьям
         в Телеграм`,
       handler: chooseBotQuestion,
+      isActive: isQuestionBotActive,
     },
 
     {
@@ -162,6 +197,7 @@ function Create() {
       title: 'Simple Bot Instance',
       description: `Наш телеграмм бот - это универсальный помощник для вашей повседневной жизни.`,
       handler: chooseBotSimple,
+      isActive: isSimpleBotActive,
     },
 
     {
@@ -180,6 +216,7 @@ function Create() {
           />
         </div>
       ),
+      isActive: isGPTBotActive,
     },
   ];
 
@@ -187,38 +224,35 @@ function Create() {
     <Layout>
       <div className='create'>
         <div className='create__entry-token'>
-          <h3>Enter Token:</h3>
-          <input
-            className={isClassInputBot ? 'create__input-disable' : 'create__input-active'}
-            placeholder='Token to access the HTTP API'
-            type='text'
-            defaultValue={getStorageItem('actualKey')}
-            onChange={saveToStorage}
-          />
+          <div className='create__entry-token-wrap'>
+            <h3 className='create__entry-token_titile'>Enter Token:</h3>
+            <input
+              className={isInputActive ? 'create__input-disable' : 'create__input-active'}
+              placeholder='Token to access the HTTP API'
+              type='text'
+              defaultValue={getStorageItem('actualKey')}
+              onChange={saveToStorage}
+            />
+          </div>
+          <span className={isInputActive ? 'create__token-disable' : 'create__token-active'}>
+            Enter token!
+          </span>
         </div>
 
-        {!isRuningBot && (
-          <div className='create__runing'>
-            <ul className='create__choose-bot'>
-              {botArr.map((cardInfo) => (
-                <BotCard
-                  key={cardInfo.id}
-                  title={cardInfo.title}
-                  description={cardInfo.description}
-                  handler={cardInfo.handler}
-                  customEl={cardInfo.customEl}
-                />
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {isRuningBot && (
-          <div>
-            <h2>bot is running</h2>
-            {teleName && <a href={teleNameUrl}>{teleNameUrl}</a>}
-          </div>
-        )}
+        <div className='create__runing'>
+          <ul className='create__choose-bot'>
+            {botArr.map((cardInfo) => (
+              <BotCard
+                key={cardInfo.id}
+                title={cardInfo.title}
+                description={cardInfo.description}
+                handler={cardInfo.handler}
+                customEl={cardInfo.customEl}
+                isActive={cardInfo.isActive}
+              />
+            ))}
+          </ul>
+        </div>
       </div>
     </Layout>
   );
