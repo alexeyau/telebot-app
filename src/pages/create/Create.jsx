@@ -1,6 +1,7 @@
 import { useState, createRef, useEffect } from 'react';
 import {
   BasicBot,
+  BasicBotFire,
   BasicBotQuestion,
   BasicBotChatGPT,
   BasicBotRandom,
@@ -19,6 +20,7 @@ const RANDOM_BOT_NAME = 'randomBot001';
 const SIMPLE_BOT_NAME = 'simpleBot01';
 const QUESTION_BOT_NAME = 'questionBot01';
 const GPT_BOT_NAME = 'botName_gpt0';
+const FIRE_BOT_NAME = 'botName_fire023';
 
 function BotCard(props) {
   // const [teleName, setTeleName] = useState('');
@@ -69,6 +71,7 @@ function Create() {
   const [isRandomBotActive, setIsRandomBotActive] = useState(false);
   const [isQuestionBotActive, setIsQuestionBotActive] = useState(false);
   const [isGPTBotActive, setIsGPTBotActive] = useState(false);
+  const [isFireBotActive, setIsFireBotActive] = useState(false);
 
   const createBot = () => {
     if (!token) return;
@@ -89,6 +92,7 @@ function Create() {
       setIsSimpleBotActive(false);
       setIsQuestionBotActive(false);
       setIsGPTBotActive(false);
+      setIsFireBotActive(false);
     }
     if (botName === SIMPLE_BOT_NAME) {
       const bot = adapterBrowser(BasicBot, settings);
@@ -99,6 +103,18 @@ function Create() {
       setIsSimpleBotActive(true);
       setIsQuestionBotActive(false);
       setIsGPTBotActive(false);
+      setIsFireBotActive(false);
+    }
+    if (botName === FIRE_BOT_NAME) {
+      const bot = adapterBrowser(BasicBotFire, settings);
+      bot.start();
+      setBotInstance(bot);
+
+      setIsRandomBotActive(false);
+      setIsSimpleBotActive(false);
+      setIsQuestionBotActive(false);
+      setIsGPTBotActive(false);
+      setIsFireBotActive(true);
     }
     if (botName === QUESTION_BOT_NAME) {
       const bot = new adapterBrowser(BasicBotQuestion, settings);
@@ -109,6 +125,7 @@ function Create() {
       setIsSimpleBotActive(false);
       setIsQuestionBotActive(true);
       setIsGPTBotActive(false);
+      setIsFireBotActive(false);
     }
     if (botName === GPT_BOT_NAME) {
       const bot = new adapterBrowser(BasicBotChatGPT, settings);
@@ -119,6 +136,7 @@ function Create() {
       setIsSimpleBotActive(false);
       setIsQuestionBotActive(false);
       setIsGPTBotActive(true);
+      setIsFireBotActive(false);
     }
   };
 
@@ -140,6 +158,14 @@ function Create() {
   };
   const chooseBotGPT = () => {
     setBotName(GPT_BOT_NAME);
+    if (token) {
+      setisInputActive(true);
+    } else {
+      setisInputActive(false);
+    }
+  };
+  const chooseBotFire = () => {
+    setBotName(FIRE_BOT_NAME);
     if (token) {
       setisInputActive(true);
     } else {
@@ -217,6 +243,14 @@ function Create() {
         </div>
       ),
       isActive: isGPTBotActive,
+    },
+
+    {
+      id: 5,
+      title: 'FireBase Bot Instance',
+      description: `FireBase.`,
+      handler: chooseBotFire,
+      isActive: isFireBotActive,
     },
   ];
 
