@@ -1,7 +1,7 @@
 import { useState, createRef, useEffect } from 'react';
 import {
   BasicBot,
-  BasicBotFire,
+  // BasicBotFire,
   BasicBotQuestion,
   BasicBotChatGPT,
   BasicBotRandom,
@@ -105,17 +105,17 @@ function Create() {
       setIsGPTBotActive(false);
       setIsFireBotActive(false);
     }
-    if (botName === FIRE_BOT_NAME) {
-      const bot = adapterBrowser(BasicBotFire, settings);
-      bot.start();
-      setBotInstance(bot);
+    // if (botName === FIRE_BOT_NAME) {
+    //   const bot = adapterBrowser(BasicBotFire, settings);
+    //   bot.start();
+    //   setBotInstance(bot);
 
-      setIsRandomBotActive(false);
-      setIsSimpleBotActive(false);
-      setIsQuestionBotActive(false);
-      setIsGPTBotActive(false);
-      setIsFireBotActive(true);
-    }
+    //   setIsRandomBotActive(false);
+    //   setIsSimpleBotActive(false);
+    //   setIsQuestionBotActive(false);
+    //   setIsGPTBotActive(false);
+    //   setIsFireBotActive(true);
+    // }
     if (botName === QUESTION_BOT_NAME) {
       const bot = new adapterBrowser(BasicBotQuestion, settings);
       bot.start();
